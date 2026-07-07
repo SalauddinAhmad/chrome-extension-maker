@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <title>Durud Reminder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div class="brand-text">
+            <div class="brand-name">Durud Reminder</div>
+            <div class="brand-sub">নবীজি (সাঃ)-এর উপর দুরুদ</div>
+          </div>
+        </div>
+        <label class="switch" title="রিমাইন্ডার চালু/বন্ধ">
+          <input type="checkbox" id="toggle-enabled" />
+          <span class="slider"></span>
+        </label>
+      </header>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab is-active" data-tab="reminder">রিমাইন্ডার</button>
+        <button class="tab" data-tab="tasbih">তাসবিহ</button>
+        <button class="tab" data-tab="stats">পরিসংখ্যান</button>
+      </nav>
+
+      <main class="tab-body">
+        <!-- Reminder tab -->
+        <section class="tab-panel is-active" data-panel="reminder">
+          <div class="card durud-card">
+            <div class="durud-meta">
+              <span id="durud-name" class="durud-name">দুরুদে ইব্রাহিম</span>
+              <div class="durud-actions">
+                <button class="icon-btn" id="btn-prev" title="পূর্ববর্তী">‹</button>
+                <button class="icon-btn" id="btn-next" title="পরবর্তী">›</button>
+                <button class="icon-btn" id="btn-copy" title="কপি">⧉</button>
+              </div>
+            </div>
+            <div id="durud-arabic" class="durud-arabic" dir="rtl"></div>
+            <div id="durud-translit" class="durud-translit"></div>
+            <div id="durud-bangla" class="durud-bangla"></div>
+            <div id="durud-ref" class="durud-ref"></div>
+          </div>
+
+          <div class="card settings-card">
+            <div class="row">
+              <label class="row-label" for="interval">রিমাইন্ডার ইন্টারভাল</label>
+              <span id="interval-val" class="row-val">১৫ মিনিট</span>
+            </div>
+            <input type="range" id="interval" min="5" max="120" step="5" value="15" />
+
+            <div class="row">
+              <label class="row-label" for="select-durud">দুরুদ নির্বাচন</label>
+            </div>
+            <select id="select-durud" class="select"></select>
+
+            <div class="row toggle-row">
+              <label class="row-label" for="toggle-dnd">রাতে সাইলেন্স (১১টা–ভোর ৬টা)</label>
+              <label class="switch small">
+                <input type="checkbox" id="toggle-dnd" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="row toggle-row">
+              <label class="row-label" for="toggle-friday">শুক্রবার বিশেষ মোড</label>
+              <label class="switch small">
+                <input type="checkbox" id="toggle-friday" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="row toggle-row">
+              <label class="row-label" for="toggle-idle">শুধু সক্রিয় থাকলে</label>
+              <label class="switch small">
+                <input type="checkbox" id="toggle-idle" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="next-line">
+            পরবর্তী রিমাইন্ডার: <span id="next-time">—</span>
+          </div>
+        </section>
+
+        <!-- Tasbih tab -->
+        <section class="tab-panel" data-panel="tasbih">
+          <div class="tasbih">
+            <div class="tasbih-goal">
+              দৈনিক লক্ষ্য: <span id="tasbih-goal">১০০</span>
+            </div>
+            <div class="tasbih-ring" id="tasbih-ring">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="52" />
+                <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52" />
+              </svg>
+              <div class="tasbih-count" id="tasbih-count">0</div>
+            </div>
+            <button class="tasbih-btn" id="btn-count">সুবহানআল্লাহ · ট্যাপ</button>
+            <div class="tasbih-actions">
+              <button class="ghost-btn" id="btn-reset">রিসেট</button>
+              <button class="ghost-btn" id="btn-goal">লক্ষ্য পরিবর্তন</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats tab -->
+        <section class="tab-panel" data-panel="stats">
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="stat-val" id="stat-streak">0</div>
+              <div class="stat-lbl">দিনের স্ট্রিক</div>
+            </div>
+            <div class="stat">
+              <div class="stat-val" id="stat-today">0</div>
+              <div class="stat-lbl">আজকের গণনা</div>
+            </div>
+            <div class="stat">
+              <div class="stat-val" id="stat-total">0</div>
+              <div class="stat-lbl">মোট দুরুদ</div>
+            </div>
+          </div>
+          <div class="heatmap-wrap">
+            <div class="heatmap-title">গত ৮ সপ্তাহ</div>
+            <div class="heatmap" id="heatmap"></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span>v2.0 · মিনিমাল এলিগ্যান্ট</span>
+        <button class="link-btn" id="btn-theme">থিম</button>
+      </footer>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
