@@ -4,23 +4,26 @@ import { Command } from "cmdk";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Bookmark,
-  Camera,
-  Cpu,
   Image as ImageIcon,
   LayoutDashboard,
-  Layers,
   Palette,
   Search,
   Settings as SettingsIcon,
   StickyNote,
   Type,
   FolderKanban,
+  ShieldCheck,
+  Accessibility,
   type LucideIcon,
 } from "lucide-react";
-import { db } from "@/storage";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { noteRepository } from "@/modules/notes/repository";
 import { MODULES, type ModuleId } from "@/lib/modules";
 import { useUIStore } from "@/stores/ui-store";
 import { cn } from "@/lib/cn";
+import type { StoredColor, StoredFont, Inspiration, Note } from "@/types";
 
 interface Action {
   id: string;
@@ -39,10 +42,9 @@ const MODULE_ICON: Record<ModuleId, LucideIcon> = {
   "inspiration-vault": Bookmark,
   notes: StickyNote,
   "asset-extractor": ImageIcon,
-  screenshot: Camera,
   "design-inspector": Search,
-  "tech-stack": Cpu,
-  "resource-hub": Layers,
+  "design-audit": ShieldCheck,
+  accessibility: Accessibility,
   settings: SettingsIcon,
 };
 
@@ -75,23 +77,23 @@ export function CommandPalette() {
   };
 
   // Live data (only when palette is open to keep it cheap)
-  const colors = useLiveQuery(
-    () => (open ? db.colors.orderBy("createdAt").reverse().limit(20).toArray() : Promise.resolve([])),
+  const colors = useLiveQuery<StoredColor[]>(
+    () => (open ? colorRepository.listRecent(20) : Promise.resolve([])),
     [open],
     [],
   );
-  const fonts = useLiveQuery(
-    () => (open ? db.fonts.orderBy("createdAt").reverse().limit(20).toArray() : Promise.resolve([])),
+  const fonts = useLiveQuery<StoredFont[]>(
+    () => (open ? typographyRepository.listRecent(20) : Promise.resolve([])),
     [open],
     [],
   );
-  const inspirations = useLiveQuery(
-    () => (open ? db.inspirations.orderBy("createdAt").reverse().limit(30).toArray() : Promise.resolve([])),
+  const inspirations = useLiveQuery<Inspiration[]>(
+    () => (open ? inspirationRepository.listRecent(30) : Promise.resolve([])),
     [open],
     [],
   );
-  const notes = useLiveQuery(
-    () => (open ? db.notes.orderBy("updatedAt").reverse().limit(30).toArray() : Promise.resolve([])),
+  const notes = useLiveQuery<Note[]>(
+    () => (open ? noteRepository.listRecent(30) : Promise.resolve([])),
     [open],
     [],
   );

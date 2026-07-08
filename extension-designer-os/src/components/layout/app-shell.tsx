@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { MODULES, MODULE_GROUPS, type ModuleGroup } from "@/lib/modules";
 import { useUIStore } from "@/stores/ui-store";
 import { useProjectStore } from "@/stores/project-store";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { cn } from "@/lib/cn";
 
 interface AppShellProps {
@@ -26,7 +26,7 @@ export function AppShell({ children, variant }: AppShellProps) {
   const [collapsed, setCollapsed] = useState(variant === "popup");
 
   const activeProject = useLiveQuery(
-    () => (activeProjectId ? db.projects.get(activeProjectId) : Promise.resolve(undefined)),
+    () => (activeProjectId ? projectRepository.getById(activeProjectId) : Promise.resolve(undefined)),
     [activeProjectId],
     undefined,
   );
