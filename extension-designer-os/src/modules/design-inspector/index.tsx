@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  Copy, Download, ExternalLink, Loader2, Palette, RefreshCw, Save, Search, Star,
+  Copy, Download, Loader2, Palette, RefreshCw, Save, Search, Star,
   Type, Image as ImageIcon, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
