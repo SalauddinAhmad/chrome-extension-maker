@@ -227,7 +227,7 @@ function Index() {
                   className="mb-2 text-[10px] font-semibold uppercase tracking-widest"
                   style={{ color: "var(--primary)" }}
                 >
-                  ✦ দুরুদে ইব্রাহিম
+                  ✦ ছোট দুরুদ
                 </div>
                 <div
                   dir="rtl"
