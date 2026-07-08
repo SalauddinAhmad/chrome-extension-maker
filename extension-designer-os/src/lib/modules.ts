@@ -45,7 +45,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "screenshot", name: "Screenshot Studio", tagline: "Capture · crop · mockup", icon: Camera, phase: 4, status: "ready" },
   { id: "design-inspector", name: "Design Inspector", tagline: "Full design DNA", icon: Search, phase: 5, status: "ready" },
   { id: "tech-stack", name: "Tech Stack", tagline: "Framework · CMS · CDN", icon: Cpu, phase: 5, status: "ready" },
-  { id: "resource-hub", name: "Resource Hub", tagline: "Icons · fonts · mockups", icon: Layers, phase: 6, status: "scaffolded" },
+  { id: "resource-hub", name: "Resource Hub", tagline: "Icons · fonts · mockups", icon: Layers, phase: 6, status: "ready" },
 ];
 
 export const MODULES_BY_ID = Object.fromEntries(
