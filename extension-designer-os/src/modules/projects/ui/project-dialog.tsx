@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { toast } from "sonner";
+import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { projectsRepo, db } from "@/storage";
+import { useProjectStore } from "@/stores/project-store";
 import { cn } from "@/lib/cn";
 
 const PALETTE = [
@@ -20,29 +21,54 @@ interface Props {
 }
 
 export function ProjectDialog({ open, onOpenChange, projectId }: Props) {
+  const getProject = useProjectStore((s) => s.getProject);
+  const createProject = useProjectStore((s) => s.createProject);
+  const updateProject = useProjectStore((s) => s.updateProject);
+
   const [name, setName] = useState("");
   const [clientName, setClientName] = useState("");
   const [description, setDescription] = useState("");
   const [color, setColor] = useState(PALETTE[0]);
+  const [coverImage, setCoverImage] = useState<string | undefined>();
   const [saving, setSaving] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
     if (projectId) {
-      db.projects.get(projectId).then((p) => {
+      getProject(projectId).then((p) => {
         if (!p) return;
         setName(p.name);
         setClientName(p.clientName ?? "");
         setDescription(p.description ?? "");
         setColor(p.color ?? PALETTE[0]);
+        setCoverImage(p.coverImage);
       });
     } else {
       setName("");
       setClientName("");
       setDescription("");
       setColor(PALETTE[Math.floor(Math.random() * PALETTE.length)]);
+      setCoverImage(undefined);
     }
-  }, [open, projectId]);
+  }, [open, projectId, getProject]);
+
+  function pickCover() {
+    fileRef.current?.click();
+  }
+
+  function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Image too large (max 2MB)");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setCoverImage(reader.result as string);
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  }
 
   async function submit() {
     if (!name.trim()) {
@@ -51,22 +77,18 @@ export function ProjectDialog({ open, onOpenChange, projectId }: Props) {
     }
     setSaving(true);
     try {
+      const payload = {
+        name: name.trim(),
+        clientName: clientName.trim() || undefined,
+        description: description.trim() || undefined,
+        color,
+        coverImage,
+      };
       if (projectId) {
-        await projectsRepo.update(projectId, {
-          name: name.trim(),
-          clientName: clientName.trim() || undefined,
-          description: description.trim() || undefined,
-          color,
-        });
+        await updateProject(projectId, payload);
         toast.success("Project updated");
       } else {
-        await projectsRepo.create({
-          name: name.trim(),
-          clientName: clientName.trim() || undefined,
-          description: description.trim() || undefined,
-          color,
-          archived: false,
-        });
+        await createProject(payload);
         toast.success("Project created");
       }
       onOpenChange(false);
@@ -88,6 +110,32 @@ export function ProjectDialog({ open, onOpenChange, projectId }: Props) {
           </Dialog.Description>
 
           <div className="space-y-2.5">
+            <div>
+              <label className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Cover</label>
+              <div className="mt-1">
+                {coverImage ? (
+                  <div className="relative overflow-hidden rounded-md border">
+                    <img src={coverImage} alt="" className="h-20 w-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setCoverImage(undefined)}
+                      className="absolute right-1 top-1 rounded-full bg-background/80 p-0.5 text-foreground shadow"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={pickCover}
+                    className="flex h-16 w-full items-center justify-center gap-1.5 rounded-md border border-dashed text-[10px] text-muted-foreground hover:bg-muted/40"
+                  >
+                    <ImagePlus className="h-3.5 w-3.5" /> Add cover image
+                  </button>
+                )}
+                <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
+              </div>
+            </div>
             <div>
               <label className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
                 Name
