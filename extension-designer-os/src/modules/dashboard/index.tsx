@@ -30,8 +30,11 @@ import { useLibraryStore } from "@/modules/asset-extractor/library-store";
 import { colorRepository } from "@/modules/color-studio/repository";
 import { useColorLibraryStore } from "@/modules/color-studio/library-store";
 import { useColorStudioStore } from "@/modules/color-studio/store";
-import { ASSET_TYPE_LABEL } from "@/types";
-import type { Project, Inspiration, Asset, AssetType } from "@/types";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { useTypographyLibraryStore } from "@/modules/typography-studio/library-store";
+import { useTypeStore } from "@/modules/typography-studio/store";
+import { ASSET_TYPE_LABEL, FONT_CATEGORY_LABEL } from "@/types";
+import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
@@ -242,6 +245,10 @@ export default function Dashboard() {
 
       {/* Color library summary */}
       <ColorSummary onOpen={() => setActiveModule("color-studio")} />
+
+      {/* Typography library summary */}
+      <FontSummary onOpen={() => setActiveModule("typography-studio")} />
+
 
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
