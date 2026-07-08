@@ -145,13 +145,22 @@ input:checked + .slider::before { transform: translateX(18px); }
     linear-gradient(160deg, var(--brand) 0%, var(--brand-2) 100%);
   color: #fff;
   border-radius: 18px;
-  padding: 20px 20px 16px;
+  padding: 20px 20px 22px;
   margin-bottom: 12px;
   text-align: center;
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
   transition: filter 0.35s;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 .hero.off { filter: grayscale(0.55) brightness(0.85); }
 .hero::before {
