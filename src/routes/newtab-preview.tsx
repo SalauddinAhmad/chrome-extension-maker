@@ -166,7 +166,7 @@ function NewTabPreview() {
               alt=""
               aria-hidden
               className="absolute bottom-0 left-0 w-full pointer-events-none select-none"
-              style={{ height: "auto", transform: "scaleY(-1)", opacity: 0.9 }}
+              style={{ height: "auto", opacity: 0.9 }}
             />
 
 
