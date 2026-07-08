@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import { toast } from "sonner";
 import { Download, Upload, Trash2, Sun, Moon, Monitor, Palette, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -59,8 +60,11 @@ export default function SettingsModule() {
       const file = await exportAll();
       downloadBackup(file);
       setStatus("Backup downloaded.");
+      toast.success("Backup downloaded");
     } catch (e) {
-      setStatus(`Export failed: ${(e as Error).message}`);
+      const msg = (e as Error).message;
+      setStatus(`Export failed: ${msg}`);
+      toast.error("Export failed", { description: msg });
     } finally {
       setBusy(false);
     }
@@ -83,8 +87,11 @@ export default function SettingsModule() {
       const parsed = JSON.parse(text) as BackupFile;
       const res = await importAll(parsed, modeAttr);
       setStatus(`Imported ${res.imported} rows (${modeAttr}).`);
+      toast.success(`Imported ${res.imported} rows`, { description: `Mode: ${modeAttr}` });
     } catch (err) {
-      setStatus(`Import failed: ${(err as Error).message}`);
+      const msg = (err as Error).message;
+      setStatus(`Import failed: ${msg}`);
+      toast.error("Import failed", { description: msg });
     } finally {
       setBusy(false);
       e.target.value = "";
@@ -97,6 +104,7 @@ export default function SettingsModule() {
     try {
       await clearAll();
       setStatus("All data cleared.");
+      toast.success("All data cleared");
     } finally {
       setBusy(false);
     }
