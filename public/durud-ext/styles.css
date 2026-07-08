@@ -581,6 +581,45 @@ input:checked + .slider::before { transform: translateX(18px); }
 }
 .icon-btn:hover { color: var(--brand); border-color: var(--brand); background: var(--brand-soft); }
 
+/* ---------- Language toggle ---------- */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  font-family: "Inter", "Tiro Bangla", sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--ink-mute);
+  transition: 0.15s;
+}
+.lang-toggle:hover { border-color: var(--brand); }
+.lang-opt {
+  padding: 2px 6px;
+  border-radius: 999px;
+  transition: 0.15s;
+  font-weight: 500;
+}
+.lang-opt.active {
+  background: var(--brand);
+  color: var(--brand-ink, #fff);
+  font-weight: 600;
+}
+.lang-sep { opacity: 0.35; padding: 0 1px; }
+[data-theme="dark"] .lang-toggle {
+  background: var(--surface);
+  border-color: var(--line-2);
+}
+[data-theme="dark"] .lang-opt.active {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+  color: var(--brand-ink);
+}
+
+
 /* ---------- Footer ---------- */
 .app-footer {
   display: flex; justify-content: space-between; align-items: center;
