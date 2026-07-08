@@ -66,7 +66,7 @@ function renderSettings() {
   $("#toggle-dnd").checked = state.settings.dnd;
   $("#toggle-friday").checked = state.settings.friday;
   $("#toggle-idle").checked = state.settings.idleOnly;
-  $("#toggle-audio").checked = state.settings.audioEnabled;
+  { const _ta = $("#toggle-audio"); if (_ta) _ta.checked = true; state.settings.audioEnabled = true; }
   $("#select-audio").value = String(state.settings.audioChoice ?? "random");
   const volPct = Math.round((state.settings.volume ?? 0.9) * 100);
   $("#volume").value = volPct;
@@ -175,11 +175,7 @@ function bindAll() {
     state.settings.audioChoice = e.target.value;
     await saveSettings();
   });
-  $("#toggle-audio").addEventListener("change", async (e) => {
-    state.settings.audioEnabled = e.target.checked;
-    await saveSettings();
-    toast(e.target.checked ? "অডিও চালু" : "অডিও বন্ধ");
-  });
+  { const _ta = $("#toggle-audio"); if (_ta) _ta.addEventListener("change", async (e) => { state.settings.audioEnabled = e.target.checked; await saveSettings(); toast(e.target.checked ? "অডিও চালু" : "অডিও বন্ধ"); }); }
   $("#volume").addEventListener("input", (e) => {
     const v = +e.target.value;
     state.settings.volume = v / 100;
