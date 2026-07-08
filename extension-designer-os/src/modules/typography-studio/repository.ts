@@ -60,7 +60,7 @@ export const typographyRepository = {
   },
 
   async getById(id: string): Promise<StoredFont | undefined> {
-    return fontsRepo.get(id);
+    return fontsRepo.get(id) as Promise<StoredFont | undefined>;
   },
 
   async query(filters: FontFilters = {}): Promise<StoredFont[]> {
@@ -87,7 +87,7 @@ export const typographyRepository = {
   },
 
   async createFont(data: Omit<StoredFont, "id" | "createdAt" | "updatedAt">): Promise<StoredFont> {
-    return fontsRepo.create(data);
+    return fontsRepo.create(data) as Promise<StoredFont>;
   },
 
   async updateFont(id: string, patch: Partial<StoredFont>): Promise<void> {
@@ -153,7 +153,7 @@ export const typographyRepository = {
   async createSystem(
     data: Omit<TypographySystem, "id" | "createdAt" | "updatedAt">,
   ): Promise<TypographySystem> {
-    return typographySystemsRepo.create(data);
+    return typographySystemsRepo.create(data) as Promise<TypographySystem>;
   },
 
   async updateSystem(id: string, patch: Partial<TypographySystem>): Promise<void> {
