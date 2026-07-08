@@ -11,6 +11,7 @@ import type {
   Note,
   Project,
   Settings,
+  DesignReport,
 } from "@/types";
 
 
