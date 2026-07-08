@@ -12,6 +12,7 @@ import {
   Settings as SettingsIcon,
   FolderKanban,
   ShieldCheck,
+  Accessibility,
   type LucideIcon,
 } from "lucide-react";
 
@@ -22,6 +23,7 @@ export type ModuleId =
   | "typography-studio"
   | "design-inspector"
   | "design-audit"
+  | "accessibility"
   | "inspiration-vault"
   | "asset-extractor"
   | "resource-hub"
@@ -30,7 +32,7 @@ export type ModuleId =
   | "screenshot"
   | "settings";
 
-export type ModulePhase = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type ModulePhase = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type ModuleGroup = "dashboard" | "workspace" | "tools" | "library" | "utilities";
 
 export interface ModuleMeta {
@@ -50,6 +52,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "typography-studio", name: "Typography", tagline: "Detect · pair · scale", icon: Type, phase: 2, status: "ready", group: "tools" },
   { id: "design-inspector", name: "Design Inspector", tagline: "Full design DNA", icon: Search, phase: 5, status: "ready", group: "tools" },
   { id: "design-audit", name: "Design Audit", tagline: "Score · grade · fix", icon: ShieldCheck, phase: 7, status: "ready", group: "tools" },
+  { id: "accessibility", name: "Accessibility", tagline: "WCAG · contrast · a11y", icon: Accessibility, phase: 8, status: "ready", group: "tools" },
   { id: "screenshot", name: "Screenshot Studio", tagline: "Capture · crop · mockup", icon: Camera, phase: 4, status: "ready", group: "tools" },
   { id: "inspiration-vault", name: "Inspiration Vault", tagline: "Save · tag · moodboard", icon: Bookmark, phase: 3, status: "ready", group: "library" },
   { id: "asset-extractor", name: "Asset Manager", tagline: "Images · SVG · icons", icon: ImageIcon, phase: 4, status: "ready", group: "library" },
