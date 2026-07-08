@@ -161,7 +161,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={c.id}
                       value={`color-${c.hex}-${c.name ?? ""}`}
-                      keywords={[c.hex, c.name ?? ""].join(" ")}
+                      keywords={[c.hex, c.name ?? ""]}
                       onSelect={() =>
                         run(() => navigator.clipboard.writeText(c.hex))
                       }
@@ -187,7 +187,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={f.id}
                       value={`font-${f.family}`}
-                      keywords={f.family}
+                      keywords={[f.family]}
                       onSelect={() =>
                         run(() => navigator.clipboard.writeText(f.family))
                       }
@@ -212,7 +212,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={i.id}
                       value={`insp-${i.id}`}
-                      keywords={`${i.title} ${i.url} ${i.tags.join(" ")}`}
+                      keywords={[i.title, i.url, ...i.tags]}
                       onSelect={() =>
                         run(() => window.open(i.url, "_blank", "noreferrer"))
                       }
@@ -232,7 +232,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={n.id}
                       value={`note-${n.id}`}
-                      keywords={`${n.title} ${n.body} ${n.tags.join(" ")}`}
+                      keywords={[n.title, n.body, ...n.tags]}
                       onSelect={() => run(() => setActiveModule("notes"))}
                       className={itemCls}
                     >
