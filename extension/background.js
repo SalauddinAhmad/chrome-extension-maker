@@ -13,7 +13,7 @@ const AUDIO_FILES = [
 ];
 const DEFAULTS = {
   enabled: true,
-  interval: 15,
+  interval: 10,
   durudId: "small-blessing",
   dnd: true,
   friday: true,

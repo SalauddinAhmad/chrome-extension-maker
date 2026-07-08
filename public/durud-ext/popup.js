@@ -1,7 +1,7 @@
 // Durud Reminder v2.0 — Premium popup
 const DEFAULT_SETTINGS = {
   enabled: true,
-  interval: 15,
+  interval: 10,
   durudId: "small-blessing",
   dnd: true,
   friday: true,
@@ -95,7 +95,7 @@ async function renderNext() {
   } catch (e) {}
   const t = scheduled
     ? new Date(scheduled)
-    : new Date(Date.now() + (state.settings.interval || 15) * 60000);
+    : new Date(Date.now() + (state.settings.interval || 10) * 60000);
   const h = t.getHours() % 12 || 12;
   const m = String(t.getMinutes()).padStart(2, "0");
   const ap = t.getHours() >= 12 ? "PM" : "AM";
