@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Copy, Star, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { db } from "@/storage";
+import { typographyRepository } from "../repository";
+import { projectRepository } from "@/modules/projects/repository";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import { useTypographyLibraryStore } from "../library-store";
@@ -38,8 +39,8 @@ function Body({ id, onClose }: { id: string; onClose: () => void }) {
   const toggleFavorite = useTypographyLibraryStore((s) => s.toggleFavorite);
   const moveToProject = useTypographyLibraryStore((s) => s.moveToProject);
 
-  const font = useLiveQuery(() => db.fonts.get(id), [id]);
-  const projects = useLiveQuery(() => db.projects.filter((p) => !p.archived).toArray(), [], []);
+  const font = useLiveQuery(() => typographyRepository.getById(id), [id]);
+  const projects = useLiveQuery(() => projectRepository.listActive(), [], []);
 
   const [tagsInput, setTagsInput] = useState("");
   useEffect(() => { setTagsInput(font?.tags?.join(", ") ?? ""); }, [font?.id]); // eslint-disable-line react-hooks/exhaustive-deps

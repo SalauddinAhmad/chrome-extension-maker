@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Search, X, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { useColorLibraryStore } from "../library-store";
 import { COLOR_SOURCE_LABEL, type ColorSource } from "@/types";
 import type { ColorSort, ColorDateRange } from "../repository";
@@ -33,7 +33,7 @@ const SORT_OPTIONS: Array<{ id: ColorSort; label: string }> = [
 export function ColorFiltersBar() {
   const { filters, setFilters, resetFilters } = useColorLibraryStore();
   const projects = useLiveQuery(
-    () => db.projects.filter((p) => !p.archived).sortBy("name"),
+    () => projectRepository.listActive(),
     [],
     [],
   );

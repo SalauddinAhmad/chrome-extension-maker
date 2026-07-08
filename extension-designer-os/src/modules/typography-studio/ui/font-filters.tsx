@@ -1,6 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { Search, X, Star } from "lucide-react";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import { useTypographyLibraryStore } from "../library-store";
@@ -22,7 +22,7 @@ export function FontFilters() {
   const setFilters = useTypographyLibraryStore((s) => s.setFilters);
   const resetFilters = useTypographyLibraryStore((s) => s.resetFilters);
 
-  const projects = useLiveQuery(() => db.projects.filter((p) => !p.archived).toArray(), [], []);
+  const projects = useLiveQuery(() => projectRepository.listActive(), [], []);
 
   return (
     <div className="space-y-2">

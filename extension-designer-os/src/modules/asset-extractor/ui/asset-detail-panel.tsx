@@ -4,7 +4,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Copy, Download, Star, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { downloadFile } from "@/lib/chrome";
 import { safeFilename } from "../logic/download";
 import { formatBytes, parseTags } from "../logic/validation";
@@ -42,7 +42,7 @@ function DetailBody({ id, onClose }: { id: string; onClose: () => void }) {
   const [saving, setSaving] = useState(false);
 
   const projects = useLiveQuery(
-    () => db.projects.filter((p) => !p.archived).sortBy("name"),
+    () => projectRepository.listActive(),
     [],
     [],
   );
