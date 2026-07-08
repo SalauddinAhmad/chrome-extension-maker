@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { toast } from "sonner";
 import {
   Bookmark,
   Camera,
@@ -35,15 +34,6 @@ const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }
   { id: "design-inspector", label: "Analyze site", icon: Search },
   { id: "asset-extractor", label: "Extract", icon: ImageIcon },
   { id: "tech-stack", label: "Tech stack", icon: Cpu },
-];
-
-const COLLECTIONS = [
-  { name: "Landing Pages", tag: "landing" },
-  { name: "Dashboards", tag: "dashboard" },
-  { name: "Branding", tag: "branding" },
-  { name: "Ecommerce", tag: "ecommerce" },
-  { name: "Mobile Apps", tag: "mobile" },
-  { name: "Islamic Design", tag: "islamic" },
 ];
 
 function timeAgo(ts: number): string {
