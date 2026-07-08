@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { ArrowLeft, Bookmark, Palette, Type, Image as ImageIcon, StickyNote, Star } from "lucide-react";
 import { toast } from "sonner";
-import { db } from "@/storage";
+import { projectRepository } from "./repository";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { assetRepository } from "@/modules/asset-extractor/repository";
+import { noteRepository } from "@/modules/notes/repository";
 import { useProjectStore } from "@/stores/project-store";
 import { useUIStore } from "@/stores/ui-store";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -52,7 +57,7 @@ export function ProjectDetail({ projectId, onBack }: { projectId: string; onBack
   const setActiveProject = useProjectStore((s) => s.setActiveProject);
   const setActiveModule = useUIStore((s) => s.setActiveModule);
 
-  const project = useLiveQuery(() => db.projects.get(projectId), [projectId], undefined);
+  const project = useLiveQuery(() => projectRepository.getById(projectId), [projectId], undefined);
 
   if (project === undefined) {
     return (
@@ -171,15 +176,15 @@ function TabContent({ tab, projectId, onOpenModule }: { tab: Tab; projectId: str
   const items = useLiveQuery(async () => {
     switch (tab) {
       case "inspirations":
-        return db.inspirations.filter((i) => i.projectId === projectId).reverse().sortBy("createdAt");
+        return inspirationRepository.query({ projectId });
       case "colors":
-        return db.colors.filter((c) => c.projectId === projectId).reverse().sortBy("createdAt");
+        return colorRepository.query({ projectId });
       case "fonts":
-        return db.fonts.filter((f) => f.projectId === projectId).reverse().sortBy("createdAt");
+        return typographyRepository.query({ projectId });
       case "assets":
-        return db.assets.filter((a) => a.projectId === projectId).reverse().sortBy("createdAt");
+        return assetRepository.query({ projectId });
       case "notes":
-        return db.notes.filter((n) => n.projectId === projectId).reverse().sortBy("updatedAt");
+        return noteRepository.listForProject(projectId);
     }
   }, [tab, projectId], []);
 

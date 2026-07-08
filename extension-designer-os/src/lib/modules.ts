@@ -4,10 +4,7 @@ import {
   Search,
   Bookmark,
   Image as ImageIcon,
-  Layers,
   StickyNote,
-  Cpu,
-  Camera,
   LayoutDashboard,
   Settings as SettingsIcon,
   FolderKanban,
@@ -26,10 +23,7 @@ export type ModuleId =
   | "accessibility"
   | "inspiration-vault"
   | "asset-extractor"
-  | "resource-hub"
   | "notes"
-  | "tech-stack"
-  | "screenshot"
   | "settings";
 
 export type ModulePhase = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -53,12 +47,9 @@ export const MODULES: ModuleMeta[] = [
   { id: "design-inspector", name: "Design Inspector", tagline: "Full design DNA", icon: Search, phase: 5, status: "ready", group: "tools" },
   { id: "design-audit", name: "Design Audit", tagline: "Score · grade · fix", icon: ShieldCheck, phase: 7, status: "ready", group: "tools" },
   { id: "accessibility", name: "Accessibility", tagline: "WCAG · contrast · a11y", icon: Accessibility, phase: 8, status: "ready", group: "tools" },
-  { id: "screenshot", name: "Screenshot Studio", tagline: "Capture · crop · mockup", icon: Camera, phase: 4, status: "ready", group: "tools" },
   { id: "inspiration-vault", name: "Inspiration Vault", tagline: "Save · tag · moodboard", icon: Bookmark, phase: 3, status: "ready", group: "library" },
   { id: "asset-extractor", name: "Asset Manager", tagline: "Images · SVG · icons", icon: ImageIcon, phase: 4, status: "ready", group: "library" },
   { id: "notes", name: "Notes", tagline: "Ideas · briefs · todos", icon: StickyNote, phase: 3, status: "ready", group: "library" },
-  { id: "resource-hub", name: "Resource Hub", tagline: "Icons · fonts · mockups", icon: Layers, phase: 6, status: "ready", group: "library" },
-  { id: "tech-stack", name: "Tech Stack", tagline: "Framework · CMS · CDN", icon: Cpu, phase: 5, status: "ready", group: "utilities" },
   { id: "settings", name: "Settings", tagline: "Theme · data · backup", icon: SettingsIcon, phase: 6, status: "ready", group: "utilities" },
 ];
 

@@ -14,10 +14,7 @@ const Audit = lazy(() => import("@/modules/design-audit"));
 const A11y = lazy(() => import("@/modules/accessibility"));
 const Vault = lazy(() => import("@/modules/inspiration-vault"));
 const Assets = lazy(() => import("@/modules/asset-extractor"));
-const Resources = lazy(() => import("@/modules/resource-hub"));
 const Notes = lazy(() => import("@/modules/notes"));
-const Tech = lazy(() => import("@/modules/tech-stack"));
-const Screenshot = lazy(() => import("@/modules/screenshot"));
 const SettingsMod = lazy(() => import("@/modules/settings"));
 const Projects = lazy(() => import("@/modules/projects"));
 
@@ -31,10 +28,7 @@ const REGISTRY: Record<ModuleId, React.ComponentType> = {
   accessibility: A11y,
   "inspiration-vault": Vault,
   "asset-extractor": Assets,
-  "resource-hub": Resources,
   notes: Notes,
-  "tech-stack": Tech,
-  screenshot: Screenshot,
   settings: SettingsMod,
 };
 

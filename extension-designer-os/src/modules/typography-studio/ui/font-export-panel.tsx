@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { toast } from "sonner";
 import { Copy, Download } from "lucide-react";
-import { db } from "@/storage";
+import { typographyRepository } from "../repository";
 import { useProjectStore } from "@/stores/project-store";
 import { exportFontsCss, exportFontsJson } from "../logic/scale";
 import { exportFontsTailwind } from "../logic/system";
@@ -25,7 +25,7 @@ export function FontExportPanel() {
   const activeProjectId = useProjectStore((s) => s.activeProjectId);
 
   const fonts = useLiveQuery(async () => {
-    const all = await db.fonts.orderBy("createdAt").toArray();
+    const all = await typographyRepository.getAll();
     if (activeProjectId && onlyProject) return all.filter((f) => f.projectId === activeProjectId);
     return all;
   }, [activeProjectId, onlyProject], []);

@@ -1,12 +1,12 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { Copy, Trash2 } from "lucide-react";
-import { db } from "@/storage";
+import { colorRepository } from "../repository";
 import { useColorStudioStore } from "../store";
 import { bestTextOn, hexToRgb } from "../logic";
 
 export function SavedColors() {
   const colors = useLiveQuery(
-    () => db.colors.orderBy("createdAt").reverse().toArray(),
+    () => colorRepository.getAll(),
     [],
     [],
   );

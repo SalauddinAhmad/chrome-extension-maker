@@ -5,7 +5,7 @@ import { Copy, Star, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { cn } from "@/lib/cn";
 import { bestTextOn, formatHsl, formatRgb, hexToRgb } from "../logic";
 import { colorRepository } from "../repository";
@@ -40,7 +40,7 @@ function DetailBody({ id, onClose }: { id: string; onClose: () => void }) {
   const [saving, setSaving] = useState(false);
 
   const projects = useLiveQuery(
-    () => db.projects.filter((p) => !p.archived).sortBy("name"),
+    () => projectRepository.listActive(),
     [],
     [],
   );

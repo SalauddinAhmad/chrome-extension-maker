@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import {
   Bookmark,
-  Camera,
-  Cpu,
   FolderKanban,
   Image as ImageIcon,
   LayoutDashboard,
@@ -14,7 +12,6 @@ import {
   Type,
   Clock,
 } from "lucide-react";
-import { db } from "@/storage";
 import { useUIStore } from "@/stores/ui-store";
 import { useProjectStore } from "@/stores/project-store";
 import type { ModuleId } from "@/lib/modules";
@@ -22,6 +19,7 @@ import { cn } from "@/lib/cn";
 import { EmptyState } from "@/components/shared/empty-state";
 import { fetchRecentActivity, type ActivityItem } from "@/modules/projects/logic/activity";
 import { computeProjectStats, EMPTY_STATS } from "@/modules/projects/logic/stats";
+import { projectRepository } from "@/modules/projects/repository";
 import { inspirationRepository } from "@/modules/inspiration-vault/repository";
 import { useVaultStore } from "@/modules/inspiration-vault/store";
 import { DEFAULT_COLLECTIONS, collectionLabel } from "@/modules/inspiration-vault/logic/collections";
@@ -35,16 +33,15 @@ import { useTypographyLibraryStore } from "@/modules/typography-studio/library-s
 import { useTypeStore } from "@/modules/typography-studio/store";
 import { designAuditRepository } from "@/modules/design-audit/repository";
 import { accessibilityRepository } from "@/modules/accessibility/repository";
+import { noteRepository } from "@/modules/notes/repository";
 import { ASSET_TYPE_LABEL, FONT_CATEGORY_LABEL } from "@/types";
 import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory, DesignAudit, AccessibilityReport } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
   { id: "typography-studio", label: "Scan fonts", icon: Type },
-  { id: "screenshot", label: "Screenshot", icon: Camera },
   { id: "design-inspector", label: "Analyze site", icon: Search },
   { id: "asset-extractor", label: "Extract", icon: ImageIcon },
-  { id: "tech-stack", label: "Tech stack", icon: Cpu },
 ];
 
 function timeAgo(ts: number): string {
@@ -74,19 +71,18 @@ export default function Dashboard() {
   const activeProject = useProjectStore((s) => s.activeProjectId);
 
   const totals = {
-    projects: useLiveQuery(() => db.projects.filter((p) => !p.archived).count(), [], 0),
-    inspirations: useLiveQuery(() => db.inspirations.count(), [], 0),
-    assets: useLiveQuery(() => db.assets.count(), [], 0),
-    colors: useLiveQuery(() => db.colors.count(), [], 0),
-    fonts: useLiveQuery(() => db.fonts.count(), [], 0),
-    notes: useLiveQuery(() => db.notes.count(), [], 0),
+    projects: useLiveQuery(() => projectRepository.countActive(), [], 0),
+    inspirations: useLiveQuery(() => inspirationRepository.getAll().then((r) => r.length), [], 0),
+    assets: useLiveQuery(() => assetRepository.getAll().then((r) => r.length), [], 0),
+    colors: useLiveQuery(() => colorRepository.getAll().then((r) => r.length), [], 0),
+    fonts: useLiveQuery(() => typographyRepository.getAll().then((r) => r.length), [], 0),
+    notes: useLiveQuery(() => noteRepository.count(), [], 0),
   };
 
   const recentProjects = useLiveQuery(
-    () => db.projects.filter((p) => !p.archived).reverse().sortBy("createdAt").then((r) => r.slice(0, 4)),
+    () => projectRepository.listRecentActive(4),
     [],
-    [],
-  );
+  ) ?? [];
 
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const activityTick = totals.colors + totals.fonts + totals.inspirations + totals.assets + totals.notes + totals.projects;

@@ -6,7 +6,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { getActiveTab, isExtension } from "@/lib/chrome";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { useProjectStore } from "@/stores/project-store";
 import { useAssetStore } from "../store";
 import { useLibraryStore } from "../library-store";
@@ -48,7 +48,7 @@ export function ExtractionPanel() {
   } = useAssetStore();
   const saveScanned = useLibraryStore((s) => s.saveScanned);
   const activeProjectId = useProjectStore((s) => s.activeProjectId);
-  const projects = useLiveQuery(() => db.projects.filter((p) => !p.archived).sortBy("name"), [], []);
+  const projects = useLiveQuery(() => projectRepository.listActive(), [], []);
   const [saving, setSaving] = useState(false);
 
   const filtered = useMemo(

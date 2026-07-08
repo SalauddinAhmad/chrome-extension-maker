@@ -90,12 +90,29 @@ export const designInspectorRepository = {
     return designReportsRepo.update(id, patch);
   },
 
+  /** Cascade delete: also drops audits + a11y reports that reference this report. */
   async remove(id: string): Promise<void> {
-    return designReportsRepo.remove(id);
+    await db.transaction(
+      "rw",
+      [db.designReports, db.designAudits, db.accessibilityReports],
+      async () => {
+        await db.designAudits.where("reportId").equals(id).delete();
+        await db.accessibilityReports.where("reportId").equals(id).delete();
+        await db.designReports.delete(id);
+      },
+    );
   },
 
   async removeMany(ids: string[]): Promise<void> {
-    await db.designReports.bulkDelete(ids);
+    await db.transaction(
+      "rw",
+      [db.designReports, db.designAudits, db.accessibilityReports],
+      async () => {
+        await db.designAudits.where("reportId").anyOf(ids).delete();
+        await db.accessibilityReports.where("reportId").anyOf(ids).delete();
+        await db.designReports.bulkDelete(ids);
+      },
+    );
   },
 
   async listRecent(limit = 6): Promise<DesignReport[]> {

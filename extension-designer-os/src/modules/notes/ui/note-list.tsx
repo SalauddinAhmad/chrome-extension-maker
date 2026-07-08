@@ -1,6 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { Pencil, Pin, Trash2 } from "lucide-react";
-import { db } from "@/storage";
+import { noteRepository } from "../repository";
 import { cn } from "@/lib/cn";
 import { useNotesStore } from "../store";
 import type { Note } from "@/types";
@@ -12,7 +12,7 @@ function formatDate(ts: number): string {
 
 export function NoteList() {
   const notes = useLiveQuery(
-    () => db.notes.orderBy("updatedAt").reverse().toArray(),
+    () => noteRepository.getAll(),
     [],
     [] as Note[],
   );

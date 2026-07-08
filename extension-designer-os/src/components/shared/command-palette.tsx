@@ -4,30 +4,33 @@ import { Command } from "cmdk";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Bookmark,
-  Camera,
-  Cpu,
   Image as ImageIcon,
   LayoutDashboard,
-  Layers,
   Palette,
   Search,
   Settings as SettingsIcon,
   StickyNote,
   Type,
   FolderKanban,
+  ShieldCheck,
+  Accessibility,
   type LucideIcon,
 } from "lucide-react";
-import { db } from "@/storage";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { noteRepository } from "@/modules/notes/repository";
 import { MODULES, type ModuleId } from "@/lib/modules";
 import { useUIStore } from "@/stores/ui-store";
 import { cn } from "@/lib/cn";
+import type { StoredColor, StoredFont, Inspiration, Note } from "@/types";
 
 interface Action {
   id: string;
   label: string;
   hint?: string;
   icon: LucideIcon;
-  keywords?: string;
+  keywords?: string[];
   perform: () => void;
 }
 
@@ -39,10 +42,9 @@ const MODULE_ICON: Record<ModuleId, LucideIcon> = {
   "inspiration-vault": Bookmark,
   notes: StickyNote,
   "asset-extractor": ImageIcon,
-  screenshot: Camera,
   "design-inspector": Search,
-  "tech-stack": Cpu,
-  "resource-hub": Layers,
+  "design-audit": ShieldCheck,
+  accessibility: Accessibility,
   settings: SettingsIcon,
 };
 
@@ -76,25 +78,21 @@ export function CommandPalette() {
 
   // Live data (only when palette is open to keep it cheap)
   const colors = useLiveQuery(
-    () => (open ? db.colors.orderBy("createdAt").reverse().limit(20).toArray() : Promise.resolve([])),
+    () => (open ? colorRepository.listRecent(20) : Promise.resolve([] as StoredColor[])),
     [open],
-    [],
-  );
+  ) ?? [];
   const fonts = useLiveQuery(
-    () => (open ? db.fonts.orderBy("createdAt").reverse().limit(20).toArray() : Promise.resolve([])),
+    () => (open ? typographyRepository.listRecent(20) : Promise.resolve([] as StoredFont[])),
     [open],
-    [],
-  );
+  ) ?? [];
   const inspirations = useLiveQuery(
-    () => (open ? db.inspirations.orderBy("createdAt").reverse().limit(30).toArray() : Promise.resolve([])),
+    () => (open ? inspirationRepository.listRecent(30) : Promise.resolve([] as Inspiration[])),
     [open],
-    [],
-  );
+  ) ?? [];
   const notes = useLiveQuery(
-    () => (open ? db.notes.orderBy("updatedAt").reverse().limit(30).toArray() : Promise.resolve([])),
+    () => (open ? noteRepository.listRecent(30) : Promise.resolve([] as Note[])),
     [open],
-    [],
-  );
+  ) ?? [];
 
   const navActions = useMemo<Action[]>(
     () =>
@@ -103,7 +101,7 @@ export function CommandPalette() {
         label: m.name,
         hint: m.tagline,
         icon: MODULE_ICON[m.id],
-        keywords: `${m.name} ${m.tagline} ${m.id}`,
+        keywords: [m.name, m.tagline, m.id],
         perform: () => setActiveModule(m.id),
       })),
     [setActiveModule],
@@ -163,7 +161,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={c.id}
                       value={`color-${c.hex}-${c.name ?? ""}`}
-                      keywords={[c.hex, c.name ?? ""].join(" ")}
+                      keywords={[c.hex, c.name ?? ""]}
                       onSelect={() =>
                         run(() => navigator.clipboard.writeText(c.hex))
                       }
@@ -189,7 +187,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={f.id}
                       value={`font-${f.family}`}
-                      keywords={f.family}
+                      keywords={[f.family]}
                       onSelect={() =>
                         run(() => navigator.clipboard.writeText(f.family))
                       }
@@ -214,7 +212,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={i.id}
                       value={`insp-${i.id}`}
-                      keywords={`${i.title} ${i.url} ${i.tags.join(" ")}`}
+                      keywords={[i.title, i.url, ...i.tags]}
                       onSelect={() =>
                         run(() => window.open(i.url, "_blank", "noreferrer"))
                       }
@@ -234,7 +232,7 @@ export function CommandPalette() {
                     <Command.Item
                       key={n.id}
                       value={`note-${n.id}`}
-                      keywords={`${n.title} ${n.body} ${n.tags.join(" ")}`}
+                      keywords={[n.title, n.body, ...n.tags]}
                       onSelect={() => run(() => setActiveModule("notes"))}
                       className={itemCls}
                     >

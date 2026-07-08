@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { toast } from "sonner";
 import { Copy, Download } from "lucide-react";
-import { db } from "@/storage";
+import { colorRepository } from "../repository";
 import { useProjectStore } from "@/stores/project-store";
 import {
   exportCssVariables,
@@ -27,7 +27,7 @@ export function ExportPanel() {
   const activeProjectId = useProjectStore((s) => s.activeProjectId);
 
   const colors = useLiveQuery(async () => {
-    const all = await db.colors.orderBy("createdAt").toArray();
+    const all = await colorRepository.getAll();
     if (activeProjectId && onlyProject) return all.filter((c) => c.projectId === activeProjectId);
     return all;
   }, [activeProjectId, onlyProject], []);

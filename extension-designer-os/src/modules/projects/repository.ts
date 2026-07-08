@@ -1,6 +1,9 @@
 /**
  * Project repository — the ONLY module allowed to touch `db.projects`.
  * All other code (stores, components, other modules) must go through here.
+ *
+ * `remove()` cascades to every child table that references `projectId` so
+ * deleting a project cannot leave orphaned rows behind.
  */
 import { db, projectsRepo } from "@/storage";
 import type { Project } from "@/types";
@@ -47,6 +50,21 @@ export const projectRepository = {
     return db.projects.orderBy("createdAt").reverse().toArray();
   },
 
+  async listActive(): Promise<Project[]> {
+    const all = await this.getAll();
+    return all.filter((p) => !p.archived).sort((a, b) => a.name.localeCompare(b.name));
+  },
+
+  async listRecentActive(limit = 4): Promise<Project[]> {
+    const all = await this.getAll();
+    return all.filter((p) => !p.archived).slice(0, limit);
+  },
+
+  async countActive(): Promise<number> {
+    const all = await this.getAll();
+    return all.filter((p) => !p.archived).length;
+  },
+
   async getById(id: string): Promise<Project | undefined> {
     return projectsRepo.get(id);
   },
@@ -78,8 +96,50 @@ export const projectRepository = {
     return projectsRepo.update(id, patch);
   },
 
+  /**
+   * Cascade delete a project and every row that references it via projectId.
+   * Runs in a single Dexie transaction so a failure rolls back the whole set.
+   */
   async remove(id: string): Promise<void> {
-    return projectsRepo.remove(id);
+    await db.transaction(
+      "rw",
+      [
+        db.projects,
+        db.inspirations,
+        db.colors,
+        db.palettes,
+        db.fonts,
+        db.typographySystems,
+        db.assets,
+        db.assetBlobs,
+        db.notes,
+        db.designReports,
+        db.designAudits,
+        db.accessibilityReports,
+      ],
+      async () => {
+        // Collect asset ids first so we can drop paired blobs.
+        const assetIds = await db.assets
+          .filter((a) => a.projectId === id)
+          .primaryKeys();
+        if (assetIds.length) await db.assetBlobs.bulkDelete(assetIds);
+
+        await Promise.all([
+          db.inspirations.filter((r) => r.projectId === id).delete(),
+          db.colors.filter((r) => r.projectId === id).delete(),
+          db.palettes.filter((r) => r.projectId === id).delete(),
+          db.fonts.filter((r) => r.projectId === id).delete(),
+          db.typographySystems.filter((r) => r.projectId === id).delete(),
+          db.assets.filter((r) => r.projectId === id).delete(),
+          db.notes.filter((r) => r.projectId === id).delete(),
+          db.designReports.filter((r) => r.projectId === id).delete(),
+          db.designAudits.filter((r) => r.projectId === id).delete(),
+          db.accessibilityReports.filter((r) => r.projectId === id).delete(),
+        ]);
+
+        await db.projects.delete(id);
+      },
+    );
   },
 
   async archive(id: string, archived: boolean): Promise<void> {

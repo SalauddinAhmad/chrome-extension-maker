@@ -1,4 +1,8 @@
-import { db } from "@/storage";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { assetRepository } from "@/modules/asset-extractor/repository";
+import { noteRepository } from "@/modules/notes/repository";
 import type { ProjectStats } from "@/types";
 
 export const EMPTY_STATS: ProjectStats = {
@@ -12,11 +16,11 @@ export const EMPTY_STATS: ProjectStats = {
 
 export async function computeProjectStats(projectId: string): Promise<ProjectStats> {
   const [inspirations, colors, fonts, assets, notes] = await Promise.all([
-    db.inspirations.filter((i) => i.projectId === projectId).count(),
-    db.colors.filter((c) => c.projectId === projectId).count(),
-    db.fonts.filter((f) => f.projectId === projectId).count(),
-    db.assets.filter((a) => a.projectId === projectId).count(),
-    db.notes.filter((n) => n.projectId === projectId).count(),
+    inspirationRepository.projectStats(projectId),
+    colorRepository.query({ projectId }).then((r) => r.length),
+    typographyRepository.query({ projectId }).then((r) => r.length),
+    assetRepository.query({ projectId }).then((r) => r.length),
+    noteRepository.countForProject(projectId),
   ]);
   return {
     inspirations,

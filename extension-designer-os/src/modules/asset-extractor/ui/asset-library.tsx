@@ -1,8 +1,8 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { Download, FolderPlus, Grid3x3, LayoutList, Star, Trash2 } from "lucide-react";
+import { Download, Grid3x3, LayoutList, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { EmptyState } from "@/components/shared/empty-state";
 import { cn } from "@/lib/cn";
 import { assetRepository } from "../repository";
@@ -17,7 +17,7 @@ export function AssetLibrary() {
   const {
     view, filters, selected, setView,
     toggleSelected, selectAll, clearSelection, openDetail,
-    bulkDelete, bulkDownload, bulkMove, toggleFavorite,
+    bulkDelete, bulkDownload, bulkMove,
   } = useLibraryStore();
 
   const assets = useLiveQuery(
@@ -27,7 +27,7 @@ export function AssetLibrary() {
   );
 
   const projects = useLiveQuery(
-    () => db.projects.filter((p) => !p.archived).sortBy("name"),
+    () => projectRepository.listActive(),
     [],
     [],
   );

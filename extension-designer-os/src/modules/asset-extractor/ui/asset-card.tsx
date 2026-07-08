@@ -1,4 +1,4 @@
-import { Download, Heart, MoreVertical, Star } from "lucide-react";
+import { Download, Star } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { downloadFile } from "@/lib/chrome";
 import { safeFilename } from "../logic/download";
