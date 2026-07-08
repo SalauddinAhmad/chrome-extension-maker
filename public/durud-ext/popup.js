@@ -6,7 +6,7 @@ const DEFAULT_SETTINGS = {
   dnd: true,
   dndStart: "23:00",
   dndEnd: "06:00",
-  friday: true,
+  
   idleOnly: false,
   audioEnabled: true,
   audioChoice: "random",
@@ -130,12 +130,7 @@ function applyChips() {
   }
 }
 
-/* ---------- Jumu'ah badge ---------- */
-function applyJumuahBadge() {
-  const isFriday = new Date().getDay() === 5;
-  const badge = $("#jumuah-badge");
-  if (badge) badge.hidden = !isFriday;
-}
+function applyJumuahBadge() {}
 
 /* ---------- Today count ---------- */
 function renderTodayCount() {
@@ -165,7 +160,7 @@ function renderSettings() {
   $("#dnd-start").value = state.settings.dndStart;
   $("#dnd-end").value = state.settings.dndEnd;
   updateDndSub();
-  $("#toggle-friday").checked = state.settings.friday;
+  
   $("#toggle-idle").checked = state.settings.idleOnly;
   $("#select-audio").value = String(state.settings.audioChoice ?? "random");
   const volPct = Math.round((state.settings.volume ?? 0.9) * 100);
@@ -384,10 +379,6 @@ function bindAll() {
     await saveSettings();
   });
 
-  $("#toggle-friday").addEventListener("change", async (e) => {
-    state.settings.friday = e.target.checked;
-    await saveSettings();
-  });
   $("#toggle-idle").addEventListener("change", async (e) => {
     state.settings.idleOnly = e.target.checked;
     await saveSettings();
