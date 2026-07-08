@@ -2,7 +2,7 @@
 const DEFAULT_SETTINGS = {
   enabled: true,
   interval: 15,
-  durudId: "short",
+  durudId: "small-blessing",
   dnd: true,
   friday: true,
   idleOnly: false,
