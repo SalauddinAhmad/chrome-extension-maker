@@ -14,6 +14,7 @@ const Resources = lazy(() => import("@/modules/resource-hub"));
 const Notes = lazy(() => import("@/modules/notes"));
 const Tech = lazy(() => import("@/modules/tech-stack"));
 const Screenshot = lazy(() => import("@/modules/screenshot"));
+const SettingsMod = lazy(() => import("@/modules/settings"));
 
 const REGISTRY: Record<ModuleId, React.ComponentType> = {
   dashboard: Dashboard,
@@ -26,6 +27,7 @@ const REGISTRY: Record<ModuleId, React.ComponentType> = {
   notes: Notes,
   "tech-stack": Tech,
   screenshot: Screenshot,
+  settings: SettingsMod,
 };
 
 export function ActiveModule() {
