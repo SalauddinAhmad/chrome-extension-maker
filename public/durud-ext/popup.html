@@ -57,21 +57,23 @@
             </svg>
           </div>
           <div class="brand-text">
-            <div class="brand-name">
-              Durud Reminder
-              
-            </div>
-            <div class="brand-sub">নবীজি ﷺ-এর উপর দুরুদ</div>
+            <div class="brand-name">Durud Reminder</div>
+            <div class="brand-sub" data-i18n="brandSub">নবীজি ﷺ-এর উপর দুরুদ</div>
           </div>
         </div>
         <div class="header-actions">
-          <button class="icon-btn theme-btn" id="btn-theme" title="থিম পরিবর্তন" aria-label="Theme">
+          <button class="lang-toggle" id="btn-lang" title="Language" aria-label="Language">
+            <span class="lang-opt" data-lang="bn">বাং</span>
+            <span class="lang-sep">|</span>
+            <span class="lang-opt" data-lang="en">EN</span>
+          </button>
+          <button class="icon-btn theme-btn" id="btn-theme" title="Theme" aria-label="Theme">
             <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
             </svg>
           </button>
-          <button class="icon-btn" id="btn-share" title="শেয়ার করুন" aria-label="Share">
+          <button class="icon-btn" id="btn-share" title="Share" aria-label="Share">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="18" cy="5" r="3"/>
               <circle cx="6" cy="12" r="3"/>
@@ -80,7 +82,7 @@
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
             </svg>
           </button>
-          <label class="switch" title="রিমাইন্ডার চালু/বন্ধ">
+          <label class="switch" title="Enable/Disable">
             <input type="checkbox" id="toggle-enabled" />
             <span class="slider"></span>
           </label>
@@ -89,22 +91,22 @@
 
       <!-- Hero: next reminder + countdown -->
       <section class="hero" id="hero">
-        <div class="hero-label">পরবর্তী রিমাইন্ডার</div>
+        <div class="hero-label" data-i18n="nextReminder">পরবর্তী রিমাইন্ডার</div>
         <div class="hero-time" id="next-time">--:--</div>
-        <div class="hero-countdown" id="hero-countdown">আর -- মিনিট</div>
+        <div class="hero-countdown" id="hero-countdown">--</div>
         <div class="hero-actions">
-          <div class="hero-status" id="hero-status">চালু</div>
-          <button class="hero-play-now" id="btn-play-now" title="এখনই বাজান">
+          <div class="hero-status" id="hero-status" data-i18n="on">চালু</div>
+          <button class="hero-play-now" id="btn-play-now" title="Play now">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            এখনই বাজান
+            <span data-i18n="playNow">এখনই বাজান</span>
           </button>
         </div>
 
         <!-- Today's count -->
         <div class="hero-count-wrap">
           <div class="hero-count-line">
-            <span>আজ পড়েছেন</span>
-            <span class="hero-count-val"><span id="today-count">০</span> বার</span>
+            <span data-i18n="todayRead">আজ পড়েছেন</span>
+            <span class="hero-count-val"><span id="today-count">০</span> <span data-i18n="times">বার</span></span>
           </div>
           <div class="hero-count-bar">
             <div class="hero-count-bar-fill" id="today-bar"></div>
