@@ -11,8 +11,10 @@ import {
   Layers,
   Palette,
   Search,
+  Settings as SettingsIcon,
   StickyNote,
   Type,
+  FolderKanban,
   type LucideIcon,
 } from "lucide-react";
 import { db } from "@/storage";
@@ -31,6 +33,7 @@ interface Action {
 
 const MODULE_ICON: Record<ModuleId, LucideIcon> = {
   dashboard: LayoutDashboard,
+  projects: FolderKanban,
   "color-studio": Palette,
   "typography-studio": Type,
   "inspiration-vault": Bookmark,
@@ -40,6 +43,7 @@ const MODULE_ICON: Record<ModuleId, LucideIcon> = {
   "design-inspector": Search,
   "tech-stack": Cpu,
   "resource-hub": Layers,
+  settings: SettingsIcon,
 };
 
 export function CommandPalette() {
