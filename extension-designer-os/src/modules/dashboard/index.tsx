@@ -486,3 +486,104 @@ function AssetChip({ asset }: { asset: Asset }) {
     </button>
   );
 }
+
+function ColorSummary({ onOpen }: { onOpen: () => void }) {
+  const setColorTab = useColorStudioStore((s) => s.setTab);
+  const setColorFilters = useColorLibraryStore((s) => s.setFilters);
+  const recent = useLiveQuery(() => colorRepository.listRecent(8), [], []);
+  const favorites = useLiveQuery(() => colorRepository.listFavorites(8), [], []);
+  const sourceStats = useLiveQuery(() => colorRepository.sourceStats(), [], {} as Record<string, number>);
+  const paletteCount = useLiveQuery(() => colorRepository.paletteCount(), [], 0);
+
+  if (recent.length === 0 && favorites.length === 0) return null;
+
+  const openLibrary = () => { setColorTab("library"); onOpen(); };
+  const openFavorites = () => {
+    setColorTab("library");
+    setColorFilters({ favoritesOnly: true });
+    onOpen();
+  };
+  const openBySource = (src: string) => {
+    setColorTab("library");
+    setColorFilters({ source: src as never });
+    onOpen();
+  };
+
+  const topSources = Object.entries(sourceStats)
+    .filter(([, n]) => n > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4);
+
+  return (
+    <div className="space-y-3">
+      {recent.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={Palette}>Recent colors</SectionLabel>
+            <OpenLink onClick={openLibrary} />
+          </div>
+          <div className="mt-1.5 flex overflow-hidden rounded-md border">
+            {recent.map((c) => (
+              <button
+                key={c.id}
+                onClick={openLibrary}
+                className="h-8 flex-1"
+                style={{ background: c.hex }}
+                title={c.name ?? c.hex}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      {favorites.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={Palette}>Favorite colors</SectionLabel>
+            <OpenLink onClick={openFavorites} />
+          </div>
+          <div className="mt-1.5 flex overflow-hidden rounded-md border">
+            {favorites.map((c) => (
+              <button
+                key={c.id}
+                onClick={openFavorites}
+                className="h-8 flex-1"
+                style={{ background: c.hex }}
+                title={c.name ?? c.hex}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      {topSources.length > 0 && (
+        <div>
+          <SectionLabel icon={Palette}>Color statistics</SectionLabel>
+          <div className="mt-1.5 grid grid-cols-4 gap-1.5">
+            {topSources.map(([src, n]) => (
+              <button
+                key={src}
+                onClick={() => openBySource(src)}
+                className="rounded-md border bg-card px-2 py-2 text-left hover:border-primary/40 hover:bg-accent/40"
+              >
+                <div className="text-sm font-semibold leading-tight">{n}</div>
+                <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
+                  {src}
+                </div>
+              </button>
+            ))}
+            {paletteCount > 0 && (
+              <button
+                onClick={openLibrary}
+                className="rounded-md border bg-card px-2 py-2 text-left hover:border-primary/40 hover:bg-accent/40"
+              >
+                <div className="text-sm font-semibold leading-tight">{paletteCount}</div>
+                <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
+                  Palettes
+                </div>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
