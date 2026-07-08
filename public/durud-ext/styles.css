@@ -368,14 +368,14 @@ input:checked + .slider::before { transform: translateX(18px); }
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
-  max-width: 340px;
+  width: 130%;
+  max-width: none;
   pointer-events: none;
-  opacity: 0.28;
+  opacity: 0.16;
   z-index: 0;
 }
-.hero-decor-top { top: 8px; }
-.hero-decor-bottom, .hero > .hero-decor:not(.hero-decor-top) { bottom: 0; opacity: 0.35; }
+.hero-decor-top { top: -8px; }
+.hero-decor-bottom, .hero > .hero-decor:not(.hero-decor-top) { bottom: -8px; opacity: 0.2; }
 @keyframes decor-float {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(-4px); }
