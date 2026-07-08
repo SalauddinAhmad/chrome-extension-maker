@@ -1,6 +1,13 @@
 import { create } from "zustand";
-import { projectsRepo, db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import type { Project } from "@/types";
+
+export class DuplicateProjectNameError extends Error {
+  constructor(name: string) {
+    super(`A project named "${name}" already exists.`);
+    this.name = "DuplicateProjectNameError";
+  }
+}
 
 interface ProjectState {
   activeProjectId: string | null;
@@ -31,18 +38,25 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   requestNewProject: () =>
     set((s) => ({ newProjectRequestId: s.newProjectRequestId + 1 })),
 
-  createProject: (data) =>
-    projectsRepo.create({ archived: false, ...data }),
-  updateProject: (id, patch) => projectsRepo.update(id, patch),
+  createProject: async (data) => {
+    if (await projectRepository.isNameTaken(data.name)) {
+      throw new DuplicateProjectNameError(data.name);
+    }
+    return projectRepository.create({ archived: false, ...data });
+  },
+  updateProject: async (id, patch) => {
+    if (patch.name && (await projectRepository.isNameTaken(patch.name, id))) {
+      throw new DuplicateProjectNameError(patch.name);
+    }
+    return projectRepository.update(id, patch);
+  },
   deleteProject: async (id) => {
-    await projectsRepo.remove(id);
+    await projectRepository.remove(id);
     if (get().activeProjectId === id) set({ activeProjectId: null });
     if (get().detailProjectId === id) set({ detailProjectId: null });
   },
-  archiveProject: (id, archived) => projectsRepo.update(id, { archived }),
-  getProject: (id) => projectsRepo.get(id),
-  getProjects: async ({ includeArchived = false } = {}) => {
-    const all = await db.projects.orderBy("createdAt").reverse().toArray();
-    return includeArchived ? all : all.filter((p) => !p.archived);
-  },
+  archiveProject: (id, archived) => projectRepository.archive(id, archived),
+  getProject: (id) => projectRepository.getById(id),
+  getProjects: ({ includeArchived = false } = {}) =>
+    projectRepository.query({ includeArchived }),
 }));

@@ -44,6 +44,11 @@ export class DesignerOSDB extends Dexie {
       projects: "id, archived, createdAt",
       settings: "id",
     });
+    // v2: index projectId, favorite, collection on inspirations for fast filters.
+    this.version(2).stores({
+      inspirations:
+        "id, url, createdAt, updatedAt, boardId, projectId, favorite, collection, *tags",
+    });
   }
 }
 

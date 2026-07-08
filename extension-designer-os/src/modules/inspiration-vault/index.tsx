@@ -4,6 +4,7 @@ import { cn } from "@/lib/cn";
 import { useVaultStore } from "./store";
 import { SavePanel } from "./ui/save-panel";
 import { VaultGrid } from "./ui/vault-grid";
+import { EditDialog } from "./ui/edit-dialog";
 import type { VaultTab } from "./types";
 
 const TABS: Array<{ id: VaultTab; label: string }> = [
@@ -12,11 +13,13 @@ const TABS: Array<{ id: VaultTab; label: string }> = [
 ];
 
 export default function InspirationVault() {
-  const { tab, setTab, draft, capture } = useVaultStore();
+  const tab = useVaultStore((s) => s.tab);
+  const setTab = useVaultStore((s) => s.setTab);
+  const draft = useVaultStore((s) => s.draft);
+  const capture = useVaultStore((s) => s.capture);
 
-  // Auto-capture the current tab when opening the Save panel with no URL yet.
   useEffect(() => {
-    if (tab === "save" && !draft.url) {
+    if (tab === "save" && !draft.url && !draft.id) {
       void capture();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,7 +33,7 @@ export default function InspirationVault() {
         </div>
         <div className="flex-1">
           <div className="text-sm font-semibold leading-tight">Inspiration Vault</div>
-          <div className="text-[10px] text-muted-foreground">Save · tag · revisit</div>
+          <div className="text-[10px] text-muted-foreground">Save · tag · organize · revisit</div>
         </div>
       </header>
 
@@ -52,6 +55,8 @@ export default function InspirationVault() {
       </div>
 
       {tab === "save" ? <SavePanel /> : <VaultGrid />}
+
+      <EditDialog />
     </div>
   );
 }

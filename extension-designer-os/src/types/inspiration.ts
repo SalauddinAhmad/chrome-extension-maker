@@ -9,6 +9,7 @@ export interface Inspiration extends Entity {
   boardId?: string;
   projectId?: string;
   collection?: string;
+  favorite?: boolean;
 }
 
 export interface InspirationBoard extends Entity {
