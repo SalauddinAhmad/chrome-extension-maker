@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { useUIStore } from "@/stores/ui-store";
 import { useTheme } from "@/hooks/use-theme";
 import type { ModuleId } from "@/lib/modules";
-import { Dashboard } from "@/modules/dashboard";
+import Dashboard from "@/modules/dashboard";
 
 // Lazy-load feature modules so the popup boots < 1 s.
 const Color = lazy(() => import("@/modules/color-studio"));
