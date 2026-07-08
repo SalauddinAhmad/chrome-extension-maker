@@ -14,7 +14,7 @@ const AUDIO_FILES = [
 const DEFAULTS = {
   enabled: true,
   interval: 15,
-  durudId: "ibrahim",
+  durudId: "short",
   dnd: true,
   friday: true,
   idleOnly: false,
