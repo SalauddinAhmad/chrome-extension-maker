@@ -19,7 +19,7 @@ export function PopupShell({ children }: PopupShellProps) {
   const { activeModule, setActiveModule, query, setQuery } = useUIStore();
 
   return (
-    <div className="flex h-[600px] w-[400px] flex-col bg-background text-foreground">
+    <div className="relative flex h-[600px] w-[400px] flex-col bg-background text-foreground">
       {/* header */}
       <header className="flex items-center justify-between border-b px-4 py-3">
         <div className="flex items-center gap-2">
