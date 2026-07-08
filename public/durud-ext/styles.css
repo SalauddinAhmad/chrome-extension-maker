@@ -279,22 +279,7 @@ input:checked + .slider::before { transform: translateX(18px); }
 }
 
 .hero-decor {
-  position: absolute;
-  left: 50%;
-  bottom: -14px;
-  width: 130%;
-  max-width: none;
-  height: auto;
-  display: block;
-  transform: translateX(-50%);
-  opacity: 0.07;
-  filter: brightness(0) invert(1);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, #000 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, #000 100%);
-  animation: decor-float 12s ease-in-out infinite;
+  display: none;
 }
 @keyframes decor-float {
   0%, 100% { transform: translateX(-50%) translateY(0); }
