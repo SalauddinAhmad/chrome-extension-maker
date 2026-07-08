@@ -273,3 +273,39 @@ function OpenLink({ onClick }: { onClick: () => void }) {
     </button>
   );
 }
+
+function RecentProjectCard({
+  project,
+  isActive,
+  onOpen,
+}: {
+  project: Project;
+  isActive: boolean;
+  onOpen: () => void;
+}) {
+  const stats = useLiveQuery(() => computeProjectStats(project.id), [project.id], EMPTY_STATS);
+  return (
+    <button
+      onClick={onOpen}
+      className={cn(
+        "flex items-center gap-2 rounded-md border bg-card p-2 text-left hover:border-primary/40",
+        isActive && "border-primary/60",
+      )}
+    >
+      <div
+        className="h-8 w-8 shrink-0 rounded-md border"
+        style={{
+          background: project.coverImage
+            ? `url(${project.coverImage}) center/cover`
+            : project.color ?? "hsl(var(--muted))",
+        }}
+      />
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[11px] font-medium">{project.name}</div>
+        <div className="truncate text-[9px] text-muted-foreground">
+          {stats.total === 0 ? (project.clientName ?? "empty") : `${stats.total} items`}
+        </div>
+      </div>
+    </button>
+  );
+}
