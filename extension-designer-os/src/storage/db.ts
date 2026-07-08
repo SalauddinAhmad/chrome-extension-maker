@@ -4,6 +4,7 @@ import type {
   ColorPalette,
   StoredFont,
   FontPair,
+  TypographySystem,
   Inspiration,
   InspirationBoard,
   Asset,
@@ -11,6 +12,7 @@ import type {
   Project,
   Settings,
 } from "@/types";
+
 
 /**
  * DesignerOSDB — single IndexedDB database, all local.
