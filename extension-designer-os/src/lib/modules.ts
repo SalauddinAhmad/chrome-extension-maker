@@ -9,6 +9,7 @@ import {
   Cpu,
   Camera,
   LayoutDashboard,
+  Settings as SettingsIcon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -22,7 +23,8 @@ export type ModuleId =
   | "resource-hub"
   | "notes"
   | "tech-stack"
-  | "screenshot";
+  | "screenshot"
+  | "settings";
 
 export type ModulePhase = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -46,6 +48,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "design-inspector", name: "Design Inspector", tagline: "Full design DNA", icon: Search, phase: 5, status: "ready" },
   { id: "tech-stack", name: "Tech Stack", tagline: "Framework · CMS · CDN", icon: Cpu, phase: 5, status: "ready" },
   { id: "resource-hub", name: "Resource Hub", tagline: "Icons · fonts · mockups", icon: Layers, phase: 6, status: "ready" },
+  { id: "settings", name: "Settings", tagline: "Theme · data · backup", icon: SettingsIcon, phase: 6, status: "ready" },
 ];
 
 export const MODULES_BY_ID = Object.fromEntries(
