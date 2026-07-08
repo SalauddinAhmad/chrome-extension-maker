@@ -141,8 +141,8 @@ function fmtNum(n) {
   return currentLang() === "bn" ? toBn(n) : String(n);
 }
 function detectBrowserLang() {
-  const l = (navigator.language || "en").toLowerCase();
-  return l.startsWith("bn") ? "bn" : "en";
+  // Default to Bangla always
+  return "bn";
 }
 
 function applyI18n() {
