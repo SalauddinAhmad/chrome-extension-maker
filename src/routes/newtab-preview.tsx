@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Coordinates, CalculationMethod, PrayerTimes, SunnahTimes } from "adhan";
 
 export const Route = createFileRoute("/newtab-preview")({
   head: () => ({
