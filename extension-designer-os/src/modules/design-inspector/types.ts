@@ -1,11 +1,27 @@
-export type InspectorTab = "colors" | "type" | "spacing" | "effects";
+import type { DesignReport } from "@/types";
 
-export interface DesignDNA {
-  colors: Array<{ hex: string; count: number; roles: string[] }>;
-  fonts: Array<{ family: string; count: number }>;
-  fontSizes: Array<{ px: number; count: number }>;
-  radii: Array<{ value: string; count: number }>;
-  shadows: Array<{ value: string; count: number }>;
-  spacings: Array<{ px: number; count: number }>;
-  scannedElements: number;
-}
+export type InspectorTab = "analyze" | "library";
+
+export type ReportViewTab =
+  | "summary"
+  | "colors"
+  | "type"
+  | "components"
+  | "layout"
+  | "effects"
+  | "assets";
+
+/**
+ * Raw scan payload returned by the in-page scanner.
+ * Missing report metadata (id, projectId, timestamps) which the store adds.
+ */
+export type ScanPayload = Omit<
+  DesignReport,
+  "id" | "createdAt" | "updatedAt" | "projectId" | "saved"
+>;
+
+/**
+ * Backwards-compatible alias — older UI code referenced `DesignDNA`.
+ * New code should prefer `DesignReport` from `@/types`.
+ */
+export type DesignDNA = ScanPayload;
