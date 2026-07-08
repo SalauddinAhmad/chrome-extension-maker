@@ -18,7 +18,7 @@ export function SidepanelShell({ children }: SidepanelShellProps) {
   const { activeModule, setActiveModule, query, setQuery } = useUIStore();
 
   return (
-    <div className="flex h-screen w-full bg-background text-foreground">
+    <div className="relative flex h-screen w-full bg-background text-foreground">
       {/* nav rail */}
       <aside className="flex w-[240px] shrink-0 flex-col border-r">
         <div className="flex items-center gap-2 border-b px-4 py-3">
