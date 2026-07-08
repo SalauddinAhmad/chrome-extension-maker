@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <title>Durud Reminder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M16 4 L26 12 L26 22 L16 28 L6 22 L6 12 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="16" cy="16" r="4" fill="currentColor" opacity="0.15"/>
+              <circle cx="16" cy="16" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-name">Durud Reminder</div>
+            <div class="brand-sub">নবীজি ﷺ-এর উপর দুরুদ</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="btn-share" title="শেয়ার করুন" aria-label="Share">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </button>
+          <label class="switch" title="রিমাইন্ডার চালু/বন্ধ">
+            <input type="checkbox" id="toggle-enabled" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </header>
+
+      <!-- Hero: next reminder -->
+      <section class="hero">
+        <div class="hero-label">পরবর্তী রিমাইন্ডার</div>
+        <div class="hero-time" id="next-time">--:--</div>
+        <div class="hero-status" id="hero-status">চালু</div>
+      </section>
+
+      <!-- Durud Card -->
+      <section class="card durud-card">
+        <div class="durud-meta">
+          <span id="durud-name" class="durud-name">দুরুদে ইব্রাহিম</span>
+          <div class="durud-actions">
+            <button class="icon-btn sm" id="btn-prev" title="পূর্ববর্তী">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="icon-btn sm" id="btn-next" title="পরবর্তী">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <button class="icon-btn sm" id="btn-copy" title="কপি">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="durud-arabic" class="durud-arabic" dir="rtl"></div>
+        <div id="durud-translit" class="durud-translit"></div>
+        <div id="durud-bangla" class="durud-bangla"></div>
+        <div id="durud-ref" class="durud-ref"></div>
+      </section>
+
+      <!-- Controls -->
+      <section class="card settings-card">
+        <!-- Interval -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>ইন্টারভাল</span>
+            <span class="control-val" id="interval-val">১৫ মিনিট</span>
+          </div>
+          <div class="select-wrap">
+            <select id="interval-select" class="select">
+              <option value="5">প্রতি ৫ মিনিট</option>
+              <option value="10">প্রতি ১০ মিনিট</option>
+              <option value="15">প্রতি ১৫ মিনিট</option>
+              <option value="20">প্রতি ২০ মিনিট</option>
+              <option value="30">প্রতি ৩০ মিনিট</option>
+              <option value="45">প্রতি ৪৫ মিনিট</option>
+              <option value="60">প্রতি ১ ঘণ্টা</option>
+              <option value="90">প্রতি ১.৫ ঘণ্টা</option>
+              <option value="120">প্রতি ২ ঘণ্টা</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Durud text selector -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>দুরুদ (টেক্সট)</span>
+          </div>
+          <div class="select-wrap">
+            <select id="select-durud" class="select"></select>
+          </div>
+        </div>
+
+        <!-- Audio -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>দুরুদ (অডিও)</span>
+            <button class="play-btn" id="btn-play" title="প্রিভিউ">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="select-wrap">
+            <select id="select-audio" class="select">
+              <option value="random">র‍্যান্ডম (৯টি থেকে)</option>
+              <option value="0">দুরুদ ১</option>
+              <option value="1">দুরুদ ২</option>
+              <option value="2">দুরুদ ৩</option>
+              <option value="3">দুরুদ ৪</option>
+              <option value="4">দুরুদ ৫</option>
+              <option value="5">দুরুদ ৬</option>
+              <option value="6">দুরুদ ৭</option>
+              <option value="7">দুরুদ ৮</option>
+              <option value="8">দুরুদ ৯</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Volume -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>ভলিউম</span>
+            <span class="control-val" id="volume-val">৯০%</span>
+          </div>
+          <input type="range" id="volume" class="range" min="0" max="100" step="5" value="90" />
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Toggles -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">অডিও তিলাওয়াত</div>
+            <div class="toggle-sub">নোটিফিকেশনের সাথে অডিও বাজবে</div>
+          </div>
+          <label class="switch small">
+            <input type="checkbox" id="toggle-audio" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">রাতে সাইলেন্স</div>
+            <div class="toggle-sub">১১টা – ভোর ৬টা</div>
+          </div>
+          <label class="switch small">
+            <input type="checkbox" id="toggle-dnd" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">শুক্রবার বিশেষ মোড</div>
+            <div class="toggle-sub">অর্ধেক ইন্টারভালে রিমাইন্ডার</div>
+          </div>
+          <label class="switch small">
+            <input type="checkbox" id="toggle-friday" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">শুধু সক্রিয় থাকলে</div>
+            <div class="toggle-sub">Idle অবস্থায় রিমাইন্ডার বন্ধ</div>
+          </div>
+          <label class="switch small">
+            <input type="checkbox" id="toggle-idle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <div class="save-indicator">
+          <svg id="save-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+          <span id="save-text">Auto-saved</span>
+        </div>
+        <div class="version">v2.0 · Premium</div>
+      </footer>
+
+      <!-- Hadith -->
+      <div class="hadith">
+        <div class="hadith-text">
+          জাবির (রাঃ) হতে বর্ণিত। রাসূলুল্লাহ ﷺ বলেছেনঃ
+          <em>"প্রতিটি ভালো কাজই সাদাকা।"</em>
+        </div>
+        <div class="hadith-ref">— তিরমিযী ১৯৭০</div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">কপি হয়েছে</div>
+    <script src="popup.js"></script>
+  </body>
+</html>
