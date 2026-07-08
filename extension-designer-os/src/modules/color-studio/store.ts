@@ -1,10 +1,11 @@
 import { create } from "zustand";
+import { toast } from "sonner";
 import { hexToRgb, rgbToHsl, normalizeHex } from "./logic";
-import { colorsRepo } from "@/storage";
+import { colorRepository } from "./repository";
 import { useProjectStore } from "@/stores/project-store";
+import type { ColorSource } from "@/types";
 import type { NewColorInput, StudioTab } from "./types";
 import { nearestName } from "./logic/name";
-
 
 interface ColorStudioState {
   tab: StudioTab;
@@ -14,7 +15,7 @@ interface ColorStudioState {
   setTab: (tab: StudioTab) => void;
   setCurrent: (hex: string) => void;
   pickFromPage: () => Promise<void>;
-  saveCurrent: () => Promise<void>;
+  saveCurrent: (source?: ColorSource) => Promise<void>;
   removeColor: (id: string) => Promise<void>;
 }
 
@@ -35,7 +36,9 @@ export const useColorStudioStore = create<ColorStudioState>((set, get) => ({
   },
 
   async pickFromPage() {
-    const Ctor = (window as unknown as { EyeDropper?: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper;
+    const Ctor = (window as unknown as {
+      EyeDropper?: new () => { open: () => Promise<{ sRGBHex: string }> };
+    }).EyeDropper;
     if (!Ctor) {
       set({ error: "EyeDropper API not supported in this browser." });
       return;
@@ -51,23 +54,33 @@ export const useColorStudioStore = create<ColorStudioState>((set, get) => ({
     }
   },
 
-  async saveCurrent() {
-    const hex = get().currentHex;
-    const rgb = hexToRgb(hex);
-    const hsl = rgbToHsl(rgb);
-    const projectId = useProjectStore.getState().activeProjectId ?? undefined;
-    const input: NewColorInput & { projectId?: string } = {
-      hex,
-      rgb,
-      hsl,
-      name: nearestName(rgb),
-      projectId,
-    };
-    await colorsRepo.create(input);
+  async saveCurrent(source = "picker") {
+    try {
+      const hex = get().currentHex;
+      const rgb = hexToRgb(hex);
+      const hsl = rgbToHsl(rgb);
+      const projectId = useProjectStore.getState().activeProjectId ?? undefined;
+      const input: NewColorInput & { projectId?: string; source: ColorSource; tags: string[] } = {
+        hex,
+        rgb,
+        hsl,
+        name: nearestName(rgb),
+        source,
+        tags: [],
+        projectId,
+      };
+      await colorRepository.create(input);
+      toast.success(`Saved ${hex}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Save failed");
+    }
   },
 
-
   async removeColor(id) {
-    await colorsRepo.remove(id);
+    try {
+      await colorRepository.remove(id);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Delete failed");
+    }
   },
 }));

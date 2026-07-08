@@ -54,6 +54,11 @@ export class DesignerOSDB extends Dexie {
       assets:
         "id, projectId, type, favorite, source, createdAt, updatedAt, pageUrl, *tags",
     });
+    // v4: index projectId, favorite, source, updatedAt on colors for the library.
+    this.version(4).stores({
+      colors: "id, hex, createdAt, updatedAt, paletteId, projectId, favorite, source, *tags",
+      palettes: "id, name, createdAt, updatedAt, projectId",
+    });
   }
 }
 

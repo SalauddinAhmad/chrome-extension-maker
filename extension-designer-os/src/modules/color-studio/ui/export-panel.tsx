@@ -4,15 +4,21 @@ import { toast } from "sonner";
 import { Copy, Download } from "lucide-react";
 import { db } from "@/storage";
 import { useProjectStore } from "@/stores/project-store";
-import { exportCssVariables, exportJson, exportTailwindConfig } from "../logic/export";
+import {
+  exportCssVariables,
+  exportJson,
+  exportScssVariables,
+  exportTailwindConfig,
+} from "../logic/export";
 import { cn } from "@/lib/cn";
 
-type Format = "css" | "json" | "tailwind";
+type Format = "css" | "scss" | "json" | "tailwind";
 
 const FORMATS: Array<{ id: Format; label: string; ext: string; mime: string }> = [
-  { id: "css", label: "CSS Variables", ext: "css", mime: "text/css" },
+  { id: "css", label: "CSS", ext: "css", mime: "text/css" },
+  { id: "scss", label: "SCSS", ext: "scss", mime: "text/x-scss" },
   { id: "json", label: "JSON", ext: "json", mime: "application/json" },
-  { id: "tailwind", label: "Tailwind Config", ext: "js", mime: "application/javascript" },
+  { id: "tailwind", label: "Tailwind", ext: "js", mime: "application/javascript" },
 ];
 
 export function ExportPanel() {
@@ -30,6 +36,7 @@ export function ExportPanel() {
     if (colors.length === 0) return "// no colors saved yet";
     switch (format) {
       case "css": return exportCssVariables(colors);
+      case "scss": return exportScssVariables(colors);
       case "json": return exportJson(colors);
       case "tailwind": return exportTailwindConfig(colors);
     }
@@ -38,7 +45,6 @@ export function ExportPanel() {
   function copy() {
     navigator.clipboard.writeText(output).then(() => toast.success("Copied to clipboard"));
   }
-
   function download() {
     const fmt = FORMATS.find((f) => f.id === format)!;
     const blob = new Blob([output], { type: fmt.mime });
@@ -51,7 +57,7 @@ export function ExportPanel() {
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-3 gap-1 rounded-md border bg-muted/40 p-1">
+      <div className="grid grid-cols-4 gap-1 rounded-md border bg-muted/40 p-1">
         {FORMATS.map((f) => (
           <button
             key={f.id}

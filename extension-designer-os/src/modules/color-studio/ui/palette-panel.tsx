@@ -4,7 +4,7 @@ import { Save } from "lucide-react";
 import { useColorStudioStore } from "../store";
 import { generateHarmony, generateTailwindScale, type HarmonyKind } from "../logic/palette";
 import { bestTextOn, hexToRgb, rgbToHsl } from "../logic";
-import { colorsRepo } from "@/storage";
+import { colorRepository } from "../repository";
 import { useProjectStore } from "@/stores/project-store";
 import { cn } from "@/lib/cn";
 
@@ -25,17 +25,20 @@ export function PalettePanel() {
   const projectId = useProjectStore((s) => s.activeProjectId);
 
   async function saveAll(list: string[]) {
-    for (const hex of list) {
+    const items = list.map((hex) => {
       const rgb = hexToRgb(hex);
-      await colorsRepo.create({
+      return {
         hex,
         rgb,
         hsl: rgbToHsl(rgb),
         name: null,
+        source: "manual" as const,
+        tags: ["palette", kind],
         projectId: projectId ?? undefined,
-      });
-    }
-    toast.success(`Saved ${list.length} colors`);
+      };
+    });
+    const n = await colorRepository.createMany(items);
+    toast.success(`Saved ${n} colors`);
   }
 
   return (
