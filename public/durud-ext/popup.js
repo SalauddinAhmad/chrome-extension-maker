@@ -106,6 +106,8 @@ const I18N = {
     endLbl: "End",
     onlyActive: "Only when active",
     onlyActiveSub: "Pause reminders when idle",
+    language: "Language",
+    languageSub: "Interface & hadith language",
     randomAudio: "Random (from 9)",
     durud1: "Durud 1", durud2: "Durud 2", durud3: "Durud 3",
     durud4: "Durud 4", durud5: "Durud 5", durud6: "Durud 6",
