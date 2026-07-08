@@ -1,0 +1,137 @@
+{
+  "platforms": [
+    {
+      "name": "Instagram",
+      "icon": "📸",
+      "color": "#E1306C",
+      "sizes": [
+        { "name": "Square Post", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "Classic feed post" },
+        { "name": "Portrait Post", "width": 1080, "height": 1350, "ratio": "4:5", "notes": "Max height for feed" },
+        { "name": "Landscape Post", "width": 1080, "height": 566, "ratio": "1.91:1", "notes": "Wide feed post" },
+        { "name": "Story / Reels", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "Full screen vertical" },
+        { "name": "Profile Photo", "width": 320, "height": 320, "ratio": "1:1", "notes": "Displayed at 110px" },
+        { "name": "Carousel Post", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "Up to 10 slides" },
+        { "name": "IGTV Cover", "width": 420, "height": 654, "ratio": "1:1.55", "notes": "Vertical format" },
+        { "name": "Highlight Cover", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "Circle crop at 161px" }
+      ]
+    },
+    {
+      "name": "Facebook",
+      "icon": "👤",
+      "color": "#1877F2",
+      "sizes": [
+        { "name": "Feed Post (Square)", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "Most common" },
+        { "name": "Feed Post (Landscape)", "width": 1200, "height": 630, "ratio": "1.91:1", "notes": "Link previews" },
+        { "name": "Feed Post (Portrait)", "width": 1080, "height": 1350, "ratio": "4:5", "notes": "Max portrait" },
+        { "name": "Story", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "Full screen" },
+        { "name": "Cover Photo (Page)", "width": 820, "height": 312, "ratio": "2.63:1", "notes": "Desktop view" },
+        { "name": "Cover Photo (Mobile)", "width": 640, "height": 360, "ratio": "16:9", "notes": "Mobile view" },
+        { "name": "Profile Photo", "width": 170, "height": 170, "ratio": "1:1", "notes": "Desktop display" },
+        { "name": "Event Cover", "width": 1920, "height": 1080, "ratio": "16:9", "notes": "" },
+        { "name": "Group Cover", "width": 1640, "height": 856, "ratio": "1.91:1", "notes": "" },
+        { "name": "Ad (Single Image)", "width": 1200, "height": 628, "ratio": "1.91:1", "notes": "Recommended" },
+        { "name": "Ad (Carousel)", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "" },
+        { "name": "Ad (Stories)", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "" }
+      ]
+    },
+    {
+      "name": "YouTube",
+      "icon": "▶️",
+      "color": "#FF0000",
+      "sizes": [
+        { "name": "Thumbnail", "width": 1280, "height": 720, "ratio": "16:9", "notes": "Max 2MB" },
+        { "name": "Channel Art (Desktop)", "width": 2560, "height": 1440, "ratio": "16:9", "notes": "Full banner" },
+        { "name": "Channel Art (Safe Zone)", "width": 1546, "height": 423, "ratio": "Safe zone", "notes": "Visible on all devices" },
+        { "name": "Profile Photo", "width": 800, "height": 800, "ratio": "1:1", "notes": "Displayed at 98px" },
+        { "name": "End Screen", "width": 1280, "height": 720, "ratio": "16:9", "notes": "" },
+        { "name": "Shorts Thumbnail", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "Vertical" },
+        { "name": "Community Post", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "" }
+      ]
+    },
+    {
+      "name": "Twitter / X",
+      "icon": "𝕏",
+      "color": "#000000",
+      "sizes": [
+        { "name": "Post (Landscape)", "width": 1600, "height": 900, "ratio": "16:9", "notes": "Recommended" },
+        { "name": "Post (Square)", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "" },
+        { "name": "Post (Portrait)", "width": 1080, "height": 1350, "ratio": "4:5", "notes": "" },
+        { "name": "Header Image", "width": 1500, "height": 500, "ratio": "3:1", "notes": "" },
+        { "name": "Profile Photo", "width": 400, "height": 400, "ratio": "1:1", "notes": "Displayed as circle" },
+        { "name": "Card Image", "width": 1200, "height": 628, "ratio": "1.91:1", "notes": "Twitter Card" }
+      ]
+    },
+    {
+      "name": "LinkedIn",
+      "icon": "💼",
+      "color": "#0A66C2",
+      "sizes": [
+        { "name": "Post (Landscape)", "width": 1200, "height": 627, "ratio": "1.91:1", "notes": "Recommended" },
+        { "name": "Post (Square)", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "" },
+        { "name": "Post (Portrait)", "width": 1080, "height": 1350, "ratio": "4:5", "notes": "" },
+        { "name": "Profile Photo", "width": 400, "height": 400, "ratio": "1:1", "notes": "Displayed at 200px" },
+        { "name": "Background Photo", "width": 1584, "height": 396, "ratio": "4:1", "notes": "" },
+        { "name": "Company Logo", "width": 300, "height": 300, "ratio": "1:1", "notes": "" },
+        { "name": "Company Cover", "width": 1128, "height": 191, "ratio": "5.9:1", "notes": "" },
+        { "name": "Article Cover", "width": 1200, "height": 644, "ratio": "1.91:1", "notes": "" },
+        { "name": "Ad (Single Image)", "width": 1200, "height": 627, "ratio": "1.91:1", "notes": "" },
+        { "name": "Ad (Carousel)", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "" }
+      ]
+    },
+    {
+      "name": "TikTok",
+      "icon": "🎵",
+      "color": "#010101",
+      "sizes": [
+        { "name": "Video / Post", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "Primary format" },
+        { "name": "Landscape Video", "width": 1920, "height": 1080, "ratio": "16:9", "notes": "" },
+        { "name": "Square Video", "width": 1080, "height": 1080, "ratio": "1:1", "notes": "" },
+        { "name": "Profile Photo", "width": 200, "height": 200, "ratio": "1:1", "notes": "" },
+        { "name": "Ad (TopView)", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "" },
+        { "name": "Ad (In-Feed)", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "" }
+      ]
+    },
+    {
+      "name": "Pinterest",
+      "icon": "📌",
+      "color": "#E60023",
+      "sizes": [
+        { "name": "Standard Pin", "width": 1000, "height": 1500, "ratio": "2:3", "notes": "Recommended" },
+        { "name": "Square Pin", "width": 1000, "height": 1000, "ratio": "1:1", "notes": "" },
+        { "name": "Long Pin", "width": 1000, "height": 2100, "ratio": "1:2.1", "notes": "Max height" },
+        { "name": "Profile Photo", "width": 165, "height": 165, "ratio": "1:1", "notes": "" },
+        { "name": "Board Cover", "width": 222, "height": 150, "ratio": "1.48:1", "notes": "" },
+        { "name": "Ad Pin", "width": 1000, "height": 1500, "ratio": "2:3", "notes": "" }
+      ]
+    },
+    {
+      "name": "Snapchat",
+      "icon": "👻",
+      "color": "#FFFC00",
+      "sizes": [
+        { "name": "Snap / Story", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "" },
+        { "name": "Ad (Single Image)", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "" },
+        { "name": "Ad (Collection)", "width": 1080, "height": 1920, "ratio": "9:16", "notes": "" }
+      ]
+    },
+    {
+      "name": "Behance",
+      "icon": "🎨",
+      "color": "#1769FF",
+      "sizes": [
+        { "name": "Project Cover", "width": 1400, "height": 1050, "ratio": "4:3", "notes": "" },
+        { "name": "Profile Photo", "width": 230, "height": 230, "ratio": "1:1", "notes": "" },
+        { "name": "Module Image", "width": 1400, "height": "auto", "ratio": "Variable", "notes": "Max width 1400px" }
+      ]
+    },
+    {
+      "name": "Dribbble",
+      "icon": "🏀",
+      "color": "#EA4C89",
+      "sizes": [
+        { "name": "Shot", "width": 1600, "height": 1200, "ratio": "4:3", "notes": "" },
+        { "name": "Profile Cover", "width": 3200, "height": 2400, "ratio": "4:3", "notes": "Retina" }
+      ]
+    }
+  ]
+}

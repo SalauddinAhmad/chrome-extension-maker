@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designer OS</title>
+  <meta name="description" content="The Open-Source Creative Workspace for Designers. No account. No subscription. No tracking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+<div id="app">
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="header">
+    <div class="header-brand">
+      <img src="../icons/icon48.png" alt="Designer OS" class="header-logo" />
+      <div>
+        <div class="header-title">Designer OS</div>
+        <span class="header-subtitle">Creative Workspace</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-refresh" title="Refresh page data">
+        <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+      </button>
+      <button class="btn-icon" id="btn-settings" title="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="nav" id="main-nav">
+    <button class="nav-item active" data-module="color">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 11.25 21.6 10.3 21 9.8C20.4 9.3 19.3 9 18.5 9C17.7 9 17 8.3 17 7.5C17 6.7 17.7 6 18.5 5.5C19.3 5 20 4.25 20 3.5C20 1.5 16.5 2 15 2C9.47715 2 5 6.47715 5 12C5 17.5228 9.47715 22 12 22Z"/><circle cx="7.5" cy="10.5" r="1" fill="currentColor"/><circle cx="11.5" cy="7.5" r="1" fill="currentColor"/><circle cx="16.5" cy="11.5" r="1" fill="currentColor"/></svg>
+      </span>
+      <span class="nav-label">Colors</span>
+    </button>
+    <button class="nav-item" data-module="font">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      </span>
+      <span class="nav-label">Fonts</span>
+    </button>
+    <button class="nav-item" data-module="design-system">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </span>
+      <span class="nav-label">Design</span>
+    </button>
+    <button class="nav-item" data-module="vault">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </span>
+      <span class="nav-label">Vault</span>
+    </button>
+    <button class="nav-item" data-module="svg">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 3L21 19H3L12 3Z"/><circle cx="12" cy="3" r="2" fill="currentColor"/><circle cx="3" cy="19" r="2" fill="currentColor"/><circle cx="21" cy="19" r="2" fill="currentColor"/></svg>
+      </span>
+      <span class="nav-label">SVG</span>
+    </button>
+    <button class="nav-item" data-module="screenshot">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+      </span>
+      <span class="nav-label">Annotate</span>
+    </button>
+    <button class="nav-item" data-module="tech">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <span class="nav-label">Tech</span>
+    </button>
+    <button class="nav-item" data-module="social">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><path d="M14 6h-4"/><path d="M14 10h-4"/><path d="M14 14h-4"/><path d="M14 18h-4"/></svg>
+      </span>
+      <span class="nav-label">Sizes</span>
+    </button>
+    <button class="nav-item" data-module="resources">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      </span>
+      <span class="nav-label">Assets</span>
+    </button>
+    <button class="nav-item" data-module="tasks">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </span>
+      <span class="nav-label">Tasks</span>
+    </button>
+  </nav>
+
+  <!-- ============================================================
+       CONTENT AREA
+       ============================================================ -->
+  <main class="content" id="content">
+
+    <!-- ==================== MODULE 1: COLOR TOOLKIT ==================== -->
+    <section class="module-panel active" data-panel="color">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 11.25 21.6 10.3 21 9.8C20.4 9.3 19.3 9 18.5 9C17.7 9 17 8.3 17 7.5C17 6.7 17.7 6 18.5 5.5C19.3 5 20 4.25 20 3.5C20 1.5 16.5 2 15 2C9.47715 2 5 6.47715 5 12C5 17.5228 9.47715 22 12 22Z"/><circle cx="7.5" cy="10.5" r="1" fill="currentColor"/><circle cx="11.5" cy="7.5" r="1" fill="currentColor"/><circle cx="16.5" cy="11.5" r="1" fill="currentColor"/></svg>
+          </span>
+          Color Toolkit
+        </h1>
+        <p class="module-desc">Advanced color picker, palette generator, contrast checker, and more.</p>
+      </div>
+
+      <div class="tabs" id="color-tabs">
+        <button class="tab active" data-tab="picker">Picker</button>
+        <button class="tab" data-tab="palette">Palette</button>
+        <button class="tab" data-tab="contrast">Contrast</button>
+        <button class="tab" data-tab="gradient">Gradient</button>
+        <button class="tab" data-tab="history">History</button>
+      </div>
+
+      <!-- PICKER TAB -->
+      <div id="color-tab-picker" class="color-tab-content">
+        <div class="card">
+          <div class="flex items-center gap-3 mb-3">
+            <div id="color-preview-box" class="color-preview-box" style="background:#0d8a7e; flex:1;">
+              <span style="font-size:12px;color:rgba(255,255,255,0.7)">Click to change</span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <button class="btn btn-primary" id="btn-eyedropper" title="Pick color from page">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13s-7 8.7-7 13a7 7 0 0 0 7 7z"/></svg> Pick
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-copy-hex">
+                <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy HEX
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="input-label">HEX</label>
+            <div class="input-group mb-2">
+              <input type="text" class="input input-mono" id="input-hex" value="#0f766e" maxlength="9" placeholder="#000000" />
+              <input type="color" id="input-color-native" value="#0f766e"
+                style="width:40px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;padding:2px;" />
+            </div>
+          </div>
+
+          <div id="smart-color-name" class="mb-3" style="font-size:12px;color:var(--text-secondary)">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> <span id="color-name-display">Deep Teal</span>
+          </div>
+
+          <div class="color-formats" id="color-formats">
+            <div class="color-format-item" data-copy="hex">
+              <div class="color-format-label">HEX</div>
+              <div class="color-format-value font-mono" id="fmt-hex">#0f766e</div>
+            </div>
+            <div class="color-format-item" data-copy="rgb">
+              <div class="color-format-label">RGB</div>
+              <div class="color-format-value font-mono" id="fmt-rgb">15, 118, 110</div>
+            </div>
+            <div class="color-format-item" data-copy="hsl">
+              <div class="color-format-label">HSL</div>
+              <div class="color-format-value font-mono" id="fmt-hsl">175°, 77%, 26%</div>
+            </div>
+            <div class="color-format-item" data-copy="tailwind">
+              <div class="color-format-label">Tailwind</div>
+              <div class="color-format-value font-mono" id="fmt-tailwind">teal-700</div>
+            </div>
+            <div class="color-format-item" data-copy="css-var">
+              <div class="color-format-label">CSS Var</div>
+              <div class="color-format-value font-mono" id="fmt-cssvar">--color-primary: #0f766e</div>
+            </div>
+            <div class="color-format-item" data-copy="oklch">
+              <div class="color-format-label">OKLCH</div>
+              <div class="color-format-value font-mono" id="fmt-oklch">oklch(46% 0.08 185)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PALETTE TAB -->
+      <div id="color-tab-palette" class="color-tab-content hidden">
+        <div class="card">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg> Harmony Generator</div>
+          <div class="mb-3">
+            <label class="input-label">Base Color</label>
+            <div class="input-group">
+              <input type="text" class="input input-mono" id="palette-base-hex" value="#0d8a7e" placeholder="#hex" />
+              <input type="color" id="palette-base-native" value="#0d8a7e"
+                style="width:40px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;padding:2px;" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="input-label">Harmony Type</label>
+            <select class="select" id="harmony-type">
+              <option value="complementary">Complementary</option>
+              <option value="triadic">Triadic</option>
+              <option value="analogous">Analogous</option>
+              <option value="split-complementary">Split Complementary</option>
+              <option value="tetradic">Tetradic (Square)</option>
+              <option value="monochromatic">Monochromatic</option>
+              <option value="shades">Shades & Tints</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-full mb-3" id="btn-generate-palette">Generate Palette</button>
+          <div id="palette-result"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Saved Palettes</div>
+          <div id="saved-palettes-list">
+            <p class="text-xs text-muted">No palettes saved yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTRAST TAB -->
+      <div id="color-tab-contrast" class="color-tab-content hidden">
+        <div class="card">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10"/><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2H9v2h3v10h2v-8h3v-2h-5z"/></svg> WCAG Contrast Checker</div>
+          <div class="mb-3">
+            <label class="input-label">Foreground</label>
+            <div class="input-group">
+              <input type="text" class="input input-mono" id="contrast-fg" value="#ffffff" placeholder="#foreground" />
+              <input type="color" id="contrast-fg-native" value="#ffffff"
+                style="width:40px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;padding:2px;" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="input-label">Background</label>
+            <div class="input-group">
+              <input type="text" class="input input-mono" id="contrast-bg" value="#0d8a7e" placeholder="#background" />
+              <input type="color" id="contrast-bg-native" value="#0d8a7e"
+                style="width:40px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;padding:2px;" />
+            </div>
+          </div>
+          <div class="contrast-display" id="contrast-display">
+            <div>
+              <div class="contrast-ratio" id="contrast-ratio">6.31</div>
+              <div style="font-size:11px;color:var(--text-tertiary)">Contrast Ratio</div>
+            </div>
+            <div class="contrast-labels" id="contrast-labels">
+              <div class="contrast-label"><span id="wcag-aa-normal">✅</span> AA Normal</div>
+              <div class="contrast-label"><span id="wcag-aa-large">✅</span> AA Large</div>
+              <div class="contrast-label"><span id="wcag-aaa-normal">✅</span> AAA Normal</div>
+              <div class="contrast-label"><span id="wcag-aaa-large">✅</span> AAA Large</div>
+            </div>
+          </div>
+          <div id="contrast-preview"
+            style="padding:16px;border-radius:10px;border:1px solid var(--border-subtle);text-align:center;background:#0d8a7e;color:#ffffff;">
+            <div style="font-size:18px;font-weight:700;margin-bottom:4px">Aa Preview</div>
+            <div style="font-size:13px">The quick brown fox jumps over the lazy dog</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRADIENT TAB -->
+      <div id="color-tab-gradient" class="color-tab-content hidden">
+        <div class="card">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg> Gradient Builder</div>
+          <div class="gradient-preview" id="gradient-preview" style="background:linear-gradient(135deg, #0d8a7e, #13a396)"></div>
+          <div class="mb-3">
+            <label class="input-label">Type</label>
+            <select class="select mb-2" id="gradient-type">
+              <option value="linear">Linear</option>
+              <option value="radial">Radial</option>
+              <option value="conic">Conic</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="input-label">Direction (deg)</label>
+            <input type="range" class="range" id="gradient-angle" min="0" max="360" value="135" />
+            <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">
+              <span id="gradient-angle-display">135°</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="input-label">Colors</div>
+            <div id="gradient-stops">
+              <div class="input-group mb-2">
+                <input type="color" value="#0d8a7e" class="gradient-stop-color" style="width:40px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;" />
+                <input type="text" class="input input-mono gradient-stop-hex" value="#0d8a7e" />
+                <button class="btn-icon btn-delete-stop">
+                  <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+              <div class="input-group mb-2">
+                <input type="color" value="#13a396" class="gradient-stop-color" style="width:40px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;" />
+                <input type="text" class="input input-mono gradient-stop-hex" value="#13a396" />
+                <button class="btn-icon btn-delete-stop">
+                  <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            </div>
+            <button class="btn btn-ghost btn-sm btn-full" id="btn-add-stop">+ Add Color Stop</button>
+          </div>
+          <div class="code-block" id="gradient-css-output" style="margin-top:12px;">
+background: linear-gradient(135deg, #0d8a7e, #13a396);
+          </div>
+          <button class="btn btn-secondary btn-full mt-2" id="btn-copy-gradient">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy CSS
+          </button>
+        </div>
+      </div>
+
+      <!-- HISTORY TAB -->
+      <div id="color-tab-history" class="color-tab-content hidden">
+        <div class="card">
+          <div class="card-title flex justify-between">
+            <span><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Color History</span>
+            <button class="btn btn-ghost btn-sm" id="btn-clear-history">Clear</button>
+          </div>
+          <div id="color-history-grid" class="swatch-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 2: FONT TOOLKIT ==================== -->
+    <section class="module-panel" data-panel="font">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </span>
+          Font Toolkit
+        </h1>
+        <p class="module-desc">Inspect any text element, discover all fonts, and export CSS or Tailwind.</p>
+      </div>
+
+      <div class="tabs" id="font-tabs">
+        <button class="tab active" data-tab="inspect">Inspector</button>
+        <button class="tab" data-tab="all-fonts">Page Fonts</button>
+        <button class="tab" data-tab="saved-fonts">Saved</button>
+      </div>
+
+      <!-- INSPECTOR TAB -->
+      <div id="font-tab-inspect" class="font-tab-content">
+        <div class="card">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><rect x="5" y="2" width="14" height="20" rx="7"/><path d="M12 2v10"/></svg> Click-to-Inspect</div>
+          <p class="text-xs text-muted mb-3">Click the button, then click any text on the page to inspect its font.</p>
+          <button class="btn btn-primary btn-full" id="btn-activate-inspector">
+            🔍 Activate Font Inspector
+          </button>
+          <div id="font-inspector-hint" class="mt-3 text-xs text-muted" style="text-align:center;">
+            Press <kbd style="background:var(--bg-600);padding:2px 6px;border-radius:4px;font-family:monospace;">Esc</kbd> to deactivate
+          </div>
+        </div>
+
+        <div class="card" id="font-result-card" style="display:none;">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Font Details</div>
+          <div id="font-result-content">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ALL FONTS TAB -->
+      <div id="font-tab-all-fonts" class="font-tab-content hidden">
+        <div class="card">
+          <div class="card-title flex justify-between">
+            <span style="display:flex;align-items:center;gap:6px;">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              All Page Fonts
+            </span>
+            <button class="btn btn-secondary btn-sm" id="btn-scan-fonts">Scan Now</button>
+          </div>
+          <div id="all-fonts-list">
+            <p class="text-xs text-muted">Click "Scan Now" to detect all fonts on this page.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVED FONTS TAB -->
+      <div id="font-tab-saved-fonts" class="font-tab-content hidden">
+        <div class="card">
+          <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Saved Fonts
+          </div>
+          <div id="saved-fonts-list">
+            <p class="text-xs text-muted">Fonts you save from the inspector will appear here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 3: DESIGN SYSTEM EXTRACTOR ==================== -->
+    <section class="module-panel" data-panel="design-system">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          </span>
+          Design System
+        </h1>
+        <p class="module-desc">Extract the complete design system from any website — colors, typography, spacing, components.</p>
+      </div>
+
+      <button class="btn btn-primary btn-full mb-4" id="btn-extract-design">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;margin-right:4px;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Extract Design System
+      </button>
+
+      <div id="ds-loading" class="hidden">
+        <div class="loading"><div class="spinner"></div><span>Analyzing page...</span></div>
+      </div>
+
+      <div id="ds-results" class="hidden">
+        <!-- EXPORT BAR -->
+        <div class="flex gap-2 mb-4">
+          <button class="btn btn-secondary btn-sm flex-1" id="btn-export-json">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            JSON
+          </button>
+          <button class="btn btn-secondary btn-sm flex-1" id="btn-export-css">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 11.25 21.6 10.3 21 9.8C20.4 9.3 19.3 9 18.5 9C17.7 9 17 8.3 17 7.5C17 6.7 17.7 6 18.5 5.5C19.3 5 20 4.25 20 3.5C20 1.5 16.5 2 15 2C9.47715 2 5 6.47715 5 12C5 17.5228 9.47715 22 12 22Z"/></svg>
+            CSS Vars
+          </button>
+          <button class="btn btn-secondary btn-sm flex-1" id="btn-export-tailwind">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Tailwind
+          </button>
+        </div>
+
+        <!-- COLORS -->
+        <div class="card ds-section">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 11.25 21.6 10.3 21 9.8C20.4 9.3 19.3 9 18.5 9C17.7 9 17 8.3 17 7.5C17 6.7 17.7 6 18.5 5.5C19.3 5 20 4.25 20 3.5C20 1.5 16.5 2 15 2C9.47715 2 5 6.47715 5 12C5 17.5228 9.47715 22 12 22Z"/><circle cx="7.5" cy="10.5" r="1" fill="currentColor"/><circle cx="11.5" cy="7.5" r="1" fill="currentColor"/><circle cx="16.5" cy="11.5" r="1" fill="currentColor"/></svg>
+            Color Palette
+          </div>
+          <div id="ds-colors" class="swatch-grid"></div>
+        </div>
+
+        <!-- TYPOGRAPHY -->
+        <div class="card ds-section">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            Typography Scale
+          </div>
+          <div id="ds-typography"></div>
+        </div>
+
+        <!-- SPACING -->
+        <div class="card ds-section">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M5 17h14v2H5z"/><path d="M19 17V5c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2v12"/><path d="M5 8h4"/><path d="M5 12h6"/><path d="M5 15h4"/><path d="M5 5h4"/></svg>
+            Spacing System
+          </div>
+          <div id="ds-spacing"></div>
+        </div>
+
+        <!-- BORDERS -->
+        <div class="card ds-section">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="4" ry="4"/></svg>
+            Border Radius
+          </div>
+          <div id="ds-borders" class="spacing-pills"></div>
+        </div>
+
+        <!-- SHADOWS -->
+        <div class="card ds-section">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17"/><polygon points="2 12 12 17 22 12"/></svg>
+            Shadows
+          </div>
+          <div id="ds-shadows"></div>
+        </div>
+
+        <!-- COMPONENTS -->
+        <div class="card ds-section">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg>
+            Buttons Detected
+          </div>
+          <div id="ds-buttons"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 4: INSPIRATION VAULT ==================== -->
+    <section class="module-panel" data-panel="vault">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </span>
+          Inspiration Vault
+        </h1>
+        <p class="module-desc">Save, organize, and search design inspiration locally. No cloud. No account.</p>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <button class="btn btn-primary flex-1" id="btn-save-screenshot">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;margin-right:4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Save Page
+        </button>
+        <button class="btn btn-secondary" id="btn-vault-export" title="Export as ZIP">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        </button>
+      </div>
+
+      <div class="input-group mb-3" style="position:relative;display:flex;align-items:center;">
+        <span style="position:absolute;left:12px;color:var(--text-muted);font-size:14px;pointer-events:none;">🔍</span>
+        <input type="text" class="input" id="vault-search" placeholder="Search by title, tags, notes..." style="padding-left:34px;font-size:12px;" />
+      </div>
+
+      <div class="flex gap-2 mb-3">
+        <select class="select" id="vault-filter-tag" style="font-size:12px;">
+          <option value="">All Tags</option>
+        </select>
+        <select class="select" id="vault-sort" style="font-size:12px;">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="title">Title A-Z</option>
+        </select>
+      </div>
+
+      <div id="vault-gallery" class="vault-grid"></div>
+
+      <div id="vault-empty" class="vault-empty hidden">
+        <span class="vault-empty-icon">
+          <svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:var(--text-tertiary);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </span>
+        <div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">No screenshots yet</div>
+        <p class="text-xs text-muted">Click "Save Page" to capture inspiration from any website.</p>
+      </div>
+
+      <!-- VAULT DETAIL MODAL -->
+      <div id="vault-modal" class="hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border-subtle);">
+          <div style="font-weight:600;font-size:14px;" id="vault-modal-title">Screenshot</div>
+          <button class="btn-icon" id="btn-vault-modal-close">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:16px;">
+          <img id="vault-modal-img" src="" alt="" style="width:100%;border-radius:10px;margin-bottom:12px;" />
+          <div class="mb-2">
+            <label class="input-label">Title</label>
+            <input type="text" class="input" id="vault-modal-title-input" />
+          </div>
+          <div class="mb-2">
+            <label class="input-label">Tags (comma separated)</label>
+            <input type="text" class="input" id="vault-modal-tags" placeholder="landing page, saas, dark theme" />
+          </div>
+          <div class="mb-3">
+            <label class="input-label">Notes</label>
+            <textarea class="input" id="vault-modal-notes" rows="3" placeholder="What do you like about this design?"></textarea>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-primary flex-1" id="btn-vault-save-meta">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save
+            </button>
+            <button class="btn btn-danger" id="btn-vault-delete">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 5: SVG TOOLKIT ==================== -->
+    <section class="module-panel" data-panel="svg">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3L21 19H3L12 3Z"/><circle cx="12" cy="3" r="2" fill="currentColor"/><circle cx="3" cy="19" r="2" fill="currentColor"/><circle cx="21" cy="19" r="2" fill="currentColor"/></svg>
+          </span>
+          SVG Toolkit
+        </h1>
+        <p class="module-desc">Extract, preview, optimize, and export SVGs from any website.</p>
+      </div>
+
+      <div class="tabs" id="svg-tabs">
+        <button class="tab active" data-tab="extract">Extract</button>
+        <button class="tab" data-tab="optimize">Optimize</button>
+      </div>
+
+      <!-- EXTRACT TAB -->
+      <div id="svg-tab-extract" class="svg-tab-content">
+        <button class="btn btn-primary btn-full mb-3" id="btn-scan-svgs">🔍 Scan Page for SVGs</button>
+        <div id="svg-list" class="svg-list">
+          <p class="text-xs text-muted text-center" style="padding:24px 0;">Click "Scan" to detect all SVGs on this page.</p>
+        </div>
+      </div>
+
+      <!-- OPTIMIZE TAB -->
+      <div id="svg-tab-optimize" class="svg-tab-content hidden">
+        <div class="card">
+          <div class="card-title">⚡ SVG Optimizer</div>
+          <p class="text-xs text-muted mb-3">Paste SVG code to preview, optimize, and export.</p>
+          <textarea class="input" id="svg-paste-input" rows="6" placeholder="Paste SVG code here..."
+            style="font-family:var(--font-mono);font-size:11px;resize:vertical;"></textarea>
+          <div class="flex gap-2 mt-3">
+            <button class="btn btn-primary flex-1" id="btn-optimize-svg">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Optimize
+            </button>
+            <button class="btn btn-secondary flex-1" id="btn-preview-svg">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Preview
+            </button>
+          </div>
+        </div>
+        <div id="svg-preview-card" class="card hidden">
+          <div class="card-title flex justify-between">
+            Preview
+            <div class="flex gap-2">
+              <button class="btn btn-secondary btn-sm" id="btn-export-svg">⬇ SVG</button>
+              <button class="btn btn-secondary btn-sm" id="btn-export-png">⬇ PNG</button>
+            </div>
+          </div>
+          <div id="svg-preview-area"
+            style="background:white;border-radius:8px;padding:16px;display:flex;align-items:center;justify-content:center;min-height:120px;">
+          </div>
+          <div class="mt-3">
+            <label class="input-label">Size Multiplier</label>
+            <input type="range" class="range" id="svg-size-slider" min="1" max="10" value="2" />
+            <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">Export at <span id="svg-size-label">2x</span></div>
+          </div>
+          <div class="mt-3">
+            <div class="card-title">Stats</div>
+            <div id="svg-stats" class="flex gap-3" style="font-size:12px;">
+              <div><span class="text-muted">Original:</span> <span id="svg-orig-size">—</span></div>
+              <div><span class="text-muted">Optimized:</span> <span id="svg-opt-size">—</span></div>
+              <div><span class="text-muted">Saved:</span> <span id="svg-saved-pct">—</span></div>
+            </div>
+          </div>
+          <div class="code-block mt-3" id="svg-optimized-code" style="max-height:120px;overflow-y:auto;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 6: SCREENSHOT & ANNOTATION ==================== -->
+    <section class="module-panel" data-panel="screenshot">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+          </span>
+          Screenshot & Annotate
+        </h1>
+        <p class="module-desc">Capture, draw, annotate, and export screenshots from any page.</p>
+      </div>
+
+      <div class="flex gap-2 mb-3">
+        <button class="btn btn-primary flex-1" id="btn-capture-annotate" style="font-size:12px;padding:8px 4px;">
+          <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Viewport
+        </button>
+        <button class="btn btn-secondary flex-1" id="btn-capture-area" style="font-size:12px;padding:8px 4px;">
+          <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+          Selected Area
+        </button>
+      </div>
+
+      <div id="annotation-workspace" class="hidden">
+        <!-- TOOLBAR -->
+        <div class="annotation-toolbar">
+          <button class="tool-btn active" id="tool-pen" data-tool="pen" title="Pen">
+            <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+          </button>
+          <button class="tool-btn" id="tool-arrow" data-tool="arrow" title="Arrow">
+            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </button>
+          <button class="tool-btn" id="tool-rect" data-tool="rect" title="Rectangle">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+          </button>
+          <button class="tool-btn" id="tool-circle" data-tool="circle" title="Circle">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          </button>
+          <button class="tool-btn" id="tool-text" data-tool="text" title="Text">
+            <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </button>
+          <button class="tool-btn" id="tool-marker" data-tool="marker" title="Numbered Marker">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+          </button>
+          <div class="divider" style="width:1px;height:36px;margin:0;background:var(--border-subtle);"></div>
+          <input type="color" id="tool-color" value="#ef4444"
+            title="Tool Color" style="width:36px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;padding:2px;" />
+          <select class="select" id="tool-size" style="width:60px;font-size:12px;padding:6px 8px;">
+            <option value="2">2px</option>
+            <option value="4" selected>4px</option>
+            <option value="8">8px</option>
+            <option value="12">12px</option>
+          </select>
+          <button class="tool-btn" id="btn-undo" title="Undo">
+            <svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+          </button>
+          <button class="tool-btn" id="btn-clear-canvas" title="Clear all">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          </button>
+        </div>
+
+        <!-- CANVAS -->
+        <div class="canvas-wrap">
+          <canvas id="annotation-canvas"></canvas>
+        </div>
+
+        <!-- EXPORT -->
+        <div class="flex gap-2 mt-3">
+          <button class="btn btn-primary flex-1" id="btn-export-annotation" style="font-size:11px;padding:8px 6px;">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export PNG
+          </button>
+          <button class="btn btn-secondary flex-1" id="btn-copy-annotation" style="font-size:11px;padding:8px 6px;">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+          <button class="btn btn-secondary flex-1" id="btn-save-to-vault" style="font-size:11px;padding:8px 6px;">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Save to Vault
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 7: TECH STACK ANALYZER ==================== -->
+    <section class="module-panel" data-panel="tech">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          Tech Analyzer
+        </h1>
+        <p class="module-desc">Instantly detect frameworks, CMS, analytics, ad pixels, and more on any website.</p>
+      </div>
+
+      <button class="btn btn-primary btn-full mb-4" id="btn-detect-tech">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Analyze This Page
+      </button>
+
+      <div id="tech-loading" class="hidden">
+        <div class="loading"><div class="spinner"></div><span>Detecting tech stack...</span></div>
+      </div>
+
+      <div id="tech-results" class="hidden">
+        <!-- Page Meta -->
+        <div class="card mb-3">
+          <div class="card-title">🌐 Page Info</div>
+          <div id="tech-meta"></div>
+        </div>
+
+        <!-- Results by category -->
+        <div class="card">
+          <div class="tech-section">
+            <div class="tech-section-title"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4.5px;display:inline-block;vertical-align:middle;"><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(150 12 12)"/><circle cx="12" cy="12" r="1.5"/></svg> JS Frameworks</div>
+            <div class="tech-grid" id="tech-frameworks">
+              <span class="text-xs text-muted">None detected</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="tech-section">
+            <div class="tech-section-title"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4.5px;display:inline-block;vertical-align:middle;"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 11.25 21.6 10.3 21 9.8C20.4 9.3 19.3 9 18.5 9C17.7 9 17 8.3 17 7.5C17 6.7 17.7 6 18.5 5.5C19.3 5 20 4.25 20 3.5C20 1.5 16.5 2 15 2C9.47715 2 5 6.47715 5 12C5 17.5228 9.47715 22 12 22Z"/><circle cx="7.5" cy="10.5" r="1" fill="currentColor"/><circle cx="11.5" cy="7.5" r="1" fill="currentColor"/><circle cx="16.5" cy="11.5" r="1" fill="currentColor"/></svg> CSS Frameworks</div>
+            <div class="tech-grid" id="tech-css">
+              <span class="text-xs text-muted">None detected</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="tech-section">
+            <div class="tech-section-title"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4.5px;display:inline-block;vertical-align:middle;"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="18" y1="10" x2="18" y2="14"/></svg> Platform / CMS</div>
+            <div class="tech-grid" id="tech-platforms">
+              <span class="text-xs text-muted">None detected</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="tech-section">
+            <div class="tech-section-title"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4.5px;display:inline-block;vertical-align:middle;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analytics</div>
+            <div class="tech-grid" id="tech-analytics">
+              <span class="text-xs text-muted">None detected</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="tech-section">
+            <div class="tech-section-title"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4.5px;display:inline-block;vertical-align:middle;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg> Ad Pixels</div>
+            <div class="tech-grid" id="tech-adpixels">
+              <span class="text-xs text-muted">None detected</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="tech-section">
+            <div class="tech-section-title"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4.5px;display:inline-block;vertical-align:middle;"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Other Services</div>
+            <div class="tech-grid" id="tech-other">
+              <span class="text-xs text-muted">None detected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 8: SOCIAL MEDIA SIZES & CALCULATOR ==================== -->
+    <section class="module-panel" data-panel="social">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><path d="M14 6h-4"/><path d="M14 10h-4"/><path d="M14 14h-4"/><path d="M14 18h-4"/></svg>
+          </span>
+          Sizes & Scale
+        </h1>
+        <p class="module-desc">Canvas sizes and aspect scale converter tools for web and print formats.</p>
+      </div>
+
+      <div class="tabs" id="sizes-tabs" style="margin-bottom:16px;">
+        <button class="tab active" data-tab="social-presets">Presets</button>
+        <button class="tab" data-tab="scale-calc">Calculator</button>
+      </div>
+
+      <!-- CANVAS PRESETS TAB -->
+      <div id="sizes-tab-social-presets" class="sizes-tab-content">
+        <div class="input-group mb-3" style="position:relative;display:flex;align-items:center;">
+          <span style="position:absolute;left:12px;color:var(--text-muted);font-size:14px;pointer-events:none;">🔍</span>
+          <input type="text" class="input" id="social-search" placeholder="Search platform or format..."
+            style="padding-left:34px;font-size:12px;" />
+        </div>
+        <div id="social-sizes-list" class="sizes-draggable-list"></div>
+      </div>
+
+      <!-- SCALE CALCULATOR TAB -->
+      <div id="sizes-tab-scale-calc" class="sizes-tab-content hidden">
+        <div class="card mb-3">
+          <div class="card-title"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;margin-right:6px;display:inline-block;vertical-align:middle;"><line x1="19" y1="4" x2="4" y2="19"/><path d="M19 11V4h-7"/></svg> Scale & Dimension Converter</div>
+          
+          <div class="form-group mb-3">
+            <label class="label-text" for="img-fit">Quick Preset</label>
+            <select id="img-fit" class="select-input">
+              <option value="custom">Custom Dimensions</option>
+              <option value="1920x1080">1920 × 1080 px (Full HD 16:9)</option>
+              <option value="1280x720">1280 × 720 px (HD 16:9)</option>
+              <option value="3840x2160">3840 × 2160 px (Ultra HD 4K)</option>
+              <option value="8.5x11">8.5 × 11 in (US Letter)</option>
+              <option value="210x297">210 × 297 mm (A4 Print)</option>
+              <option value="1080x1080">1080 × 1080 px (Instagram Square)</option>
+              <option value="1080x1350">1080 × 1350 px (Instagram Portrait)</option>
+            </select>
+          </div>
+
+          <div class="flex gap-2 items-center mb-3">
+            <div class="flex-1">
+              <label class="label-text" for="img-width">Width</label>
+              <input type="number" id="img-width" class="input w-full" value="1200" min="1" step="any" style="font-size:12px;" />
+            </div>
+            <button id="ratio-lock-btn" class="lock-btn active" title="Lock Aspect Ratio" style="margin-top:16px;">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+            <div class="flex-1">
+              <label class="label-text" for="img-height">Height</label>
+              <input type="number" id="img-height" class="input w-full" value="800" min="1" step="any" style="font-size:12px;" />
+            </div>
+          </div>
+
+          <div class="flex gap-2 mb-3">
+            <div class="flex-1">
+              <label class="label-text" for="img-unit">Measurement Unit</label>
+              <select id="img-unit" class="select-input">
+                <option value="px" selected>Pixels (px)</option>
+                <option value="in">Inches (in)</option>
+                <option value="cm">Centimeters (cm)</option>
+                <option value="mm">Millimeters (mm)</option>
+                <option value="pt">Points (pt)</option>
+                <option value="pc">Picas (pc)</option>
+                <option value="percent">Percentage (%)</option>
+              </select>
+            </div>
+            <div class="flex-1" id="res-field-wrap">
+              <label class="label-text" for="img-res">Resolution (DPI/PPI)</label>
+              <input type="number" id="img-res" class="input w-full" value="300" min="1" style="font-size:12px;" />
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-4 pt-3" style="border-top:1px solid var(--border-subtle);">
+            <div>
+              <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Aspect Ratio</div>
+              <div id="ratio-display" style="font-size:14px;font-weight:700;color:var(--text-primary);">3:2</div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;text-align:right;">Est. Raw Size (RGB)</div>
+              <div id="file-size-display" style="font-size:14px;font-weight:700;color:var(--primary-600);text-align:right;">2.75 MB</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary btn-full" id="copy-size-btn" style="font-size:12px;">
+          <svg viewBox="0 0 24 24" style="width:12px;height:12px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Specs to Clipboard
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== MODULE 9: DESIGN RESOURCES ==================== -->
+    <section class="module-panel" data-panel="resources">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </span>
+          Design Resources
+        </h1>
+        <p class="module-desc">Curated icons, fonts, illustrations, mockups, and more. All in one place.</p>
+      </div>
+      <div class="input-group mb-4" style="position:relative;display:flex;align-items:center;">
+        <span style="position:absolute;left:12px;color:var(--text-muted);font-size:14px;pointer-events:none;">🔍</span>
+        <input type="text" class="input" id="resource-search" placeholder="Search icons, fonts, illustrations..."
+          style="padding-left:34px;font-size:12px;" />
+      </div>
+      <div class="flex gap-2 mb-4" id="resource-category-tabs" style="overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;">
+        <button class="btn btn-secondary btn-sm resource-cat-btn active" data-cat="all">All</button>
+      </div>
+      <div id="resources-list" class="resources-draggable-list"></div>
+    </section>
+
+    <!-- ==================== MODULE 10: TASKS (TO-DO LIST) ==================== -->
+    <section class="module-panel" data-panel="tasks">
+      <div class="module-header">
+        <h1 class="module-title">
+          <span class="module-title-icon">
+            <svg viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </span>
+          Tasks Manager
+        </h1>
+        <p class="module-desc">Organize and prioritize your design tasks locally. Drag to reorder.</p>
+      </div>
+      
+      <div class="flex gap-2 mb-3">
+        <input type="text" id="todo-input" class="input flex-1" placeholder="Add a new task..." style="font-size:12px;" />
+        <button id="add-todo-btn" class="btn btn-primary" style="font-size:12px;padding:8px 16px;">Add</button>
+      </div>
+      
+      <div id="todo-list" class="todo-list-container">
+        <!-- JS-populated draggable list -->
+      </div>
+    </section>
+
+  </main><!-- /content -->
+</div><!-- /app -->
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ============================================================
+     SETTINGS PANEL (overlay)
+     ============================================================ -->
+<div id="settings-panel" class="hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border-subtle);">
+    <div style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px;">
+      <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </div>
+    <button class="btn-icon" id="btn-settings-close">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;">
+    <div class="card mb-3">
+      <div class="card-title">About Designer OS</div>
+      <p style="font-size:12px;color:var(--text-secondary);line-height:1.7;">
+        Version 1.0.0 — Phase 1<br/>
+        100% local-first. No account. No subscription. No server. No tracking.<br/>
+        Everything runs inside your browser.
+      </p>
+    </div>
+    <div class="card mb-3">
+      <div class="card-title">Storage</div>
+      <div id="storage-info" style="font-size:12px;color:var(--text-secondary);">
+        Calculating...
+      </div>
+      <button class="btn btn-danger btn-sm mt-3" id="btn-clear-all-data">
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;margin-right:4px;display:inline-block;vertical-align:middle;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg> Clear All Local Data
+      </button>
+    </div>
+
+    <!-- HEALTH TIMER -->
+    <div class="card mb-3">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Take a Screen Break
+      </div>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">
+        Give your eyes a rest by looking at something 20 feet away for 20 seconds.
+      </p>
+      <div class="timer-options-grid mb-3">
+        <label class="timer-option-pill">
+          <input type="radio" name="break-time" value="2">
+          <span>2m</span>
+        </label>
+        <label class="timer-option-pill">
+          <input type="radio" name="break-time" value="5">
+          <span>5m</span>
+        </label>
+        <label class="timer-option-pill">
+          <input type="radio" name="break-time" value="20" checked>
+          <span>20m</span>
+        </label>
+        <label class="timer-option-pill">
+          <input type="radio" name="break-time" value="30">
+          <span>30m</span>
+        </label>
+        <label class="timer-option-pill">
+          <input type="radio" name="break-time" value="60">
+          <span>60m</span>
+        </label>
+        <label class="timer-option-pill">
+          <input type="radio" name="break-time" value="custom">
+          <input type="number" id="custom-minutes" value="10" min="1" style="width:40px;background:none;border:none;color:inherit;font-size:10px;text-align:center;padding:0;" />
+        </label>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div id="timer-status" style="font-size:11px;color:var(--text-secondary);font-family:var(--font-mono);">No active timer</div>
+        <div>
+          <button id="start-timer" class="btn btn-primary btn-sm">Start</button>
+          <button id="stop-timer" class="btn btn-secondary btn-sm hidden">Stop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOUBLE-CLICK DOWNLOADER -->
+    <div class="card mb-3">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Double-Click Downloader
+      </div>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">
+        When active, hover over web page images (cursor becomes copy pointer) and double-click to instantly download them.
+      </p>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:12px;color:var(--text-secondary);">Enable Downloader</span>
+        <label class="switch-toggle">
+          <input type="checkbox" id="image-downloader-toggle" />
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-title">Optional AI (Your Own Key)</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">
+        Coming in Phase 3. Bring your own Gemini API, OpenRouter, or local LLM key. We never store or transmit your key to any server.
+      </p>
+      <div class="badge badge-primary">Phase 3</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Open Source</div>
+      <p style="font-size:12px;color:var(--text-secondary);">
+        Designer OS is open source. Built with ❤️ for the design community.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="app.js" type="module"></script>
+</body>
+</html>

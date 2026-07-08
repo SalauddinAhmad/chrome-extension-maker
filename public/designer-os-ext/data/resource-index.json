@@ -1,0 +1,139 @@
+{
+  "categories": [
+    {
+      "id": "icons",
+      "name": "Icons",
+      "icon": "⚡",
+      "resources": [
+        { "name": "Heroicons", "url": "https://heroicons.com", "description": "Beautiful hand-crafted SVG icons by Tailwind CSS team", "free": true, "tags": ["svg", "tailwind", "outline", "solid"] },
+        { "name": "Lucide", "url": "https://lucide.dev", "description": "Beautiful & consistent icon toolkit", "free": true, "tags": ["svg", "consistent", "open-source"] },
+        { "name": "Phosphor Icons", "url": "https://phosphoricons.com", "description": "Flexible icon family for interfaces", "free": true, "tags": ["svg", "figma", "react"] },
+        { "name": "Tabler Icons", "url": "https://tabler-icons.io", "description": "3000+ free SVG icons", "free": true, "tags": ["svg", "stroke", "open-source"] },
+        { "name": "Iconoir", "url": "https://iconoir.com", "description": "High-quality icons, free for everything", "free": true, "tags": ["svg", "minimal"] },
+        { "name": "Feather Icons", "url": "https://feathericons.com", "description": "Simply beautiful open source icons", "free": true, "tags": ["svg", "minimal", "open-source"] },
+        { "name": "Flaticon", "url": "https://flaticon.com", "description": "Largest icon database", "free": false, "tags": ["png", "svg", "colored"] },
+        { "name": "Icons8", "url": "https://icons8.com", "description": "Icons, illustrations, photos, music", "free": false, "tags": ["png", "svg", "ai"] },
+        { "name": "SVG Repo", "url": "https://svgrepo.com", "description": "500k+ open-licensed SVG vectors", "free": true, "tags": ["svg", "open-source"] },
+        { "name": "Bootstrap Icons", "url": "https://icons.getbootstrap.com", "description": "Official Bootstrap icon library", "free": true, "tags": ["svg", "bootstrap"] },
+        { "name": "Remix Icon", "url": "https://remixicon.com", "description": "Open-source neutral-style icon system", "free": true, "tags": ["svg", "open-source"] },
+        { "name": "Material Icons", "url": "https://fonts.google.com/icons", "description": "Official Material Design icons", "free": true, "tags": ["svg", "google", "material"] },
+        { "name": "Ant Design Icons", "url": "https://ant.design/components/icon", "description": "Ant Design icon library", "free": true, "tags": ["svg", "react"] },
+        { "name": "Ionicons", "url": "https://ionic.io/ionicons", "description": "Premium icons for Ionic apps", "free": true, "tags": ["svg", "ionic"] },
+        { "name": "Simple Icons", "url": "https://simpleicons.org", "description": "Free SVG icons for popular brands", "free": true, "tags": ["svg", "brands", "logos"] }
+      ]
+    },
+    {
+      "id": "fonts",
+      "name": "Fonts",
+      "icon": "🔤",
+      "resources": [
+        { "name": "Google Fonts", "url": "https://fonts.google.com", "description": "1400+ free fonts by Google", "free": true, "tags": ["web", "variable", "serif", "sans-serif"] },
+        { "name": "Font Squirrel", "url": "https://fontsquirrel.com", "description": "Free fonts for commercial use", "free": true, "tags": ["commercial", "desktop"] },
+        { "name": "DaFont", "url": "https://dafont.com", "description": "Free downloadable fonts", "free": true, "tags": ["display", "decorative"] },
+        { "name": "Fontesk", "url": "https://fontesk.com", "description": "Free fonts for designers", "free": true, "tags": ["modern", "minimal"] },
+        { "name": "Befonts", "url": "https://befonts.com", "description": "High quality free fonts", "free": true, "tags": ["premium", "free"] },
+        { "name": "Fontshare", "url": "https://fontshare.com", "description": "Free fonts from Indian Type Foundry", "free": true, "tags": ["premium", "modern"] },
+        { "name": "Bunny Fonts", "url": "https://fonts.bunny.net", "description": "Privacy-friendly Google Fonts alternative", "free": true, "tags": ["privacy", "web"] },
+        { "name": "Adobe Fonts", "url": "https://fonts.adobe.com", "description": "Premium fonts with Creative Cloud", "free": false, "tags": ["premium", "professional"] },
+        { "name": "Fonts.com", "url": "https://fonts.com", "description": "Large commercial font library", "free": false, "tags": ["commercial", "professional"] }
+      ]
+    },
+    {
+      "id": "illustrations",
+      "name": "Illustrations",
+      "icon": "🎨",
+      "resources": [
+        { "name": "unDraw", "url": "https://undraw.co", "description": "Open-source SVG illustrations, customizable color", "free": true, "tags": ["svg", "customizable", "open-source"] },
+        { "name": "Storyset", "url": "https://storyset.com", "description": "Customizable illustrations for projects", "free": true, "tags": ["customizable", "animated"] },
+        { "name": "Humaaans", "url": "https://humaaans.com", "description": "Mix-and-match people illustrations", "free": true, "tags": ["people", "svg", "figma"] },
+        { "name": "DrawKit", "url": "https://drawkit.com", "description": "Hand-drawn vector illustrations", "free": false, "tags": ["hand-drawn", "vector"] },
+        { "name": "Blush", "url": "https://blush.design", "description": "Customizable illustrations with Figma plugin", "free": false, "tags": ["figma", "customizable"] },
+        { "name": "Open Peeps", "url": "https://openpeeps.com", "description": "Hand-drawn people illustration library", "free": true, "tags": ["people", "hand-drawn", "open-source"] },
+        { "name": "ManyPixels", "url": "https://www.manypixels.co/gallery", "description": "Free vector illustrations", "free": true, "tags": ["vector", "svg"] },
+        { "name": "Lukasz Adam", "url": "https://lukaszadam.com/illustrations", "description": "Free SVG art illustrations", "free": true, "tags": ["svg", "art"] },
+        { "name": "Absurd Design", "url": "https://absurd.design", "description": "Surrealist illustrations", "free": false, "tags": ["surreal", "unique"] },
+        { "name": "IRA Design", "url": "https://iradesign.io", "description": "Build your own illustrations", "free": true, "tags": ["customizable", "gradient"] }
+      ]
+    },
+    {
+      "id": "mockups",
+      "name": "Mockups",
+      "icon": "📱",
+      "resources": [
+        { "name": "Mockup World", "url": "https://www.mockupworld.co", "description": "Best free mockup resources", "free": true, "tags": ["psd", "free"] },
+        { "name": "Smartmockups", "url": "https://smartmockups.com", "description": "Online mockup generator", "free": false, "tags": ["online", "generator"] },
+        { "name": "Shotsnapp", "url": "https://shotsnapp.com", "description": "Device frame mockups online", "free": true, "tags": ["device", "online"] },
+        { "name": "LS Graphics", "url": "https://lsgraphics.co/mockups", "description": "Free and premium mockups", "free": false, "tags": ["psd", "premium"] },
+        { "name": "Mockuuups Studio", "url": "https://mockuuups.studio", "description": "350+ device mockups", "free": false, "tags": ["figma", "sketch"] },
+        { "name": "Previewed", "url": "https://previewed.app", "description": "Free mockup generator", "free": true, "tags": ["generator", "online"] },
+        { "name": "Anthony Boyd Graphics", "url": "https://anthonyboyd.graphics", "description": "Realistic mockups", "free": true, "tags": ["realistic", "psd"] }
+      ]
+    },
+    {
+      "id": "ui-kits",
+      "name": "UI Kits",
+      "icon": "🧩",
+      "resources": [
+        { "name": "Figma Community", "url": "https://figma.com/community", "description": "Free Figma templates and UI kits", "free": true, "tags": ["figma", "templates"] },
+        { "name": "UI8", "url": "https://ui8.net", "description": "Premium design resources", "free": false, "tags": ["figma", "sketch", "premium"] },
+        { "name": "Creative Tim", "url": "https://creativetim.com", "description": "Premium Bootstrap & React templates", "free": false, "tags": ["bootstrap", "react", "templates"] },
+        { "name": "Flowbite", "url": "https://flowbite.com", "description": "Open-source Tailwind CSS components", "free": true, "tags": ["tailwind", "components", "open-source"] },
+        { "name": "shadcn/ui", "url": "https://ui.shadcn.com", "description": "Re-usable components built with Radix UI", "free": true, "tags": ["react", "radix", "open-source"] },
+        { "name": "DaisyUI", "url": "https://daisyui.com", "description": "Tailwind CSS component library", "free": true, "tags": ["tailwind", "components"] },
+        { "name": "Aceternity UI", "url": "https://ui.aceternity.com", "description": "Modern animated components", "free": true, "tags": ["react", "animated", "tailwind"] },
+        { "name": "Magic UI", "url": "https://magicui.design", "description": "Animated React components", "free": true, "tags": ["react", "animated"] }
+      ]
+    },
+    {
+      "id": "colors",
+      "name": "Color Tools",
+      "icon": "🎭",
+      "resources": [
+        { "name": "Coolors", "url": "https://coolors.co", "description": "Super fast color palette generator", "free": true, "tags": ["palette", "generator"] },
+        { "name": "Paletton", "url": "https://paletton.com", "description": "Color scheme designer", "free": true, "tags": ["palette", "harmony"] },
+        { "name": "Adobe Color", "url": "https://color.adobe.com", "description": "Color wheel and palette generator", "free": true, "tags": ["adobe", "palette"] },
+        { "name": "Huemint", "url": "https://huemint.com", "description": "AI color palette generator", "free": true, "tags": ["ai", "palette"] },
+        { "name": "Realtime Colors", "url": "https://realtimecolors.com", "description": "Visualize colors on a real UI", "free": true, "tags": ["preview", "ui"] },
+        { "name": "Tailwind Colors", "url": "https://tailwindcss.com/docs/customizing-colors", "description": "Tailwind CSS color palette", "free": true, "tags": ["tailwind"] },
+        { "name": "Radix Colors", "url": "https://www.radix-ui.com/colors", "description": "Accessible color palette system", "free": true, "tags": ["accessible", "dark-mode"] },
+        { "name": "Open Color", "url": "https://yeun.github.io/open-color", "description": "Open-source color scheme", "free": true, "tags": ["open-source", "ui"] }
+      ]
+    },
+    {
+      "id": "patterns",
+      "name": "Patterns & Textures",
+      "icon": "🔲",
+      "resources": [
+        { "name": "Hero Patterns", "url": "https://heropatterns.com", "description": "SVG background patterns", "free": true, "tags": ["svg", "background"] },
+        { "name": "CSS Pattern Gallery", "url": "https://css-pattern.com", "description": "Pure CSS background patterns", "free": true, "tags": ["css", "background"] },
+        { "name": "Subtle Patterns", "url": "https://www.toptal.com/designers/subtlepatterns", "description": "Subtle background textures", "free": true, "tags": ["texture", "background"] },
+        { "name": "Pattern Monster", "url": "https://pattern.monster", "description": "Customizable SVG patterns", "free": true, "tags": ["svg", "customizable"] },
+        { "name": "Doodle.css", "url": "https://css.land/lch", "description": "CSS background patterns library", "free": true, "tags": ["css"] }
+      ]
+    },
+    {
+      "id": "lottie",
+      "name": "Animations & Lottie",
+      "icon": "✨",
+      "resources": [
+        { "name": "LottieFiles", "url": "https://lottiefiles.com", "description": "Lightweight, scalable animations", "free": true, "tags": ["lottie", "json", "animation"] },
+        { "name": "Motion.dev", "url": "https://motion.dev", "description": "Production-ready motion library", "free": true, "tags": ["react", "animation"] },
+        { "name": "GSAP", "url": "https://greensock.com/gsap", "description": "Professional-grade animation", "free": true, "tags": ["javascript", "animation"] },
+        { "name": "Rive", "url": "https://rive.app", "description": "Interactive animations", "free": false, "tags": ["interactive", "animation"] },
+        { "name": "Spline", "url": "https://spline.design", "description": "3D design tool for web", "free": true, "tags": ["3d", "interactive"] }
+      ]
+    },
+    {
+      "id": "photos",
+      "name": "Stock Photos",
+      "icon": "📷",
+      "resources": [
+        { "name": "Unsplash", "url": "https://unsplash.com", "description": "Beautiful free stock photos", "free": true, "tags": ["photos", "high-res", "commercial"] },
+        { "name": "Pexels", "url": "https://pexels.com", "description": "Free stock photos and videos", "free": true, "tags": ["photos", "video", "commercial"] },
+        { "name": "Pixabay", "url": "https://pixabay.com", "description": "Free images, videos, music", "free": true, "tags": ["photos", "vector", "illustrations"] },
+        { "name": "Gratisography", "url": "https://gratisography.com", "description": "Quirky, creative free photos", "free": true, "tags": ["creative", "quirky"] },
+        { "name": "Burst", "url": "https://burst.shopify.com", "description": "Free stock photos for businesses", "free": true, "tags": ["commercial", "shopify"] }
+      ]
+    }
+  ]
+}
