@@ -1,4 +1,4 @@
-// Durud Reminder v2.1 — Premium popup (preview)
+// Durud Reminder v2.0 — Premium popup (preview)
 const DEFAULT_SETTINGS = {
   enabled: true,
   interval: 10,
