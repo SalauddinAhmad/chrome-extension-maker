@@ -2,13 +2,17 @@ import type { StoredColor } from "@/types";
 
 export type ColorFormat = "hex" | "rgb" | "hsl";
 
-export type StudioTab = "picker" | "saved" | "palette" | "gradient" | "contrast" | "export";
-
+export type StudioTab =
+  | "picker"
+  | "library"
+  | "palette"
+  | "brand"
+  | "contrast"
+  | "gradient"
+  | "export";
 
 /** Result of the browser EyeDropper API — kept typed since @types/dom lacks it. */
-export interface EyeDropperResult {
-  sRGBHex: string;
-}
+export interface EyeDropperResult { sRGBHex: string }
 export interface EyeDropperCtor {
   new (): { open: (opts?: { signal?: AbortSignal }) => Promise<EyeDropperResult> };
 }
@@ -18,11 +22,11 @@ export type NewColorInput = Pick<StoredColor, "hex" | "rgb" | "hsl" | "name" | "
 
 export interface GradientStop {
   color: string;
-  position: number; // 0..100
+  position: number;
 }
 
 export interface Gradient {
   type: "linear" | "radial";
-  angle: number; // degrees, linear only
+  angle: number;
   stops: GradientStop[];
 }
