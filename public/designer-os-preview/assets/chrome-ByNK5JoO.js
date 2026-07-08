@@ -1,2 +1,0 @@
-const t=typeof chrome<"u"&&!!chrome.runtime?.id;async function a(){if(!t)return null;const[e]=await chrome.tabs.query({active:!0,currentWindow:!0});return e??null}async function c(e,o){if(!t||!chrome.downloads){const n=document.createElement("a");n.href=e,n.download=o,n.click();return}await chrome.downloads.download({url:e,filename:o,saveAs:!1})}export{c as d,a as g,t as i};
-//# sourceMappingURL=chrome-ByNK5JoO.js.map

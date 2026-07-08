@@ -25,7 +25,10 @@ import { computeProjectStats, EMPTY_STATS } from "@/modules/projects/logic/stats
 import { inspirationRepository } from "@/modules/inspiration-vault/repository";
 import { useVaultStore } from "@/modules/inspiration-vault/store";
 import { DEFAULT_COLLECTIONS, collectionLabel } from "@/modules/inspiration-vault/logic/collections";
-import type { Project, Inspiration } from "@/types";
+import { assetRepository } from "@/modules/asset-extractor/repository";
+import { useLibraryStore } from "@/modules/asset-extractor/library-store";
+import { ASSET_TYPE_LABEL } from "@/types";
+import type { Project, Inspiration, Asset, AssetType } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
@@ -228,6 +231,12 @@ export default function Dashboard() {
       {/* Recent + favorite inspirations */}
       <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
 
+      {/* Recent + favorite inspirations */}
+      <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
+
+      {/* Asset library summary */}
+      <AssetSummary onOpen={() => setActiveModule("asset-extractor")} />
+
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
     </div>
@@ -384,6 +393,96 @@ function RecentProjectCard({
           {stats.total === 0 ? (project.clientName ?? "empty") : `${stats.total} items`}
         </div>
       </div>
+    </button>
+  );
+}
+
+function AssetSummary({ onOpen }: { onOpen: () => void }) {
+  const setFilters = useLibraryStore((s) => s.setFilters);
+  const recent = useLiveQuery(() => assetRepository.listRecent(4), [], []);
+  const favorites = useLiveQuery(() => assetRepository.listFavorites(4), [], []);
+  const typeStats = useLiveQuery(() => assetRepository.typeStats(), [], {} as Record<string, number>);
+
+  if (recent.length === 0 && favorites.length === 0) return null;
+
+  const topTypes = (Object.entries(typeStats) as Array<[AssetType, number]>)
+    .filter(([, n]) => n > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4);
+
+  const goFavorites = () => {
+    setFilters({ favoritesOnly: true });
+    onOpen();
+  };
+  const goType = (type: AssetType) => {
+    setFilters({ type });
+    onOpen();
+  };
+
+  return (
+    <div className="space-y-3">
+      {recent.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={ImageIcon}>Recent assets</SectionLabel>
+            <OpenLink onClick={onOpen} />
+          </div>
+          <div className="mt-1.5 grid grid-cols-4 gap-1.5">
+            {recent.map((a) => <AssetChip key={a.id} asset={a} />)}
+          </div>
+        </div>
+      )}
+      {favorites.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={ImageIcon}>Favorite assets</SectionLabel>
+            <OpenLink onClick={goFavorites} />
+          </div>
+          <div className="mt-1.5 grid grid-cols-4 gap-1.5">
+            {favorites.map((a) => <AssetChip key={a.id} asset={a} />)}
+          </div>
+        </div>
+      )}
+      {topTypes.length > 0 && (
+        <div>
+          <SectionLabel icon={ImageIcon}>Asset statistics</SectionLabel>
+          <div className="mt-1.5 grid grid-cols-4 gap-1.5">
+            {topTypes.map(([type, n]) => (
+              <button
+                key={type}
+                onClick={() => goType(type)}
+                className="rounded-md border bg-card px-2 py-2 text-left hover:border-primary/40 hover:bg-accent/40"
+              >
+                <div className="text-sm font-semibold leading-tight">{n}</div>
+                <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
+                  {ASSET_TYPE_LABEL[type]}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AssetChip({ asset }: { asset: Asset }) {
+  const openDetail = useLibraryStore((s) => s.openDetail);
+  const setActiveModule = useUIStore((s) => s.setActiveModule);
+  const previewable = asset.thumbnail || ["png","jpg","jpeg","webp","svg","gif"].includes(asset.type);
+  return (
+    <button
+      onClick={() => { setActiveModule("asset-extractor"); openDetail(asset.id); }}
+      className="group relative aspect-square overflow-hidden rounded-md border bg-muted/40 hover:border-primary/50"
+      title={asset.name}
+    >
+      {previewable ? (
+        <img src={asset.thumbnail ?? asset.url} alt="" className="h-full w-full object-cover" />
+      ) : (
+        <div className="grid h-full w-full place-items-center text-[9px] font-semibold uppercase text-muted-foreground">
+          {ASSET_TYPE_LABEL[asset.type]}
+        </div>
+      )}
     </button>
   );
 }
