@@ -424,12 +424,14 @@ function bindAll() {
 
 (async function init() {
   await loadDuruds();
+  await loadHadiths();
   await loadStorage();
   applyTheme();
   applySections();
   applyJumuahBadge();
   renderSettings();
   renderTodayCount();
+  renderHadith();
   await computeNext();
   startCountdown();
   bindAll();
