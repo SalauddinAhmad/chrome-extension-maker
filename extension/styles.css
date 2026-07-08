@@ -365,8 +365,17 @@ input:checked + .slider::before { transform: translateX(18px); }
 }
 
 .hero-decor {
-  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 340px;
+  pointer-events: none;
+  opacity: 0.28;
+  z-index: 0;
 }
+.hero-decor-top { top: 8px; }
+.hero-decor-bottom, .hero > .hero-decor:not(.hero-decor-top) { bottom: 0; opacity: 0.35; }
 @keyframes decor-float {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(-4px); }
