@@ -1,0 +1,2 @@
+import{j as e,A as s,c as o,r,a,O as n,C as d,T as i}from"./onboarding-DT5HHHxS.js";function x({children:t}){return e.jsx(s,{variant:"sidepanel",children:t})}o(document.getElementById("root")).render(e.jsxs(r.StrictMode,{children:[e.jsxs(x,{children:[e.jsx(a,{}),e.jsx(n,{})]}),e.jsx(d,{}),e.jsx(i,{position:"bottom-right",theme:"system",toastOptions:{classNames:{toast:"bg-background text-foreground border border-border shadow-md text-xs"}}})]}));
+//# sourceMappingURL=sidepanel-GxT0sYV3.js.map

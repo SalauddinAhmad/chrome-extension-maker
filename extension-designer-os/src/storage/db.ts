@@ -12,6 +12,7 @@ import type {
   Project,
   Settings,
   DesignReport,
+  DesignAudit,
 } from "@/types";
 
 
@@ -33,6 +34,7 @@ export class DesignerOSDB extends Dexie {
   projects!: Table<Project, string>;
   settings!: Table<Settings, string>;
   designReports!: Table<DesignReport, string>;
+  designAudits!: Table<DesignAudit, string>;
 
   constructor() {
     super("designer-os");
@@ -75,6 +77,11 @@ export class DesignerOSDB extends Dexie {
     this.version(6).stores({
       designReports:
         "id, projectId, url, saved, createdAt, updatedAt",
+    });
+    // v7: add designAudits table (Phase 7).
+    this.version(7).stores({
+      designAudits:
+        "id, projectId, reportId, url, overall, grade, createdAt, updatedAt",
     });
   }
 }

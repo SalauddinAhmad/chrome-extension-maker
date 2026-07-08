@@ -1,0 +1,2 @@
+import{r as s,j as a,l as t}from"./onboarding-DT5HHHxS.js";const i=s.forwardRef(({className:e,...r},o)=>a.jsx("textarea",{ref:o,className:t("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",e),...r}));i.displayName="Textarea";export{i as T};
+//# sourceMappingURL=textarea-BJpE9XX_.js.map

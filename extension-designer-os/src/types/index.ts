@@ -7,3 +7,4 @@ export * from "./note";
 export * from "./project";
 export * from "./settings";
 export * from "./design-report";
+export * from "./design-audit";
