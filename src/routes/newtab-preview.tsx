@@ -152,21 +152,23 @@ function NewTabPreview() {
               minHeight: 560,
             }}
           >
-            {/* Ornamental corner pattern */}
-            <div
-              className="absolute top-0 left-0 w-64 h-64 opacity-[0.05]"
-              style={{
-                background:
-                  "repeating-linear-gradient(45deg, #0f5f4c 0, #0f5f4c 1px, transparent 1px, transparent 12px)",
-              }}
+            {/* Decorative header banner */}
+            <img
+              src="/pattern.svg"
+              alt=""
+              aria-hidden
+              className="absolute top-0 left-0 w-full pointer-events-none select-none"
+              style={{ height: "auto", opacity: 0.85 }}
             />
-            <div
-              className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.05]"
-              style={{
-                background:
-                  "repeating-linear-gradient(-45deg, #0f5f4c 0, #0f5f4c 1px, transparent 1px, transparent 12px)",
-              }}
+            {/* Decorative footer banner */}
+            <img
+              src="/footer-bg.svg"
+              alt=""
+              aria-hidden
+              className="absolute bottom-0 left-0 w-full pointer-events-none select-none"
+              style={{ height: "auto", opacity: 0.9 }}
             />
+
 
             <div className="relative px-8 py-12 max-w-3xl mx-auto text-center">
               {/* Brand */}
