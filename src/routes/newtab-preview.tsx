@@ -39,12 +39,6 @@ const sampleDurud = {
   reference: "সহীহ বুখারী – ৩৩৭০",
 };
 
-const upcomingDuruds = [
-  { t: "দুরুদে ইব্রাহিম", v: "12:17", active: true },
-  { t: "দুরুদে শাফা'আত", v: "12:32" },
-  { t: "দুরুদে জিব্রীল", v: "12:47" },
-  { t: "দুরুদে হাজার", v: "01:02" },
-];
 
 const PRAYER_LABELS: Record<string, { bn: string; en: string }> = {
   fajr: { bn: "ফজর", en: "Fajr" },
@@ -416,111 +410,43 @@ function NewTabPreview() {
                 </div>
               </div>
 
-              {/* 2-column grid — top row */}
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
-                {/* Location + Hijri card */}
-                <div
-                  className="relative rounded-2xl p-5 overflow-hidden"
-                  style={{
-                    background: "rgba(255,255,255,0.55)",
-                    border: "1px solid rgba(122,149,118,0.25)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  {/* mosque silhouette */}
-                  <svg
-                    className="absolute bottom-0 right-0 opacity-40"
-                    width="170"
-                    height="75"
-                    viewBox="0 0 170 75"
-                    fill="#7a9576"
-                    aria-hidden
-                  >
-                    <path d="M0 75 L0 58 L22 58 L22 42 Q22 32 32 32 Q42 32 42 42 L42 58 L58 58 L58 38 Q58 22 75 16 Q80 6 85 16 Q102 22 102 38 L102 58 L118 58 L118 42 Q118 32 128 32 Q138 32 138 42 L138 58 L170 58 L170 75 Z" />
-                    <circle cx="80" cy="9" r="2.2" fill="#7a9576" />
-                  </svg>
-                  <div className="flex items-center gap-3 mb-3 relative">
-                    <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                        <path d="M12 21s-7-6-7-12a7 7 0 1 1 14 0c0 6-7 12-7 12z" />
-                        <circle cx="12" cy="9" r="2.5" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>অবস্থান</div>
-                      <div style={{ fontSize: 14, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>ঢাকা, বাংলাদেশ</div>
-                    </div>
+              {/* Location + Hijri card (single row, full width) */}
+              <div
+                className="relative rounded-2xl p-5 overflow-hidden mb-4 flex items-center justify-between gap-6 flex-wrap"
+                style={{
+                  background: "rgba(255,255,255,0.55)",
+                  border: "1px solid rgba(122,149,118,0.25)",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <div className="flex items-center gap-3 relative">
+                  <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M12 21s-7-6-7-12a7 7 0 1 1 14 0c0 6-7 12-7 12z" />
+                      <circle cx="12" cy="9" r="2.5" />
+                    </svg>
                   </div>
-                  <div className="flex items-center gap-3 relative">
-                    <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                        <rect x="3" y="4" width="18" height="18" rx="2" />
-                        <path d="M3 10h18M8 2v4M16 2v4" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>
-                        {toBn(now.getDate())} {bnMonths[now.getMonth()]} {toBn(now.getFullYear())}
-                      </div>
-                      <div style={{ fontSize: 14, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>শা'বান ২১, ১৪৪৬ হি.</div>
-                    </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>অবস্থান</div>
+                    <div style={{ fontSize: 14, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>ঢাকা, বাংলাদেশ</div>
                   </div>
                 </div>
-
-                {/* Next durud reminder ring + upcoming list */}
-                <div
-                  className="rounded-2xl p-5 flex items-center gap-5"
-                  style={{
-                    background: "rgba(255,255,255,0.55)",
-                    border: "1px solid rgba(122,149,118,0.25)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <div className="relative shrink-0" style={{ width: 120, height: 120 }}>
-                    <svg width="120" height="120" viewBox="0 0 120 120">
-                      <circle cx="60" cy="60" r="52" stroke="rgba(122,149,118,0.25)" strokeWidth="7" fill="none" />
-                      <circle
-                        cx="60"
-                        cy="60"
-                        r="52"
-                        stroke="#3d5638"
-                        strokeWidth="7"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeDasharray={2 * Math.PI * 52}
-                        strokeDashoffset={2 * Math.PI * 52 * 0.35}
-                        transform="rotate(-90 60 60)"
-                      />
-                      <circle cx="60" cy="8" r="5" fill="#ffffff" stroke="#3d5638" strokeWidth="2" />
+                <div className="flex items-center gap-3 relative">
+                  <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <path d="M3 10h18M8 2v4M16 2v4" />
                     </svg>
-                    <div className="absolute inset-0 grid place-items-center text-center">
-                      <div>
-                        <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>পরবর্তী দুরুদ</div>
-                        <div style={{ fontSize: 12, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>দুরুদে ইব্রাহিম</div>
-                        <div style={{ fontSize: 13, color: "#3d5638", fontFamily: '"Fraunces", serif', fontWeight: 700, marginTop: 2 }}>
-                          {toBn("03:06:57")}
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                  <div className="flex-1 rounded-xl overflow-hidden" style={{ background: "rgba(122,149,118,0.12)" }}>
-                    {upcomingDuruds.map((r) => (
-                      <div
-                        key={r.t}
-                        className="flex items-center justify-between px-3 py-2 text-xs"
-                        style={{
-                          background: r.active ? "#3d5638" : "transparent",
-                          color: r.active ? "#ffffff" : "#1c2a20",
-                          fontFamily: '"Tiro Bangla", serif',
-                        }}
-                      >
-                        <span>{r.t}</span>
-                        <span style={{ opacity: r.active ? 1 : 0.7 }}>{toBn(r.v)}</span>
-                      </div>
-                    ))}
+                  <div>
+                    <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>
+                      {toBn(now.getDate())} {bnMonths[now.getMonth()]} {toBn(now.getFullYear())}
+                    </div>
+                    <div style={{ fontSize: 14, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>শা'বান ২১, ১৪৪৬ হি.</div>
                   </div>
                 </div>
               </div>
+
 
               {/* Bottom row */}
               <div className="grid md:grid-cols-2 gap-4">
