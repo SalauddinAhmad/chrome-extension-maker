@@ -249,6 +249,8 @@ export default function Dashboard() {
       {/* Typography library summary */}
       <FontSummary onOpen={() => setActiveModule("typography-studio")} />
 
+      {/* Design audits summary */}
+      <AuditSummary onOpen={() => setActiveModule("design-audit")} />
 
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
