@@ -34,6 +34,7 @@ export class DesignerOSDB extends Dexie {
   projects!: Table<Project, string>;
   settings!: Table<Settings, string>;
   designReports!: Table<DesignReport, string>;
+  designAudits!: Table<DesignAudit, string>;
 
   constructor() {
     super("designer-os");
