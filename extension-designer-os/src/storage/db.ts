@@ -12,6 +12,7 @@ import type {
   Project,
   Settings,
   DesignReport,
+  DesignAudit,
 } from "@/types";
 
 
