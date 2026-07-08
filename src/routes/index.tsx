@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/hero.jpg";
 
@@ -168,6 +168,88 @@ function Index() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* New Tab Preview section */}
+      <section className="border-t border-border py-20">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <div className="mb-3 text-xs tracking-[0.2em] text-primary uppercase">
+            নতুন সংযোজন · প্রিভিউ
+          </div>
+          <h2 className="mb-4 font-serif text-3xl font-semibold tracking-tight lg:text-4xl">
+            প্রশান্ত নতুন ট্যাব ডিজাইন
+          </h2>
+          <p className="mb-8 text-base leading-relaxed text-muted-foreground">
+            প্রতিটি নতুন ট্যাব খোলার সময় দেখুন একটি সুন্দর দুরুদ, লাইভ ঘড়ি ও তারিখ।
+            <br />
+            পছন্দ হলে জানান — Extension-এ যোগ করে দেব।
+          </p>
+
+          {/* Mini preview thumbnail */}
+          <div
+            className="mx-auto mb-8 max-w-2xl overflow-hidden rounded-2xl border border-border shadow-lg"
+            style={{
+              background:
+                "linear-gradient(180deg, #faf7f2 0%, #f3ede3 100%)",
+            }}
+          >
+            <div
+              className="flex items-center gap-2 border-b border-border px-4 py-2"
+              style={{ background: "#f3ede3" }}
+            >
+              <div className="flex gap-1.5">
+                <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+              </div>
+              <div className="ml-3 text-[10px] text-muted-foreground">
+                chrome://newtab
+              </div>
+            </div>
+            <div className="px-6 py-10 text-center">
+              <div
+                className="mb-1 text-[10px] uppercase tracking-widest"
+                style={{ color: "var(--gold)" }}
+              >
+                বৃহস্পতিবার · ৮ জুলাই
+              </div>
+              <div
+                className="mb-6 font-serif text-5xl font-medium tracking-tight"
+                style={{ color: "#14201b" }}
+              >
+                ৩:২৪ PM
+              </div>
+              <div
+                className="mx-auto max-w-md rounded-xl border border-border bg-white p-5 text-left shadow-sm"
+              >
+                <div
+                  className="mb-2 text-[10px] font-semibold uppercase tracking-widest"
+                  style={{ color: "var(--primary)" }}
+                >
+                  ✦ দুরুদে ইব্রাহিম
+                </div>
+                <div
+                  dir="rtl"
+                  className="mb-2 text-lg leading-loose"
+                  style={{ fontFamily: '"Amiri Quran", serif' }}
+                >
+                  اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ
+                </div>
+                <div className="text-xs text-muted-foreground italic">
+                  আল্লাহুম্মা সাল্লি আলা মুহাম্মাদ…
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            to="/newtab-preview"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90"
+          >
+            পূর্ণ প্রিভিউ দেখুন
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 
