@@ -39,12 +39,6 @@ const sampleDurud = {
   reference: "সহীহ বুখারী – ৩৩৭০",
 };
 
-const upcomingDuruds = [
-  { t: "দুরুদে ইব্রাহিম", v: "12:17", active: true },
-  { t: "দুরুদে শাফা'আত", v: "12:32" },
-  { t: "দুরুদে জিব্রীল", v: "12:47" },
-  { t: "দুরুদে হাজার", v: "01:02" },
-];
 
 const PRAYER_LABELS: Record<string, { bn: string; en: string }> = {
   fajr: { bn: "ফজর", en: "Fajr" },
