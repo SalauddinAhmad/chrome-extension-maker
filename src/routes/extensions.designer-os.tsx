@@ -69,14 +69,16 @@ function DesignerOSPage() {
               <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
               <span className="ml-3 text-[11px] text-muted-foreground">
-                sidepanel/index.html
+                popup.html · 400 × 580
               </span>
             </div>
-            <iframe
-              title="Designer OS sidepanel preview"
-              src="/designer-os-ext/sidepanel/index.html"
-              className="h-[720px] w-full bg-white"
-            />
+            <div className="flex justify-center bg-[#f6f7fb] p-6">
+              <iframe
+                title="Designer OS popup preview"
+                src="/designer-os-ext/popup.html"
+                className="h-[620px] w-[420px] rounded-xl border-0 bg-transparent"
+              />
+            </div>
           </div>
 
           <div className="space-y-4">
