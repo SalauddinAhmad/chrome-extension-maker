@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Plus, Trash2, Star, Copy, Download } from "lucide-react";
 import { toast } from "sonner";
-import { db } from "@/storage";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import { useProjectStore } from "@/stores/project-store";
 import { useTypographyLibraryStore } from "../library-store";
+import { typographyRepository } from "../repository";
 import {
   defaultStyles,
   makeStyle,
@@ -21,8 +21,8 @@ type ExportFmt = "css" | "scss" | "json" | "tailwind";
 
 export function SystemBuilder() {
   const projectId = useProjectStore((s) => s.activeProjectId) ?? undefined;
-  const systems = useLiveQuery(() => db.typographySystems.orderBy("createdAt").reverse().toArray(), [], []);
-  const fonts = useLiveQuery(() => db.fonts.orderBy("createdAt").toArray(), [], []);
+  const systems = useLiveQuery(() => typographyRepository.listSystems(), [], []);
+  const fonts = useLiveQuery(() => typographyRepository.getAll(), [], []);
 
   const createSystem = useTypographyLibraryStore((s) => s.createSystem);
   const updateSystem = useTypographyLibraryStore((s) => s.updateSystem);
