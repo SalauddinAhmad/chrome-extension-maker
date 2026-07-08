@@ -56,3 +56,4 @@ export const notesRepo = createRepo("notes");
 export const projectsRepo = createRepo("projects");
 export const designReportsRepo = createRepo("designReports");
 export const designAuditsRepo = createRepo("designAudits");
+export const accessibilityReportsRepo = createRepo("accessibilityReports");
