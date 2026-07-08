@@ -80,6 +80,38 @@
                 <span class="slider"></span>
               </label>
             </div>
+
+            <div class="row toggle-row">
+              <label class="row-label" for="toggle-audio">অডিও তিলাওয়াত</label>
+              <label class="switch small">
+                <input type="checkbox" id="toggle-audio" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="row">
+              <label class="row-label" for="select-audio">অডিও নির্বাচন</label>
+            </div>
+            <select id="select-audio" class="select">
+              <option value="random">র‍্যান্ডম (৯টি থেকে)</option>
+              <option value="0">দুরুদ ১</option>
+              <option value="1">দুরুদ ২</option>
+              <option value="2">দুরুদ ৩</option>
+              <option value="3">দুরুদ ৪</option>
+              <option value="4">দুরুদ ৫</option>
+              <option value="5">দুরুদ ৬</option>
+              <option value="6">দুরুদ ৭</option>
+              <option value="7">দুরুদ ৮</option>
+              <option value="8">দুরুদ ৯</option>
+            </select>
+
+            <div class="row">
+              <label class="row-label" for="volume">ভলিউম</label>
+              <span id="volume-val" class="row-val">৯০%</span>
+            </div>
+            <input type="range" id="volume" min="0" max="100" step="5" value="90" />
+
+            <button class="ghost-btn" id="btn-test-audio" style="margin-top:8px;width:100%">🔊 অডিও টেস্ট</button>
           </div>
 
           <div class="next-line">

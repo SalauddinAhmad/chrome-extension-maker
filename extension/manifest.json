@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Durud Reminder",
   "version": "2.0.0",
-  "description": "মিনিমাল ও এলিগ্যান্ট দুরুদ রিমাইন্ডার — তাসবিহ কাউন্টার, স্ট্রিক, সমৃদ্ধ দুরুদ লাইব্রেরি ও স্মার্ট নোটিফিকেশন।",
+  "description": "মিনিমাল ও এলিগ্যান্ট দুরুদ রিমাইন্ডার — তাসবিহ কাউন্টার, স্ট্রিক, সমৃদ্ধ দুরুদ লাইব্রেরি, অডিও তিলাওয়াত ও স্মার্ট নোটিফিকেশন।",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -17,7 +17,13 @@
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
-  "permissions": ["alarms", "storage", "notifications", "idle"],
+  "permissions": ["alarms", "storage", "notifications", "idle", "offscreen"],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/audios/*.mp3", "offscreen.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "icons": {
     "16": "icons/icon.png",
     "48": "icons/icon.png",

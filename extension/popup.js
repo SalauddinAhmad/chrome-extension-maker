@@ -8,6 +8,9 @@ const DEFAULT_SETTINGS = {
   idleOnly: false,
   goal: 100,
   theme: "light",
+  audioEnabled: true,
+  audioChoice: "random",
+  volume: 0.9,
 };
 
 const state = {
@@ -69,6 +72,11 @@ function renderSettings() {
   $("#toggle-dnd").checked = state.settings.dnd;
   $("#toggle-friday").checked = state.settings.friday;
   $("#toggle-idle").checked = state.settings.idleOnly;
+  $("#toggle-audio").checked = state.settings.audioEnabled;
+  $("#select-audio").value = String(state.settings.audioChoice ?? "random");
+  const volPct = Math.round((state.settings.volume ?? 0.9) * 100);
+  $("#volume").value = volPct;
+  $("#volume-val").textContent = `${toBn(volPct)}%`;
   const sel = $("#select-durud");
   sel.innerHTML = state.duruds
     .map((d) => `<option value="${d.id}">${d.name}</option>`)
@@ -200,6 +208,25 @@ function bindReminder() {
       `${d.arabic}\n\n${d.translit}\n\n${d.bangla}\n— ${d.reference}`,
     );
     toast("কপি হয়েছে");
+  });
+  $("#toggle-audio").addEventListener("change", async (e) => {
+    state.settings.audioEnabled = e.target.checked;
+    await saveSettings();
+    toast(e.target.checked ? "অডিও চালু" : "অডিও বন্ধ");
+  });
+  $("#select-audio").addEventListener("change", async (e) => {
+    state.settings.audioChoice = e.target.value;
+    await saveSettings();
+  });
+  $("#volume").addEventListener("input", (e) => {
+    const v = +e.target.value;
+    state.settings.volume = v / 100;
+    $("#volume-val").textContent = `${toBn(v)}%`;
+  });
+  $("#volume").addEventListener("change", saveSettings);
+  $("#btn-test-audio").addEventListener("click", () => {
+    chrome.runtime.sendMessage({ type: "test-audio" });
+    toast("অডিও বাজানো হচ্ছে…");
   });
 }
 
