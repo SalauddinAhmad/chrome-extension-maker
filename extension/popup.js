@@ -60,7 +60,7 @@ function renderDurud() {
     state.duruds.find((x) => x.id === state.settings.durudId) ||
     state.duruds[0];
   state.currentIndex = state.duruds.indexOf(d);
-  $("#durud-name").textContent = d.name;
+  const _n = $("#durud-name"); if (_n) _n.textContent = d.name;
   $("#durud-arabic").textContent = d.arabic;
   $("#durud-translit").textContent = d.translit;
   $("#durud-bangla").textContent = d.bangla;
