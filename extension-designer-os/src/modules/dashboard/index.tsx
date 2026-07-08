@@ -152,13 +152,29 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {isEmpty && (
+      {hasNoProjects ? (
+        <div className="rounded-lg border bg-gradient-to-br from-primary/10 via-card to-card p-4 text-center">
+          <div className="mx-auto grid h-9 w-9 place-items-center rounded-full bg-primary/15 text-primary">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <div className="mt-2 text-sm font-semibold">Welcome to Designer OS</div>
+          <div className="mx-auto mt-1 max-w-[280px] text-[11px] leading-snug text-muted-foreground">
+            Create your first project to start organizing inspirations, assets, colors, fonts, and notes.
+          </div>
+          <button
+            onClick={createProject}
+            className="mt-2.5 inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            <FolderKanban className="h-3 w-3" /> Create Project
+          </button>
+        </div>
+      ) : isEmpty ? (
         <EmptyState
           icon={Sparkles}
           title="Your library is empty"
           description="Pick a color, scan a page, save an inspiration — everything you capture appears here."
         />
-      )}
+      ) : null}
 
       {/* Recent projects */}
       {recentProjects.length > 0 && (
@@ -169,25 +185,12 @@ export default function Dashboard() {
           </div>
           <div className="mt-1.5 grid grid-cols-2 gap-1.5">
             {recentProjects.map((p) => (
-              <button
+              <RecentProjectCard
                 key={p.id}
-                onClick={() => { setActiveModule("projects"); openProjectDetail(p.id); }}
-                className={cn(
-                  "flex items-center gap-2 rounded-md border bg-card p-2 text-left hover:border-primary/40",
-                  activeProject === p.id && "border-primary/60",
-                )}
-              >
-                <div
-                  className="h-6 w-6 shrink-0 rounded-md border"
-                  style={{ background: p.color ?? "hsl(var(--muted))" }}
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[11px] font-medium">{p.name}</div>
-                  {p.clientName && (
-                    <div className="truncate text-[9px] text-muted-foreground">{p.clientName}</div>
-                  )}
-                </div>
-              </button>
+                project={p}
+                isActive={activeProject === p.id}
+                onOpen={() => { setActiveModule("projects"); openProjectDetail(p.id); }}
+              />
             ))}
           </div>
         </div>
