@@ -3,10 +3,12 @@ import type { Entity } from "./entity";
 export interface Inspiration extends Entity {
   title: string;
   url: string;
-  thumbnail?: string;       // data URL or blob URL
+  thumbnail?: string;
   tags: string[];
   notes?: string;
   boardId?: string;
+  projectId?: string;
+  collection?: string;
 }
 
 export interface InspirationBoard extends Entity {

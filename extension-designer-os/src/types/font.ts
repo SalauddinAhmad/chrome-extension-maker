@@ -8,10 +8,12 @@ export interface StoredFont extends Entity {
   source: "google" | "adobe" | "system" | "custom";
   previewUrl?: string;
   sourceUrl?: string;
+  projectId?: string;
 }
 
 export interface FontPair extends Entity {
   headingFontId: string;
   bodyFontId: string;
   notes?: string;
+  projectId?: string;
 }
