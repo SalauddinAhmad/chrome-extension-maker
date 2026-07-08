@@ -49,6 +49,11 @@ export class DesignerOSDB extends Dexie {
       inspirations:
         "id, url, createdAt, updatedAt, boardId, projectId, favorite, collection, *tags",
     });
+    // v3: index projectId, type, favorite, source, tags on assets for the library.
+    this.version(3).stores({
+      assets:
+        "id, projectId, type, favorite, source, createdAt, updatedAt, pageUrl, *tags",
+    });
   }
 }
 
