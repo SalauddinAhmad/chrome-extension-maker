@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { hexToRgb, rgbToHsl, normalizeHex } from "./logic";
 import { colorsRepo } from "@/storage";
+import { useProjectStore } from "@/stores/project-store";
 import type { NewColorInput, StudioTab } from "./types";
 import { nearestName } from "./logic/name";
+
 
 interface ColorStudioState {
   tab: StudioTab;
@@ -53,14 +55,17 @@ export const useColorStudioStore = create<ColorStudioState>((set, get) => ({
     const hex = get().currentHex;
     const rgb = hexToRgb(hex);
     const hsl = rgbToHsl(rgb);
-    const input: NewColorInput = {
+    const projectId = useProjectStore.getState().activeProjectId ?? undefined;
+    const input: NewColorInput & { projectId?: string } = {
       hex,
       rgb,
       hsl,
       name: nearestName(rgb),
+      projectId,
     };
     await colorsRepo.create(input);
   },
+
 
   async removeColor(id) {
     await colorsRepo.remove(id);

@@ -4,12 +4,18 @@ import { useColorStudioStore } from "./store";
 import { ColorPicker } from "./ui/color-picker";
 import { SavedColors } from "./ui/saved-colors";
 import { GradientLab } from "./ui/gradient-lab";
+import { PalettePanel } from "./ui/palette-panel";
+import { ContrastPanel } from "./ui/contrast-panel";
+import { ExportPanel } from "./ui/export-panel";
 import type { StudioTab } from "./types";
 
 const TABS: Array<{ id: StudioTab; label: string }> = [
-  { id: "picker", label: "Picker" },
-  { id: "saved", label: "Saved" },
+  { id: "picker", label: "Pick" },
+  { id: "palette", label: "Palette" },
   { id: "gradient", label: "Gradient" },
+  { id: "contrast", label: "Contrast" },
+  { id: "saved", label: "Saved" },
+  { id: "export", label: "Export" },
 ];
 
 export default function ColorStudio() {
@@ -24,17 +30,17 @@ export default function ColorStudio() {
         </div>
         <div className="flex-1">
           <div className="text-sm font-semibold leading-tight">Color Studio</div>
-          <div className="text-[10px] text-muted-foreground">Pick · save · gradient</div>
+          <div className="text-[10px] text-muted-foreground">Pick · palette · contrast · export</div>
         </div>
       </header>
 
-      <div className="grid grid-cols-3 gap-1 rounded-md border bg-muted/40 p-1">
+      <div className="grid grid-cols-6 gap-1 rounded-md border bg-muted/40 p-1">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              "rounded px-2 py-1.5 text-[11px] font-medium transition-colors",
+              "rounded px-1 py-1.5 text-[10px] font-medium transition-colors",
               tab === t.id
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
@@ -46,8 +52,11 @@ export default function ColorStudio() {
       </div>
 
       {tab === "picker" && <ColorPicker />}
-      {tab === "saved" && <SavedColors />}
+      {tab === "palette" && <PalettePanel />}
       {tab === "gradient" && <GradientLab />}
+      {tab === "contrast" && <ContrastPanel />}
+      {tab === "saved" && <SavedColors />}
+      {tab === "export" && <ExportPanel />}
     </div>
   );
 }

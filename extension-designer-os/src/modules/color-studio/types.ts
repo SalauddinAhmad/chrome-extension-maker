@@ -2,7 +2,8 @@ import type { StoredColor } from "@/types";
 
 export type ColorFormat = "hex" | "rgb" | "hsl";
 
-export type StudioTab = "picker" | "saved" | "gradient";
+export type StudioTab = "picker" | "saved" | "palette" | "gradient" | "contrast" | "export";
+
 
 /** Result of the browser EyeDropper API — kept typed since @types/dom lacks it. */
 export interface EyeDropperResult {

@@ -1,11 +1,11 @@
-export type TypeTab = "detect" | "library" | "pairs";
+export type TypeTab = "detect" | "library" | "pairs" | "scale" | "export";
 
 export interface DetectedFont {
-  family: string;           // primary family (first in stack)
-  stack: string;            // full font-family value
+  family: string;
+  stack: string;
   weights: number[];
-  sizes: number[];          // in px, unique rounded
-  sampleTag: string;        // e.g. "h1", "p"
+  sizes: number[];
+  sampleTag: string;
   count: number;
   isSystem: boolean;
 }

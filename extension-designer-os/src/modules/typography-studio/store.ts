@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { fontsRepo } from "@/storage";
 import { getActiveTab, isExtension } from "@/lib/chrome";
+import { useProjectStore } from "@/stores/project-store";
 import { detectFontsInPage, classifyFamily } from "./logic/detect";
 import type { DetectedFont, TypeTab } from "./types";
+
 
 interface TypeState {
   tab: TypeTab;
@@ -48,13 +50,16 @@ export const useTypeStore = create<TypeState>((set) => ({
 
   async saveDetected(font) {
     const source = classifyFamily(font.family);
+    const projectId = useProjectStore.getState().activeProjectId ?? undefined;
     await fontsRepo.create({
       family: font.family,
       weights: font.weights,
       styles: ["normal"],
       source: source === "system" ? "system" : "custom",
+      projectId,
     });
   },
+
 
   async removeFont(id) {
     await fontsRepo.remove(id);
