@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Designer OS",
+  "version": "1.0.0",
+  "description": "Everything a designer needs inside the browser. Open-source, offline-first, privacy-first.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Designer OS",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "assets/index.ts-DJqokkz8.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "scripting",
+    "downloads",
+    "sidePanel"
+  ],
+  "host_permissions": [],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "assets/index.ts-DJqokkz8.js",
+        "assets/index.ts-DJqokkz8.js.map"
+      ],
+      "use_dynamic_url": false
+    }
+  ]
+}

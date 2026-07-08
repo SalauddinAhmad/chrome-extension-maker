@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/extensions/designer-os")({
   head: () => ({
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/extensions/designer-os")({
 });
 
 function DesignerOSPage() {
+  const [view, setView] = useState<"popup" | "sidepanel">("popup");
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
@@ -92,17 +94,45 @@ function DesignerOSPage() {
               <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
               <span className="ml-3 text-[11px] text-muted-foreground">
-                popup.html · 400 × 780
+                {view === "popup" ? "popup.html · 400 × 600" : "sidepanel.html · full-height"}
               </span>
+              <div className="ml-auto flex overflow-hidden rounded-md border border-border text-[10px] font-medium">
+                <button
+                  onClick={() => setView("popup")}
+                  className={
+                    view === "popup"
+                      ? "bg-primary px-2.5 py-1 text-primary-foreground"
+                      : "px-2.5 py-1 text-muted-foreground hover:bg-muted"
+                  }
+                >
+                  Popup
+                </button>
+                <button
+                  onClick={() => setView("sidepanel")}
+                  className={
+                    view === "sidepanel"
+                      ? "bg-primary px-2.5 py-1 text-primary-foreground"
+                      : "px-2.5 py-1 text-muted-foreground hover:bg-muted"
+                  }
+                >
+                  Side panel
+                </button>
+              </div>
             </div>
             <div className="flex justify-center bg-[#05050f] p-6">
               <iframe
-                title="Designer OS popup preview"
-                src="/designer-os-ext/popup.html"
-                className="h-[820px] w-[420px] rounded-xl border-0 bg-transparent"
+                key={view}
+                title={`Designer OS ${view} preview`}
+                src={`/designer-os-preview/${view}.html`}
+                className={
+                  view === "popup"
+                    ? "h-[620px] w-[420px] rounded-xl border-0 bg-background"
+                    : "h-[720px] w-full rounded-xl border-0 bg-background"
+                }
               />
             </div>
           </div>
+
 
           <div className="space-y-4">
             <div className="rounded-2xl border border-border bg-card p-6">
