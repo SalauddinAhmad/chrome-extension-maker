@@ -4,6 +4,7 @@ import type {
   ColorPalette,
   StoredFont,
   FontPair,
+  TypographySystem,
   Inspiration,
   InspirationBoard,
   Asset,
@@ -11,6 +12,7 @@ import type {
   Project,
   Settings,
 } from "@/types";
+
 
 /**
  * DesignerOSDB — single IndexedDB database, all local.
@@ -21,6 +23,7 @@ export class DesignerOSDB extends Dexie {
   palettes!: Table<ColorPalette, string>;
   fonts!: Table<StoredFont, string>;
   fontPairs!: Table<FontPair, string>;
+  typographySystems!: Table<TypographySystem, string>;
   inspirations!: Table<Inspiration, string>;
   boards!: Table<InspirationBoard, string>;
   assets!: Table<Asset, string>;
@@ -58,6 +61,13 @@ export class DesignerOSDB extends Dexie {
     this.version(4).stores({
       colors: "id, hex, createdAt, updatedAt, paletteId, projectId, favorite, source, *tags",
       palettes: "id, name, createdAt, updatedAt, projectId",
+    });
+    // v5: expand fonts index set + add typographySystems table (Phase 5).
+    this.version(5).stores({
+      fonts:
+        "id, family, source, category, projectId, favorite, createdAt, updatedAt, *tags",
+      typographySystems:
+        "id, name, projectId, favorite, createdAt, updatedAt, *tags",
     });
   }
 }

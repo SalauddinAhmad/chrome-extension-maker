@@ -48,6 +48,7 @@ export const colorsRepo = createRepo("colors");
 export const palettesRepo = createRepo("palettes");
 export const fontsRepo = createRepo("fonts");
 export const fontPairsRepo = createRepo("fontPairs");
+export const typographySystemsRepo = createRepo("typographySystems");
 export const inspirationsRepo = createRepo("inspirations");
 export const boardsRepo = createRepo("boards");
 export const assetsRepo = createRepo("assets");
