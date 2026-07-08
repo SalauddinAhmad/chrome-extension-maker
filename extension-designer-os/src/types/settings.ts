@@ -7,6 +7,7 @@ export interface Settings {
   colorFormat: "hex" | "rgb" | "hsl" | "oklch";
   reduceMotion: boolean;
   lastSeenVersion: string;
+  onboarded: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -16,4 +17,5 @@ export const DEFAULT_SETTINGS: Settings = {
   colorFormat: "hex",
   reduceMotion: false,
   lastSeenVersion: "1.0.0",
+  onboarded: false,
 };
