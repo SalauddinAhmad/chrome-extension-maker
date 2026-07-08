@@ -30,7 +30,7 @@ interface Action {
   label: string;
   hint?: string;
   icon: LucideIcon;
-  keywords?: string;
+  keywords?: string[];
   perform: () => void;
 }
 
@@ -101,7 +101,7 @@ export function CommandPalette() {
         label: m.name,
         hint: m.tagline,
         icon: MODULE_ICON[m.id],
-        keywords: `${m.name} ${m.tagline} ${m.id}`,
+        keywords: [m.name, m.tagline, m.id],
         perform: () => setActiveModule(m.id),
       })),
     [setActiveModule],
