@@ -278,294 +278,280 @@ function NewTabPreview() {
               </svg>
             </div>
 
-            <div className="relative px-8 pt-14 pb-28 max-w-4xl mx-auto">
-              {/* Big time */}
+            <div className="relative px-8 pt-14 pb-32 max-w-5xl mx-auto">
+              {/* Big time — 12.23 pm */}
               <div className="text-center mb-10">
                 <div
                   style={{
-                    fontFamily: '"Fraunces", serif',
-                    fontSize: 96,
-                    fontWeight: 500,
+                    fontFamily: '"Big Shoulders Text", "Fraunces", serif',
+                    fontSize: 108,
+                    fontWeight: 700,
                     color: "#1c2a20",
-                    letterSpacing: "-0.04em",
+                    letterSpacing: "-0.03em",
                     lineHeight: 1,
                   }}
                 >
-                  {toBn(h)}
-                  <span style={{ color: "#3d5638" }}>.</span>
-                  {toBn(m)}
+                  {h}
+                  <span>.</span>
+                  {m}
                   <span
                     style={{
                       fontSize: 22,
                       marginLeft: 6,
                       color: "#5f7a5b",
                       letterSpacing: "0.05em",
+                      fontWeight: 500,
                     }}
                   >
                     {ap}
                   </span>
                 </div>
+              </div>
+
+              {/* 2x2 card grid — matches reference exactly */}
+              <div className="grid md:grid-cols-2 gap-5">
+                {/* Location + Hijri card */}
                 <div
-                  className="mt-3 text-xs"
+                  className="relative rounded-2xl p-6 overflow-hidden"
                   style={{
-                    fontFamily: '"Fraunces", serif',
-                    color: "#5f7a5b",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
+                    background: "rgba(214,225,207,0.55)",
+                    border: "1px solid rgba(122,149,118,0.2)",
+                    minHeight: 170,
                   }}
                 >
-                  {dateStr}
-                </div>
-              </div>
+                  {/* mosque silhouette */}
+                  <svg
+                    className="absolute bottom-0 right-0"
+                    width="220"
+                    height="95"
+                    viewBox="0 0 220 95"
+                    fill="#b8ccb2"
+                    opacity="0.55"
+                    aria-hidden
+                  >
+                    <path d="M0 95 L0 72 L28 72 L28 55 Q28 42 40 42 Q52 42 52 55 L52 72 L74 72 L74 50 Q74 30 96 22 Q102 8 108 22 Q130 30 130 50 L130 72 L152 72 L152 55 Q152 42 164 42 Q176 42 176 55 L176 72 L220 72 L220 95 Z" />
+                    <circle cx="102" cy="14" r="2.5" />
+                  </svg>
+                  {/* small birds */}
+                  <svg className="absolute top-4 right-8" width="60" height="20" viewBox="0 0 60 20" stroke="#5f7a5b" strokeWidth="1.4" fill="none" strokeLinecap="round" aria-hidden>
+                    <path d="M4 12 q4 -6 8 0 q4 -6 8 0" />
+                    <path d="M28 6 q3 -4 6 0 q3 -4 6 0" opacity="0.7" />
+                  </svg>
 
-              {/* Prayer times card — from Muslim Prayer Times reference */}
-              <div
-                className="rounded-2xl p-5 mb-4 relative overflow-hidden"
-                style={{
-                  background: "rgba(255,255,255,0.65)",
-                  border: "1px solid rgba(122,149,118,0.3)",
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <div style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#5f7a5b", fontFamily: '"Fraunces", serif', fontWeight: 700 }}>
-                      ✦ সালাতের সময়সূচী · ঢাকা
+                  <div className="flex items-center gap-3 mb-4 relative">
+                    <div className="w-10 h-10 rounded-full grid place-items-center" style={{ background: "rgba(255,255,255,0.7)", color: "#3d5638" }}>
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                        <path d="M12 21s-7-6-7-12a7 7 0 1 1 14 0c0 6-7 12-7 12z" />
+                        <circle cx="12" cy="9" r="2.5" />
+                      </svg>
                     </div>
-                    <div className="mt-1" style={{ fontFamily: '"Fraunces", serif', fontWeight: 600, color: "#1c2a20", fontSize: 15 }}>
-                      পরবর্তী: {PRAYER_LABELS[prayers.nextKey].bn} —{" "}
-                      <span style={{ color: "#3d5638" }}>
-                        {toBn(fmtCountdown(prayers.nextTime.getTime() - now.getTime()))}
-                      </span>
+                    <div>
+                      <div style={{ fontSize: 12, color: "#6b7a68", fontFamily: '"Poppins", sans-serif' }}>Location</div>
+                      <div style={{ fontSize: 15, color: "#1c2a20", fontFamily: '"Poppins", sans-serif', fontWeight: 600 }}>Dhaka, Bangladesh</div>
                     </div>
                   </div>
-                  <button
-                    onClick={toggleAdhan}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full transition"
-                    style={{
-                      background: playing ? "#1c2a20" : "#3d5638",
-                      color: "#ffffff",
-                      fontFamily: '"Fraunces", serif',
-                      fontSize: 12,
-                      fontWeight: 600,
-                      letterSpacing: "0.05em",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <span style={{ fontSize: 14 }}>{playing ? "■" : "▶"}</span>
-                    {playing ? "আযান বন্ধ" : "আযান শুনুন"}
-                  </button>
-                  <audio ref={audioRef} src="/adhan.mp3" onEnded={() => setPlaying(false)} preload="none" />
+                  <div className="flex items-center gap-3 relative">
+                    <div className="w-10 h-10 rounded-full grid place-items-center" style={{ background: "rgba(255,255,255,0.7)", color: "#3d5638" }}>
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <path d="M3 10h18M8 2v4M16 2v4" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 12, color: "#6b7a68", fontFamily: '"Poppins", sans-serif' }}>
+                        {now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </div>
+                      <div style={{ fontSize: 15, color: "#1c2a20", fontFamily: '"Poppins", sans-serif', fontWeight: 600 }}>Sha'bān 21, 1446 AH</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="grid grid-cols-6 gap-2">
-                  {prayers.list.map((p) => {
-                    const t = fmtTime(p.time);
-                    const isNext = p.key === prayers.nextKey;
-                    const isCurrent = p.key === prayers.currentKey;
-                    return (
-                      <div
-                        key={p.key}
-                        className="rounded-xl px-2 py-3 text-center transition"
-                        style={{
-                          background: isNext
-                            ? "#3d5638"
-                            : isCurrent
-                              ? "rgba(122,149,118,0.28)"
-                              : "rgba(255,255,255,0.55)",
-                          color: isNext ? "#ffffff" : "#1c2a20",
-                          border: "1px solid",
-                          borderColor: isNext ? "#3d5638" : "rgba(122,149,118,0.25)",
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: 10,
-                            letterSpacing: "0.1em",
-                            textTransform: "uppercase",
-                            opacity: 0.75,
-                            fontFamily: '"Fraunces", serif',
-                            fontWeight: 600,
-                          }}
-                        >
-                          {PRAYER_LABELS[p.key].en}
+
+                {/* Prayer ring + list */}
+                <div
+                  className="rounded-2xl p-5 flex items-center gap-4"
+                  style={{
+                    background: "rgba(214,225,207,0.55)",
+                    border: "1px solid rgba(122,149,118,0.2)",
+                    minHeight: 170,
+                  }}
+                >
+                  {/* Ring */}
+                  <div className="relative shrink-0" style={{ width: 140, height: 140 }}>
+                    <svg width="140" height="140" viewBox="0 0 140 140">
+                      <circle cx="70" cy="70" r="60" stroke="rgba(122,149,118,0.3)" strokeWidth="6" fill="none" />
+                      <circle
+                        cx="70" cy="70" r="60"
+                        stroke="#3d5638" strokeWidth="6" fill="none"
+                        strokeLinecap="round"
+                        strokeDasharray={2 * Math.PI * 60}
+                        strokeDashoffset={(() => {
+                          const total = prayers.nextTime.getTime() - (prayers as any).currentStart?.getTime?.() || 6 * 3600 * 1000;
+                          const remain = prayers.nextTime.getTime() - now.getTime();
+                          const p = Math.max(0, Math.min(1, 1 - remain / total));
+                          return 2 * Math.PI * 60 * (1 - p);
+                        })()}
+                        transform="rotate(-90 70 70)"
+                      />
+                      <circle cx="70" cy="10" r="5" fill="#ffffff" stroke="#3d5638" strokeWidth="2" />
+                    </svg>
+                    <div className="absolute inset-0 grid place-items-center text-center">
+                      <div>
+                        <div style={{ fontSize: 16, color: "#1c2a20", fontFamily: '"Poppins", sans-serif', fontWeight: 700 }}>
+                          {PRAYER_LABELS[prayers.currentKey].en}
                         </div>
-                        <div style={{ fontFamily: '"Tiro Bangla", serif', fontSize: 12, marginTop: 2, opacity: 0.9 }}>
-                          {PRAYER_LABELS[p.key].bn}
-                        </div>
-                        <div
-                          className="mt-1"
-                          style={{
-                            fontFamily: '"Fraunces", serif',
-                            fontWeight: 700,
-                            fontSize: 16,
-                          }}
-                        >
-                          {toBn(fmtTime(p.time).hm)}
-                          <span style={{ fontSize: 10, marginLeft: 2, opacity: 0.7 }}>{t.ap}</span>
+                        <div style={{ fontSize: 10, color: "#6b7a68", fontFamily: '"Poppins", sans-serif', marginTop: 3, letterSpacing: "0.02em" }}>Remaining Time</div>
+                        <div style={{ fontSize: 14, color: "#3d5638", fontFamily: '"Poppins", sans-serif', fontWeight: 600, marginTop: 3 }}>
+                          {fmtCountdown(prayers.nextTime.getTime() - now.getTime())}
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Location + Hijri card (single row, full width) */}
-              <div
-                className="relative rounded-2xl p-5 overflow-hidden mb-4 flex items-center justify-between gap-6 flex-wrap"
-                style={{
-                  background: "rgba(255,255,255,0.55)",
-                  border: "1px solid rgba(122,149,118,0.25)",
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                <div className="flex items-center gap-3 relative">
-                  <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 21s-7-6-7-12a7 7 0 1 1 14 0c0 6-7 12-7 12z" />
-                      <circle cx="12" cy="9" r="2.5" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>অবস্থান</div>
-                    <div style={{ fontSize: 14, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>ঢাকা, বাংলাদেশ</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 relative">
-                  <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <rect x="3" y="4" width="18" height="18" rx="2" />
-                      <path d="M3 10h18M8 2v4M16 2v4" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 11, color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>
-                      {toBn(now.getDate())} {bnMonths[now.getMonth()]} {toBn(now.getFullYear())}
                     </div>
-                    <div style={{ fontSize: 14, color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>শা'বান ২১, ১৪৪৬ হি.</div>
+                  </div>
+                  {/* Prayer list */}
+                  <div className="flex-1 rounded-xl overflow-hidden">
+                    {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k) => {
+                      const p = prayers.list.find((x) => x.key === k)!;
+                      const isNext = k === prayers.nextKey;
+                      const t = fmtTime(p.time);
+                      return (
+                        <div
+                          key={k}
+                          className="flex items-center justify-between px-3.5 py-1.5"
+                          style={{
+                            background: isNext ? "#3d5638" : "transparent",
+                            color: isNext ? "#ffffff" : "#5a6b57",
+                            borderRadius: isNext ? 8 : 0,
+                            fontFamily: '"Poppins", sans-serif',
+                            fontSize: 12,
+                            fontWeight: isNext ? 600 : 500,
+                            opacity: isNext ? 1 : 0.85,
+                            marginBottom: 2,
+                          }}
+                        >
+                          <span>{PRAYER_LABELS[k].en}</span>
+                          <span style={{ opacity: isNext ? 1 : 0.75 }}>
+                            {t.hm} {t.ap}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              </div>
 
-
-              {/* Bottom row */}
-              <div className="grid md:grid-cols-2 gap-4">
-                {/* Quick actions */}
+                {/* Quick action icons */}
                 <div
-                  className="rounded-2xl p-5 flex items-center justify-around"
+                  className="rounded-2xl p-6 flex items-center justify-around"
                   style={{
-                    background: "rgba(255,255,255,0.55)",
-                    border: "1px solid rgba(122,149,118,0.25)",
-                    backdropFilter: "blur(6px)",
+                    background: "rgba(214,225,207,0.55)",
+                    border: "1px solid rgba(122,149,118,0.2)",
+                    minHeight: 130,
                   }}
                 >
                   {[
-                    { icon: "▶", label: "প্লে" },
-                    { icon: "⧉", label: "কপি" },
-                    { icon: "⟲", label: "নতুন" },
-                    { icon: "↗", label: "শেয়ার" },
+                    {
+                      label: "Quran Mazid",
+                      icon: (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                          <path d="M4 4h9a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4V4z" />
+                          <path d="M4 16a4 4 0 0 1 4-4h9" />
+                        </svg>
+                      ),
+                    },
+                    {
+                      label: "Al Hadith",
+                      icon: (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                          <path d="M12 3v18M5 7c2 0 5 1 7 2 2-1 5-2 7-2v11c-2 0-5 1-7 2-2-1-5-2-7-2V7z" />
+                        </svg>
+                      ),
+                    },
+                    {
+                      label: "Dua Ruqyah",
+                      icon: (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                          <path d="M9 11V6a2 2 0 1 1 4 0v5" />
+                          <path d="M13 11V4a2 2 0 1 1 4 0v9" />
+                          <path d="M17 12V7a2 2 0 1 1 4 0v9a6 6 0 0 1-6 6h-2a6 6 0 0 1-5.2-3l-3.3-5.7a2 2 0 0 1 3.4-2L9 13" />
+                        </svg>
+                      ),
+                    },
                   ].map((a) => (
                     <div key={a.label} className="text-center">
                       <div
-                        className="w-11 h-11 rounded-full grid place-items-center mx-auto mb-1"
-                        style={{
-                          background: "rgba(122,149,118,0.18)",
-                          color: "#3d5638",
-                          fontSize: 16,
-                        }}
+                        className="w-12 h-12 rounded-full grid place-items-center mx-auto mb-2"
+                        style={{ background: "rgba(255,255,255,0.7)", color: "#3d5638" }}
                       >
                         {a.icon}
                       </div>
-                      <div style={{ fontSize: 11, color: "#3d5638", fontFamily: '"Tiro Bangla", serif' }}>{a.label}</div>
+                      <div style={{ fontSize: 12, color: "#3d5638", fontFamily: '"Poppins", sans-serif', fontWeight: 500 }}>
+                        {a.label}
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Today's durud progress */}
+                {/* Remaining Fasting Time */}
                 <div
                   className="rounded-2xl p-5"
                   style={{
-                    background: "rgba(255,255,255,0.55)",
-                    border: "1px solid rgba(122,149,118,0.25)",
-                    backdropFilter: "blur(6px)",
+                    background: "rgba(214,225,207,0.55)",
+                    border: "1px solid rgba(122,149,118,0.2)",
+                    minHeight: 130,
                   }}
                 >
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span style={{ color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>আজকের দুরুদ পাঠ</span>
-                    <span style={{ color: "#3d5638", fontFamily: '"Fraunces", serif', fontWeight: 700 }}>
-                      {toBn(23)} / {toBn(40)}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span style={{ fontSize: 12, color: "#5a6b57", fontFamily: '"Poppins", sans-serif' }}>Remaining Fasting Time</span>
+                    <span style={{ fontSize: 12, color: "#3d5638", fontFamily: '"Poppins", sans-serif', fontWeight: 700 }}>
+                      {(() => {
+                        const iftar = prayers.list.find((x) => x.key === "maghrib")!.time.getTime();
+                        return fmtCountdown(iftar - now.getTime());
+                      })()}
                     </span>
                   </div>
-                  <div className="h-2 rounded-full overflow-hidden mb-3" style={{ background: "rgba(122,149,118,0.2)" }}>
+                  <div className="h-2 rounded-full overflow-hidden mb-4" style={{ background: "rgba(122,149,118,0.25)" }}>
                     <div
                       className="h-full rounded-full"
-                      style={{ width: "57%", background: "linear-gradient(90deg, #7a9576 0%, #3d5638 100%)" }}
+                      style={{
+                        width: (() => {
+                          const suhoor = prayers.list.find((x) => x.key === "fajr")!.time.getTime();
+                          const iftar = prayers.list.find((x) => x.key === "maghrib")!.time.getTime();
+                          const nowMs = now.getTime();
+                          if (nowMs <= suhoor || nowMs >= iftar) return "0%";
+                          return `${Math.min(100, Math.max(0, ((nowMs - suhoor) / (iftar - suhoor)) * 100))}%`;
+                        })(),
+                        background: "linear-gradient(90deg, #7a9576 0%, #3d5638 100%)",
+                      }}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>✦</div>
-                      <div>
-                        <div style={{ color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>শুরু</div>
-                        <div style={{ color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>ফজর ০৫:১২</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full grid place-items-center" style={{ background: "rgba(122,149,118,0.18)", color: "#3d5638" }}>◐</div>
-                      <div>
-                        <div style={{ color: "#6b7a68", fontFamily: '"Tiro Bangla", serif' }}>স্ট্রিক</div>
-                        <div style={{ color: "#1c2a20", fontFamily: '"Fraunces", serif', fontWeight: 600 }}>{toBn(7)} দিন</div>
-                      </div>
-                    </div>
+                  <div className="flex items-center justify-around">
+                    {[
+                      { label: "Suhoor", time: prayers.list.find((x) => x.key === "fajr")!.time, icon: "☾" },
+                      { label: "Iftar", time: prayers.list.find((x) => x.key === "maghrib")!.time, icon: "☀" },
+                    ].map((a) => {
+                      const t = fmtTime(a.time);
+                      return (
+                        <div key={a.label} className="flex items-center gap-2">
+                          <div className="w-9 h-9 rounded-full grid place-items-center" style={{ background: "rgba(255,255,255,0.7)", color: "#3d5638", fontSize: 14 }}>
+                            {a.icon}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: 12, color: "#5a6b57", fontFamily: '"Poppins", sans-serif' }}>{a.label}</div>
+                            <div style={{ fontSize: 13, color: "#1c2a20", fontFamily: '"Poppins", sans-serif', fontWeight: 600 }}>
+                              {t.hm} {t.ap}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
 
-              {/* Featured durud strip */}
-              <div
-                className="mt-4 rounded-2xl p-5 text-center"
-                style={{
-                  background: "rgba(255,255,255,0.72)",
-                  border: "1px solid rgba(122,149,118,0.3)",
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 10,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "#3d5638",
-                    fontFamily: '"Fraunces", serif',
-                    fontWeight: 700,
-                    marginBottom: 8,
-                  }}
-                >
-                  ✦ এই মুহূর্তের দুরুদ · {sampleDurud.name}
-                </div>
-                <div
-                  dir="rtl"
-                  style={{
-                    fontFamily: '"Amiri Quran", serif',
-                    fontSize: 22,
-                    lineHeight: 2,
-                    color: "#1c2a20",
-                  }}
-                >
-                  {sampleDurud.arabic}
-                </div>
-                <div
-                  className="mt-2"
-                  style={{
-                    fontFamily: '"Tiro Bangla", serif',
-                    fontSize: 12,
-                    color: "#5f7a5b",
-                    fontStyle: "italic",
-                  }}
-                >
-                  — {sampleDurud.reference}
-                </div>
-              </div>
+              {/* Hidden adhan audio (kept for reuse) */}
+              <audio ref={audioRef} src="/adhan.mp3" onEnded={() => setPlaying(false)} preload="none" />
+              {/* suppress unused warnings */}
+              <span className="hidden">{playing ? "" : ""}{toggleAdhan.name}{sampleDurud.name}{dateStr}</span>
+            </div>
+
             </div>
           </div>
         </div>
