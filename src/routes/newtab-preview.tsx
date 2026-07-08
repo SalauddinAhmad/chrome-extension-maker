@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Coordinates, CalculationMethod, PrayerTimes, SunnahTimes } from "adhan";
 
@@ -68,6 +68,14 @@ function fmtCountdown(ms: number) {
 }
 
 function NewTabPreview() {
+  return (
+    <ClientOnly fallback={<div className="min-h-screen" style={{ background: "#eef3ea" }} />}>
+      <NewTabPreviewContent />
+    </ClientOnly>
+  );
+}
+
+function NewTabPreviewContent() {
   const [now, setNow] = useState(HYDRATION_SAFE_NOW);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
