@@ -1,63 +1,122 @@
+# Designer OS — Phased Rebuild Plan
 
-# Durud Reminder v2.0 — আপডেট প্ল্যান
+The current extension already has most modules scaffolded (Color, Typography, Inspiration, Notes, Asset, Screenshot, Design Inspector, Tech Stack, Resource Hub, Settings). It launches as a tool grid, not as a **workspace**. We will transform it into a proper Designer OS following the 6-phase order you specified — **starting with Phase 1 only**, then stopping for approval before moving on.
 
-বর্তমান এক্সটেনশনটি সুন্দর, কিন্তু UI বেশ বেসিক এবং শুধু "next reminder" দেখায়। v2.0-এ এটিকে একটি পূর্ণাঙ্গ **মিনিমাল ও এলিগ্যান্ট আধ্যাত্মিক সঙ্গী** হিসেবে রূপ দেব।
+---
 
-## 🎨 নতুন ডিজাইন ভাষা (মিনিমাল ও এলিগ্যান্ট)
+## Scope of this step: Phase 1 only
 
-- **প্যালেট**: অফ-হোয়াইট বেস (#FAF8F5), ডিপ এমারেল্ড অ্যাকসেন্ট (#0F5F4C) — বর্তমান লাল-এর বদলে; ইসলামিক ঐতিহ্যের সাথে মানানসই, চোখে আরাম
-- **টাইপোগ্রাফি**: হেডিং-এ Fraunces (সেরিফ, এলিগ্যান্ট), বডিতে Inter, বাংলার জন্য Tiro Bangla, আরবির জন্য Amiri Quran
-- **লেআউট**: প্রচুর ব্রেদিং স্পেস, hairline বর্ডার, সূক্ষ্ম শ্যাডো, কোনো লাউড গ্রেডিয়েন্ট নয়
-- **সূক্ষ্ম মোশন**: রিমাইন্ডার এলে দুরুদ কার্ড fade-up, tasbih গণনায় pulse
-- ডার্ক/লাইট থিম টগল
+**Phase 1 — Dashboard, Navigation, Project System**
 
-## ✨ নতুন ফিচার (ক্রিয়েটিভ সাজেশন)
+Nothing from Phase 2–6 will be touched in this step. Existing modules keep working exactly as they are; we only reframe the shell around them.
 
-1. **ডিজিটাল তাসবিহ কাউন্টার** — popup-এ বড় ট্যাপ-এরিয়া, দৈনিক লক্ষ্য (যেমন ১০০ বার), হ্যাপ্টিক-স্টাইল ভিজ্যুয়াল ফিডব্যাক
-2. **দৈনিক স্ট্রিক ও পরিসংখ্যান** — কতদিন টানা পড়েছেন, সাপ্তাহিক হিটম্যাপ (GitHub-স্টাইল), মোট দুরুদ সংখ্যা
-3. **সমৃদ্ধ দুরুদ লাইব্রেরি** — দুরুদে ইব্রাহিম, দুরুদে তাজ, ছোট দুরুদ ইত্যাদি; প্রতিটিতে আরবি + বাংলা উচ্চারণ + অনুবাদ + রেফারেন্স
-3. **কপি ও শেয়ার বাটন** — প্রতিটি দুরুদ কার্ডে
-4. **নতুন ট্যাব ওভাররাইড (ঐচ্ছিক)** — নতুন ট্যাব খুললে একটি প্রশান্ত দুরুদ কার্ড + তারিখ (হিজরি + গ্রেগরিয়ান)
-5. **স্মার্ট সাইলেন্স** — ফুলস্ক্রিন ভিডিও/মিটিং চলাকালে নোটিফিকেশন hold, নির্দিষ্ট সময় DND (যেমন রাত ১১টা–ভোর ৬টা)
-6. **শুক্রবার বিশেষ মোড** — জুমার দিন বাড়তি reminder ও বিশেষ দুরুদ হাইলাইট
-7. **কাস্টম ইন্টারভাল** — শুধু dropdown নয়, ৫ মিনিট থেকে ২ ঘণ্টা পর্যন্ত slider
-8. **অনস্ক্রিন সুন্দর নোটিফিকেশন কার্ড** (chrome notification-এর সাথে): কাস্টম আইকন সহ
+---
 
-## 🗂️ স্কোপ ও পদ্ধতি
+## What Phase 1 delivers
 
-- বর্তমান manifest v3 স্ট্রাকচার রেখে UI ও লজিক নতুন করে সাজানো
-- Lovable প্রজেক্টে `extension/` ফোল্ডারে সব সোর্স
-- popup-এ vanilla HTML/CSS/JS (এক্সটেনশনের হালকা সাইজ রাখতে)
-- `chrome.storage.local`-এ streak, count, settings সংরক্ষণ
-- `chrome.alarms` API-তে reminder scheduling
-- একটি ডাউনলোডযোগ্য ZIP তৈরি হবে (`public/durud-reminder-v2.zip`), সাথে ওয়েব ল্যান্ডিং পেজে ফিচার শোকেস + ইনস্টল গাইড
+### 1. New Information Architecture (sidebar navigation)
 
-## 📁 ফাইল স্ট্রাকচার
+Replace the flat module list with a grouped sidebar shell (inspired by Linear / Raycast):
 
 ```text
-extension/
-├── manifest.json         (v2.0.0, নতুন permissions: alarms, storage, notifications)
-├── popup.html/css/js     (নতুন UI + tasbih + stats ট্যাব)
-├── background.js         (alarms, smart silence, streak logic)
-├── newtab.html/css/js    (ঐচ্ছিক new tab override)
-├── data/duruds.json      (দুরুদ কালেকশন)
-└── icons/                (নতুন এমারেল্ড আইকন সেট)
+DASHBOARD
+  Home
 
-src/routes/index.tsx      (v2 ল্যান্ডিং পেজ + ডাউনলোড বাটন)
-public/durud-reminder-v2.zip
+WORKSPACE
+  Projects
+  Recent Activity
+  Collections
+
+TOOLS
+  Color Studio
+  Typography Studio
+  Design Inspector
+  Screenshot Studio
+
+LIBRARY
+  Inspiration Vault
+  Asset Manager
+  Notes Workspace
+  Resource Hub
+
+UTILITIES
+  Tech Stack Detector
+  Settings
 ```
 
-## 🚀 ধাপ
+- Works in both **popup** and **sidepanel** shells.
+- Popup uses a collapsed icon rail; sidepanel uses full labeled sidebar.
+- Command palette (already present) gets updated with the new grouping.
 
-1. নতুন ডিজাইন টোকেন ও ফন্ট সেটআপ
-2. Extension ফোল্ডার রিবিল্ড: manifest, popup UI (৩ ট্যাব: Reminder · Tasbih · Stats), background logic, duruds.json
-3. New tab override পেজ
-4. Landing page আপডেট — ফিচার শোকেস ও ZIP ডাউনলোড
-5. Build script দিয়ে ZIP প্যাকেজিং
+### 2. Redesigned Dashboard
 
-## ⚠️ যা বাদ থাকবে (এখন)
+Replace the current dashboard with a real workspace overview:
 
-- অ্যাকাউন্ট/লগইন/সিঙ্ক (chrome.storage.sync দিয়ে ডিভাইসের মধ্যে অটো-সিঙ্ক হবে, আলাদা backend নয়)
-- মোবাইল অ্যাপ
+- **Workspace Overview** — counts for Inspirations, Assets, Colors, Fonts, Notes, Projects (live from Dexie).
+- **Quick Actions** — Pick Color, Scan Fonts, Capture Screenshot, Analyze Website, Extract Assets, Detect Tech Stack.
+- **Recent Activity** — unified feed of last 10 saves across colors/fonts/inspirations/assets/screenshots/notes (derived from `createdAt`/`updatedAt` across existing tables — no new table needed).
+- **Recent Projects** — 3–6 project cards with accent color + item counts.
+- **Collections Overview** — preset collections (Landing Pages, Dashboards, Branding, Ecommerce, Mobile Apps, Islamic Design) as clickable cards that filter Inspiration Vault.
 
-অনুমোদন দিলে বিল্ড মোডে গিয়ে সম্পূর্ণ কোড লিখে দেব।
+### 3. Projects System (new)
+
+The `Project` type + `projects` Dexie table already exist. Phase 1 adds the full UX layer:
+
+- **Projects list page** — grid of project cards (name, client, accent color, item counts, archived toggle).
+- **New / Edit project** dialog (name, client, description, accent color, archive).
+- **Project detail page** with tabs: Inspirations · Colors · Fonts · Assets · Notes — each tab filters existing repos by `projectId`.
+- **Active project context** (Zustand) — when a project is active, quick-action saves auto-tag `projectId` so new colors/fonts/inspirations/notes attach to it.
+- Add `projectId` field to `StoredColor` and `StoredFont` (Dexie schema bump v1 → v2, additive only; existing rows untouched).
+
+### 4. UX polish for the shell
+
+- Inter font, 12px radius, 4px spacing scale — enforce via existing tokens in `globals.css`.
+- Light/Dark already wired via `use-theme`; verify parity in new shell.
+- Framer Motion micro-transitions on route/module switch and dashboard cards.
+
+---
+
+## Technical details
+
+**Files to add**
+- `src/components/layout/app-shell.tsx` — new grouped sidebar + top bar (used by both popup + sidepanel shells).
+- `src/components/layout/nav-groups.ts` — IA config (groups → module ids).
+- `src/modules/projects/` — `index.tsx` (list), `detail.tsx` (tabs), `store.ts`, `ui/project-card.tsx`, `ui/project-dialog.tsx`, `logic/activity.ts` (unified recent activity feed).
+- `src/stores/project-store.ts` — active project id + setter, persisted to settings.
+
+**Files to change**
+- `src/lib/modules.ts` — add `projects` module id, group metadata.
+- `src/modules/dashboard/index.tsx` — rewrite around Workspace Overview / Quick Actions / Recent Activity / Recent Projects / Collections.
+- `src/components/layout/popup-shell.tsx` + `sidepanel-shell.tsx` — mount new `AppShell`.
+- `src/components/shared/active-module.tsx` — register projects module + detail view.
+- `src/storage/db.ts` — version(2) with `projectId` index on `colors` and `fonts` (additive).
+- `src/storage/repositories.ts` — `projectsRepo` list/create/update/archive + `attachToProject` helpers.
+- `src/types/color.ts`, `src/types/font.ts` — optional `projectId?: string`.
+- `src/components/shared/command-palette.tsx` — new grouped entries + "Switch project" action.
+
+**Non-goals for Phase 1 (explicit)**
+- No changes to Color Studio internals, Typography detection, Inspector, Vault, Notes, Asset, Screenshot, Tech Stack, Resource Hub logic.
+- No new storage backends. No cloud sync. Still offline-first, local-only.
+- No new dependencies beyond what's installed (React, Zustand, Dexie, shadcn, lucide, framer-motion).
+
+---
+
+## Build + package
+
+After Phase 1 lands:
+1. `cd extension-designer-os && bunx vite build`
+2. Copy `dist/*` → `public/designer-os-preview/` and rewrite `/assets/` paths (same script as before) so the live iframe preview reflects the new shell.
+3. Repackage `public/designer-os.zip` from `dist/`.
+
+---
+
+## After approval
+
+I will stop after Phase 1 and wait. Next phases in your specified order:
+- Phase 2 — Color Studio + Typography Studio upgrades
+- Phase 3 — Inspiration Vault + Notes Workspace
+- Phase 4 — Asset Manager + Screenshot Studio
+- Phase 5 — Design Inspector + Tech Stack Detector
+- Phase 6 — Resource Hub
+
+Reply **approve** to start Phase 1, or tell me what to adjust in the IA / dashboard sections first.

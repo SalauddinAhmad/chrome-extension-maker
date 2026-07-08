@@ -1,0 +1,2 @@
+import{j as t,A as s,c as o,r,a,O as n,C as d,T as x}from"./onboarding-BZzLrO0d.js";function c({children:e}){return t.jsx(s,{variant:"popup",children:e})}o(document.getElementById("root")).render(t.jsxs(r.StrictMode,{children:[t.jsxs(c,{children:[t.jsx(a,{}),t.jsx(n,{})]}),t.jsx(d,{}),t.jsx(x,{position:"bottom-center",theme:"system",toastOptions:{classNames:{toast:"bg-background text-foreground border border-border shadow-md text-xs"}}})]}));
+//# sourceMappingURL=popup-DRl_dDP7.js.map

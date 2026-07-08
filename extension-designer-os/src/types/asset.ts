@@ -11,5 +11,5 @@ export interface Asset extends Entity {
   width?: number;
   height?: number;
   sizeBytes?: number;
-  // Binary lives in a separate Dexie table (asset_blobs) keyed by asset id.
+  projectId?: string;
 }
