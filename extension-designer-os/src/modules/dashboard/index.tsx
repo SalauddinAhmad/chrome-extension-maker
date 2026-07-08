@@ -235,26 +235,111 @@ export default function Dashboard() {
         </div>
       )}
 
+      {/* Recent + favorite inspirations */}
+      <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
+
       {/* Collections */}
-      <div>
-        <div className="flex items-center justify-between">
-          <SectionLabel icon={Bookmark}>Collections</SectionLabel>
-          <OpenLink onClick={() => setActiveModule("inspiration-vault")} />
+      <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
+    </div>
+  );
+}
+
+function InspirationSummary({ onOpen }: { onOpen: () => void }) {
+  const setFilters = useVaultStore((s) => s.setFilters);
+  const setTab = useVaultStore((s) => s.setTab);
+
+  const recent = useLiveQuery(() => inspirationRepository.listRecent(4), [], []);
+  const favorites = useLiveQuery(() => inspirationRepository.listFavorites(4), [], []);
+
+  if (recent.length === 0 && favorites.length === 0) return null;
+
+  const goFavorites = () => {
+    setTab("vault");
+    setFilters({ favoritesOnly: true });
+    onOpen();
+  };
+
+  return (
+    <div className="space-y-3">
+      {recent.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={Bookmark}>Recent inspirations</SectionLabel>
+            <OpenLink onClick={() => { setTab("vault"); onOpen(); }} />
+          </div>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+            {recent.map((i) => <InspirationChip key={i.id} item={i} />)}
+          </div>
         </div>
-        <div className="mt-1.5 grid grid-cols-3 gap-1.5">
-          {COLLECTIONS.map((c) => (
-            <button
-              key={c.tag}
-              onClick={() => {
-                setActiveModule("inspiration-vault");
-                toast(`Filter: ${c.name}`, { description: "Filter by tag inside Vault." });
-              }}
-              className="rounded-md border bg-card px-2 py-2 text-left text-[10px] font-medium transition-colors hover:border-primary/40 hover:bg-accent/40"
-            >
-              {c.name}
-            </button>
-          ))}
+      )}
+      {favorites.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={Bookmark}>Favorites</SectionLabel>
+            <OpenLink onClick={goFavorites} />
+          </div>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+            {favorites.map((i) => <InspirationChip key={i.id} item={i} />)}
+          </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+function InspirationChip({ item }: { item: Inspiration }) {
+  return (
+    <a
+      href={item.url}
+      target="_blank"
+      rel="noreferrer"
+      className="flex items-center gap-2 overflow-hidden rounded-md border bg-card p-1.5 text-left hover:border-primary/40"
+    >
+      {item.thumbnail ? (
+        <img src={item.thumbnail} alt="" className="h-8 w-10 shrink-0 rounded object-cover" />
+      ) : (
+        <div className="h-8 w-10 shrink-0 rounded bg-muted" />
+      )}
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[10px] font-medium">{item.title}</div>
+        {item.collection && (
+          <div className="truncate text-[9px] text-muted-foreground">
+            {collectionLabel(item.collection)}
+          </div>
+        )}
+      </div>
+    </a>
+  );
+}
+
+function CollectionStats({ onOpen }: { onOpen: () => void }) {
+  const setFilters = useVaultStore((s) => s.setFilters);
+  const setTab = useVaultStore((s) => s.setTab);
+  const stats = useLiveQuery(() => inspirationRepository.collectionStats(), [], {} as Record<string, number>);
+
+  const goCollection = (id: string) => {
+    setTab("vault");
+    setFilters({ collection: id });
+    onOpen();
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <SectionLabel icon={Bookmark}>Collections</SectionLabel>
+        <OpenLink onClick={() => { setTab("vault"); onOpen(); }} />
+      </div>
+      <div className="mt-1.5 grid grid-cols-3 gap-1.5">
+        {DEFAULT_COLLECTIONS.map((c) => (
+          <button
+            key={c.id}
+            onClick={() => goCollection(c.id)}
+            className="rounded-md border bg-card px-2 py-2 text-left transition-colors hover:border-primary/40 hover:bg-accent/40"
+          >
+            <div className="text-[10px] font-medium">{c.name}</div>
+            <div className="text-[9px] text-muted-foreground">{stats[c.id] ?? 0} saved</div>
+          </button>
+        ))}
       </div>
     </div>
   );
