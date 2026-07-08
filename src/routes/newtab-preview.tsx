@@ -166,6 +166,94 @@ function NewTabPreview() {
         </p>
       </section>
 
+      {/* Durud Reminder v2 — original extension popup preview */}
+      <section className="max-w-5xl mx-auto px-6 pb-10">
+        <div className="text-center mb-5">
+          <div
+            className="inline-block px-3 py-1 rounded-full text-xs mb-3"
+            style={{
+              background: "#e4ecdf",
+              color: "#3d5638",
+              fontFamily: '"Fraunces", serif',
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}
+          >
+            ✦ Extension Preview · v2.0
+          </div>
+          <h2
+            className="text-2xl md:text-3xl mb-2"
+            style={{
+              fontFamily: '"Fraunces", serif',
+              fontWeight: 700,
+              color: "#1c2a20",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Durud Reminder v2 — লাইভ পপ-আপ
+          </h2>
+          <p
+            className="text-sm"
+            style={{ fontFamily: '"Tiro Bangla", serif', color: "#5f7a5b" }}
+          >
+            আসল Chrome extension-এর popup ঠিক যেভাবে দেখাবে — নিচে সরাসরি রেন্ডার করা।
+          </p>
+        </div>
+        <div
+          className="mx-auto rounded-2xl overflow-hidden"
+          style={{
+            width: 400,
+            maxWidth: "100%",
+            background: "#faf8f5",
+            border: "1px solid #dae5d3",
+            boxShadow: "0 25px 70px rgba(61, 86, 56, 0.2)",
+          }}
+        >
+          <div
+            className="flex items-center gap-2 px-3 py-2 border-b"
+            style={{ background: "#f4f7f1", borderColor: "#dae5d3" }}
+          >
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#ff5f57" }} />
+              <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#febc2e" }} />
+              <div className="w-2.5 h-2.5 rounded-full" style={{ background: "#28c840" }} />
+            </div>
+            <div
+              className="text-xs ml-2"
+              style={{ color: "#5f7a5b", fontFamily: '"Fraunces", serif', fontWeight: 600 }}
+            >
+              Durud Reminder — Extension Popup
+            </div>
+          </div>
+          <iframe
+            src="/durud-ext/popup.html"
+            title="Durud Reminder v2 popup preview"
+            style={{ width: "100%", height: 900, border: 0, display: "block", background: "#faf8f5" }}
+          />
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="flex items-center gap-4 py-2">
+          <div className="flex-1 h-px" style={{ background: "#dae5d3" }} />
+          <div
+            className="text-xs"
+            style={{
+              color: "#5f7a5b",
+              fontFamily: '"Fraunces", serif',
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+            }}
+          >
+            ✦ নতুন ট্যাব ডিজাইন প্রিভিউ
+          </div>
+          <div className="flex-1 h-px" style={{ background: "#dae5d3" }} />
+        </div>
+      </div>
+
+
       {/* Browser mockup */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
         <div
