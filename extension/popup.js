@@ -8,6 +8,9 @@ const DEFAULT_SETTINGS = {
   idleOnly: false,
   goal: 100,
   theme: "light",
+  audioEnabled: true,
+  audioChoice: "random",
+  volume: 0.9,
 };
 
 const state = {
