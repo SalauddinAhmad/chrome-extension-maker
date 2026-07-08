@@ -146,6 +146,21 @@ input:checked + .slider::before { transform: translateX(18px); }
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.15);
 }
+.hero-decor {
+  display: block;
+  width: 118%;
+  max-width: none;
+  height: 44px;
+  object-fit: cover;
+  object-position: center bottom;
+  margin: 14px -9% 10px;
+  opacity: 0.55;
+  filter: brightness(0) saturate(100%) invert(72%) sepia(38%) saturate(520%) hue-rotate(3deg) brightness(94%) contrast(88%);
+  pointer-events: none;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
 
 /* ---------- Cards ---------- */
 .card {
