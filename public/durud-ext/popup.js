@@ -80,10 +80,12 @@ function renderSettings() {
   $("#volume").value = volPct;
   $("#volume-val").textContent = `${toBn(volPct)}%`;
   const sel = $("#select-durud");
-  sel.innerHTML = state.duruds
-    .map((d) => `<option value="${d.id}">${d.name}</option>`)
-    .join("");
-  sel.value = state.settings.durudId;
+  if (sel) {
+    sel.innerHTML = state.duruds
+      .map((d) => `<option value="${d.id}">${d.name}</option>`)
+      .join("");
+    sel.value = state.settings.durudId;
+  }
   $("#hero-status").textContent = state.settings.enabled ? "চালু" : "বন্ধ";
   $("#hero-status").classList.toggle("off", !state.settings.enabled);
 }
@@ -145,7 +147,8 @@ function bindAll() {
   });
 
   // Durud select
-  $("#select-durud").addEventListener("change", async (e) => {
+  const _sd = $("#select-durud");
+  if (_sd) _sd.addEventListener("change", async (e) => {
     state.settings.durudId = e.target.value;
     await saveSettings();
     renderDurud();
@@ -158,14 +161,14 @@ function bindAll() {
     state.settings.durudId = state.duruds[state.currentIndex].id;
     await saveSettings();
     renderDurud();
-    $("#select-durud").value = state.settings.durudId;
+    { const _s = $("#select-durud"); if (_s) _s.value = state.settings.durudId; }
   });
   $("#btn-next").addEventListener("click", async () => {
     state.currentIndex = (state.currentIndex + 1) % state.duruds.length;
     state.settings.durudId = state.duruds[state.currentIndex].id;
     await saveSettings();
     renderDurud();
-    $("#select-durud").value = state.settings.durudId;
+    { const _s = $("#select-durud"); if (_s) _s.value = state.settings.durudId; }
   });
   $("#btn-copy").addEventListener("click", async () => {
     const d = state.duruds[state.currentIndex];
