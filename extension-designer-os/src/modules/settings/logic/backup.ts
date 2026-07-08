@@ -1,17 +1,35 @@
+/**
+ * Backup / restore for the local Dexie DB. Uses a static table map so
+ * TypeScript can prove each access is well-typed (no dynamic string keys).
+ */
 import { db } from "@/storage";
+import type { Table } from "dexie";
 
-const TABLES = [
-  "colors",
-  "palettes",
-  "fonts",
-  "fontPairs",
-  "inspirations",
-  "boards",
-  "assets",
-  "notes",
-  "projects",
-  "settings",
-] as const;
+interface TableEntry {
+  name: string;
+  table: Table<unknown, string>;
+  preserveOnClear?: boolean;
+}
+
+function tables(): TableEntry[] {
+  return [
+    { name: "colors", table: db.colors as unknown as Table<unknown, string> },
+    { name: "palettes", table: db.palettes as unknown as Table<unknown, string> },
+    { name: "fonts", table: db.fonts as unknown as Table<unknown, string> },
+    { name: "fontPairs", table: db.fontPairs as unknown as Table<unknown, string> },
+    { name: "typographySystems", table: db.typographySystems as unknown as Table<unknown, string> },
+    { name: "inspirations", table: db.inspirations as unknown as Table<unknown, string> },
+    { name: "boards", table: db.boards as unknown as Table<unknown, string> },
+    { name: "assets", table: db.assets as unknown as Table<unknown, string> },
+    { name: "assetBlobs", table: db.assetBlobs as unknown as Table<unknown, string> },
+    { name: "notes", table: db.notes as unknown as Table<unknown, string> },
+    { name: "projects", table: db.projects as unknown as Table<unknown, string> },
+    { name: "designReports", table: db.designReports as unknown as Table<unknown, string> },
+    { name: "designAudits", table: db.designAudits as unknown as Table<unknown, string> },
+    { name: "accessibilityReports", table: db.accessibilityReports as unknown as Table<unknown, string> },
+    { name: "settings", table: db.settings as unknown as Table<unknown, string>, preserveOnClear: true },
+  ];
+}
 
 export interface BackupFile {
   app: "designer-os";
@@ -22,9 +40,8 @@ export interface BackupFile {
 
 export async function exportAll(): Promise<BackupFile> {
   const data: Record<string, unknown[]> = {};
-  for (const t of TABLES) {
-    // @ts-expect-error dynamic table access
-    data[t] = await db[t].toArray();
+  for (const { name, table } of tables()) {
+    data[name] = await table.toArray();
   }
   return { app: "designer-os", version: 1, exportedAt: Date.now(), data };
 }
@@ -53,14 +70,12 @@ export async function importAll(
   let imported = 0;
   const skipped: string[] = [];
 
-  for (const t of TABLES) {
-    const rows = file.data?.[t];
+  for (const { name, table } of tables()) {
+    const rows = file.data?.[name];
     if (!Array.isArray(rows)) {
-      skipped.push(t);
+      skipped.push(name);
       continue;
     }
-    // @ts-expect-error dynamic table access
-    const table = db[t];
     if (mode === "replace") await table.clear();
     if (rows.length) {
       await table.bulkPut(rows);
@@ -71,9 +86,8 @@ export async function importAll(
 }
 
 export async function clearAll(): Promise<void> {
-  for (const t of TABLES) {
-    if (t === "settings") continue; // preserve settings row
-    // @ts-expect-error dynamic table access
-    await db[t].clear();
+  for (const { table, preserveOnClear } of tables()) {
+    if (preserveOnClear) continue;
+    await table.clear();
   }
 }

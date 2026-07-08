@@ -3,13 +3,15 @@ import { z } from "zod";
 /**
  * Central validation for the Projects module.
  * All UI + repository writes must pass these schemas before hitting Dexie.
+ * NOTE: Zod v4 removed `required_error` — use `.min(1, msg)` for presence
+ * or a top-level `error:` map when needed.
  */
 
 export const ALLOWED_COVER_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
 export const MAX_COVER_BYTES = 2 * 1024 * 1024; // 2 MB
 
 export const projectNameSchema = z
-  .string({ required_error: "Name is required" })
+  .string({ error: "Name is required" })
   .trim()
   .min(3, "Name must be at least 3 characters")
   .max(60, "Name must be 60 characters or fewer");

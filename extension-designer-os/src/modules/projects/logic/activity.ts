@@ -1,4 +1,9 @@
-import { db } from "@/storage";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { assetRepository } from "@/modules/asset-extractor/repository";
+import { noteRepository } from "@/modules/notes/repository";
+import { projectRepository } from "@/modules/projects/repository";
 
 export type ActivityKind =
   | "color"
@@ -19,59 +24,71 @@ export interface ActivityItem {
 
 export async function fetchRecentActivity(limit = 12): Promise<ActivityItem[]> {
   const [colors, fonts, insp, assets, notes, projects] = await Promise.all([
-    db.colors.orderBy("createdAt").reverse().limit(limit).toArray(),
-    db.fonts.orderBy("createdAt").reverse().limit(limit).toArray(),
-    db.inspirations.orderBy("createdAt").reverse().limit(limit).toArray(),
-    db.assets.orderBy("createdAt").reverse().limit(limit).toArray(),
-    db.notes.orderBy("updatedAt").reverse().limit(limit).toArray(),
-    db.projects.orderBy("createdAt").reverse().limit(limit).toArray(),
+    colorRepository.listRecent(limit),
+    typographyRepository.listRecent(limit),
+    inspirationRepository.listRecent(limit),
+    assetRepository.listRecent(limit),
+    noteRepository.listRecent(limit),
+    projectRepository.getAll().then((r) => r.slice(0, limit)),
   ]);
 
-  const items: ActivityItem[] = [
-    ...colors.map((c) => ({
+  const items: ActivityItem[] = [];
+
+  for (const c of colors) {
+    items.push({
       id: `c-${c.id}`,
-      kind: "color" as const,
+      kind: "color",
       label: c.name ?? c.hex,
       detail: c.hex,
       color: c.hex,
       ts: c.createdAt,
-    })),
-    ...fonts.map((f) => ({
+    });
+  }
+  for (const f of fonts) {
+    items.push({
       id: `f-${f.id}`,
-      kind: "font" as const,
+      kind: "font",
       label: f.family,
       detail: f.source,
       ts: f.createdAt,
-    })),
-    ...insp.map((i) => ({
+    });
+  }
+  for (const i of insp) {
+    items.push({
       id: `i-${i.id}`,
-      kind: "inspiration" as const,
+      kind: "inspiration",
       label: i.title,
       detail: safeHost(i.url),
       ts: i.createdAt,
-    })),
-    ...assets.map((a) => ({
+    });
+  }
+  for (const a of assets) {
+    items.push({
       id: `a-${a.id}`,
-      kind: "asset" as const,
-      label: a.filename,
-      detail: a.kind,
+      kind: "asset",
+      label: a.name ?? a.filename ?? "Untitled asset",
+      detail: a.type ?? a.kind,
       ts: a.createdAt,
-    })),
-    ...notes.map((n) => ({
+    });
+  }
+  for (const n of notes) {
+    items.push({
       id: `n-${n.id}`,
-      kind: "note" as const,
+      kind: "note",
       label: n.title || "Untitled note",
       ts: n.updatedAt,
-    })),
-    ...projects.map((p) => ({
+    });
+  }
+  for (const p of projects) {
+    items.push({
       id: `p-${p.id}`,
-      kind: "project" as const,
+      kind: "project",
       label: p.name,
       detail: p.clientName,
       color: p.color,
       ts: p.createdAt,
-    })),
-  ];
+    });
+  }
 
   return items.sort((a, b) => b.ts - a.ts).slice(0, limit);
 }
