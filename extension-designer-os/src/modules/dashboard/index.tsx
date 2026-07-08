@@ -231,6 +231,12 @@ export default function Dashboard() {
       {/* Recent + favorite inspirations */}
       <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
 
+      {/* Recent + favorite inspirations */}
+      <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
+
+      {/* Asset library summary */}
+      <AssetSummary onOpen={() => setActiveModule("asset-extractor")} />
+
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
     </div>
