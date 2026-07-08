@@ -84,38 +84,55 @@ function DesignerOSPage() {
           <div className="space-y-4">
             <div className="rounded-2xl border border-border bg-card p-6">
               <div className="text-xs tracking-[0.2em] text-primary uppercase mb-3">
-                সোর্স স্ট্রাকচার
+                Architecture v1.0 · scaffolded
               </div>
-              <pre className="text-xs leading-relaxed text-muted-foreground overflow-x-auto">
+              <pre className="text-[11px] leading-relaxed text-muted-foreground overflow-x-auto">
 {`extension-designer-os/
-├── manifest.json         MV3, sidepanel + content scripts
-├── sidepanel/            main UI (vanilla JS)
-│   ├── index.html
-│   ├── app.js
-│   └── styles/main.css
-├── background/
-│   └── service-worker.js
-├── content/              injected on every page
-│   ├── design-extractor.js
-│   ├── font-detector.js
-│   ├── tech-detector.js
-│   ├── screenshot-cropper.js
-│   └── downloader.js
-├── data/                 color-names, social-sizes …
-├── icons/                16 / 32 / 48 / 128
-└── implementation_plan.md`}
+├── manifest.json          MV3 · popup · sidepanel · content
+├── popup.html             React popup entry (400px)
+├── sidepanel.html         React sidepanel entry
+├── vite.config.ts         @crxjs/vite-plugin + aliases
+├── tailwind.config.ts     Inter · 12px radius · dark mode
+├── tsconfig.json          strict TS
+└── src/
+    ├── background/        MV3 service worker
+    ├── content/           Injected probes (empty in P1)
+    ├── popup/             main.tsx
+    ├── sidepanel/         main.tsx
+    ├── modules/           10 module shells (dashboard + 9)
+    │   ├── color-studio/
+    │   ├── typography-studio/
+    │   ├── design-inspector/
+    │   ├── inspiration-vault/
+    │   ├── asset-extractor/
+    │   ├── resource-hub/
+    │   ├── notes/
+    │   ├── tech-stack/
+    │   ├── screenshot/
+    │   └── dashboard/
+    ├── components/{ui,layout,shared}/
+    ├── stores/            Zustand (theme, ui)
+    ├── storage/           Dexie schema + repositories
+    ├── types/             color · font · inspiration · asset · note · project · settings
+    ├── hooks/             use-theme · use-hotkey
+    ├── lib/               cn · chrome · modules registry
+    └── styles/globals.css shadcn tokens (light + dark)`}
               </pre>
             </div>
 
             <div className="rounded-2xl border border-dashed border-border bg-card/50 p-6">
               <div className="text-xs tracking-[0.2em] text-primary uppercase mb-2">
-                পরবর্তী ধাপ
+                Phase 1 complete · awaiting approval
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                কোন module থেকে শুরু করব বলুন — Color Toolkit, Font Toolkit,
-                Design System extractor, SVG Toolkit, Screenshot Tool, বা অন্য
-                কিছু? <code>implementation_plan.md</code> এ পুরো Phase 1 roadmap
-                আছে।
+                Architecture, types, storage schema, stores, and UI foundation are ready.
+                Business logic is intentionally omitted per spec. Approve to start
+                <strong className="text-foreground"> Phase 2 · Color Studio</strong>.
+              </p>
+              <p className="mt-3 text-xs text-muted-foreground">
+                Preview iframe above still shows the vanilla prototype for reference.
+                Run <code>bun install &amp;&amp; bun run build</code> inside
+                <code> extension-designer-os/</code> to build the new React version.
               </p>
             </div>
           </div>
