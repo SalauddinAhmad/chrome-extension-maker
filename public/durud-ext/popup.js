@@ -49,13 +49,14 @@ async function loadHadiths() {
 
 function renderHadith() {
   if (!state.hadiths || !state.hadiths.length) return;
-  // Different each open, but deterministic per open session (rotate through)
   const idx = Math.floor(Math.random() * state.hadiths.length);
   const h = state.hadiths[idx];
+  const text = h.hadis || h.bn || "";
+  const ref = h.ref || `হাদিস #${h.id}`;
   const textEl = document.getElementById("hadith-text");
   const refEl = document.getElementById("hadith-ref");
-  if (textEl) textEl.innerHTML = `<em>"${h.bn}"</em>`;
-  if (refEl) refEl.textContent = `— হাদিস #${h.id}`;
+  if (textEl) textEl.innerHTML = `<em>"${text}"</em>`;
+  if (refEl) refEl.textContent = `— ${ref}`;
 }
 
 function todayKey() {
