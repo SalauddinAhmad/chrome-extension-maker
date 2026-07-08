@@ -153,22 +153,15 @@ input:checked + .slider::before { transform: translateX(18px); }
   overflow: hidden;
   transition: filter 0.35s;
 }
-.hero::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 60px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.12) 100%);
-  pointer-events: none;
-  z-index: 0;
-}
 .hero.off { filter: grayscale(0.55) brightness(0.85); }
 .hero::before {
   content: "";
   position: absolute; inset: 0;
   background:
+    linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.18) 100%),
     repeating-linear-gradient(45deg, transparent 0 20px, rgba(255,255,255,0.02) 20px 21px);
   pointer-events: none;
+  z-index: 0;
 }
 /* Pulse when enabled */
 .hero.on::after {
