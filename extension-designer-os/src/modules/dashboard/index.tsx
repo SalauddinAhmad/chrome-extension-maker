@@ -34,8 +34,9 @@ import { typographyRepository } from "@/modules/typography-studio/repository";
 import { useTypographyLibraryStore } from "@/modules/typography-studio/library-store";
 import { useTypeStore } from "@/modules/typography-studio/store";
 import { designAuditRepository } from "@/modules/design-audit/repository";
+import { accessibilityRepository } from "@/modules/accessibility/repository";
 import { ASSET_TYPE_LABEL, FONT_CATEGORY_LABEL } from "@/types";
-import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory, DesignAudit } from "@/types";
+import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory, DesignAudit, AccessibilityReport } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
@@ -252,6 +253,9 @@ export default function Dashboard() {
 
       {/* Design audits summary */}
       <AuditSummary onOpen={() => setActiveModule("design-audit")} />
+
+      {/* Accessibility summary */}
+      <A11ySummary onOpen={() => setActiveModule("accessibility")} />
 
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
