@@ -72,6 +72,11 @@ function renderSettings() {
   $("#toggle-dnd").checked = state.settings.dnd;
   $("#toggle-friday").checked = state.settings.friday;
   $("#toggle-idle").checked = state.settings.idleOnly;
+  $("#toggle-audio").checked = state.settings.audioEnabled;
+  $("#select-audio").value = String(state.settings.audioChoice ?? "random");
+  const volPct = Math.round((state.settings.volume ?? 0.9) * 100);
+  $("#volume").value = volPct;
+  $("#volume-val").textContent = `${toBn(volPct)}%`;
   const sel = $("#select-durud");
   sel.innerHTML = state.duruds
     .map((d) => `<option value="${d.id}">${d.name}</option>`)
