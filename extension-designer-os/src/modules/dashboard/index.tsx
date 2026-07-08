@@ -25,7 +25,10 @@ import { computeProjectStats, EMPTY_STATS } from "@/modules/projects/logic/stats
 import { inspirationRepository } from "@/modules/inspiration-vault/repository";
 import { useVaultStore } from "@/modules/inspiration-vault/store";
 import { DEFAULT_COLLECTIONS, collectionLabel } from "@/modules/inspiration-vault/logic/collections";
-import type { Project, Inspiration } from "@/types";
+import { assetRepository } from "@/modules/asset-extractor/repository";
+import { useLibraryStore } from "@/modules/asset-extractor/library-store";
+import { ASSET_TYPE_LABEL } from "@/types";
+import type { Project, Inspiration, Asset, AssetType } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
