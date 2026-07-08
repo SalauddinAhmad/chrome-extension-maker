@@ -8,7 +8,33 @@ import { useUIStore } from "@/stores/ui-store";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { computeProjectStats, EMPTY_STATS } from "./logic/stats";
 import type { ModuleId } from "@/lib/modules";
+
+function ProjectStatsRow({ projectId }: { projectId: string }) {
+  const stats = useLiveQuery(() => computeProjectStats(projectId), [projectId], EMPTY_STATS);
+  const items: Array<{ label: string; value: number; icon: typeof Palette }> = [
+    { label: "Insp", value: stats.inspirations, icon: Bookmark },
+    { label: "Colors", value: stats.colors, icon: Palette },
+    { label: "Fonts", value: stats.fonts, icon: Type },
+    { label: "Assets", value: stats.assets, icon: ImageIcon },
+    { label: "Notes", value: stats.notes, icon: StickyNote },
+  ];
+  return (
+    <div className="grid grid-cols-5 gap-1.5">
+      {items.map((s) => {
+        const Icon = s.icon;
+        return (
+          <div key={s.label} className="rounded-md border bg-card p-1.5 text-center">
+            <Icon className="mx-auto h-3 w-3 text-muted-foreground" />
+            <div className="mt-0.5 text-xs font-semibold leading-none">{s.value}</div>
+            <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{s.label}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 type Tab = "inspirations" | "colors" | "fonts" | "assets" | "notes";
 
