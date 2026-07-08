@@ -27,6 +27,9 @@ import { useVaultStore } from "@/modules/inspiration-vault/store";
 import { DEFAULT_COLLECTIONS, collectionLabel } from "@/modules/inspiration-vault/logic/collections";
 import { assetRepository } from "@/modules/asset-extractor/repository";
 import { useLibraryStore } from "@/modules/asset-extractor/library-store";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { useColorLibraryStore } from "@/modules/color-studio/library-store";
+import { useColorStudioStore } from "@/modules/color-studio/store";
 import { ASSET_TYPE_LABEL } from "@/types";
 import type { Project, Inspiration, Asset, AssetType } from "@/types";
 
@@ -236,6 +239,9 @@ export default function Dashboard() {
 
       {/* Asset library summary */}
       <AssetSummary onOpen={() => setActiveModule("asset-extractor")} />
+
+      {/* Color library summary */}
+      <ColorSummary onOpen={() => setActiveModule("color-studio")} />
 
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
