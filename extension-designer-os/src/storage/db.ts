@@ -71,6 +71,11 @@ export class DesignerOSDB extends Dexie {
       typographySystems:
         "id, name, projectId, favorite, createdAt, updatedAt, *tags",
     });
+    // v6: add designReports table (Phase 6).
+    this.version(6).stores({
+      designReports:
+        "id, projectId, url, saved, createdAt, updatedAt",
+    });
   }
 }
 
