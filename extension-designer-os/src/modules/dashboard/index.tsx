@@ -64,6 +64,7 @@ const KIND_ICON = {
 export default function Dashboard() {
   const setActiveModule = useUIStore((s) => s.setActiveModule);
   const openProjectDetail = useProjectStore((s) => s.openProjectDetail);
+  const requestNewProject = useProjectStore((s) => s.requestNewProject);
   const activeProject = useProjectStore((s) => s.activeProjectId);
 
   const totals = {
@@ -89,6 +90,12 @@ export default function Dashboard() {
   }, [activityTick]);
 
   const isEmpty = activityTick === 0;
+  const hasNoProjects = totals.projects === 0;
+
+  function createProject() {
+    setActiveModule("projects");
+    requestNewProject();
+  }
 
   return (
     <div className="space-y-4 p-3">
