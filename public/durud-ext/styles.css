@@ -114,9 +114,9 @@
   box-shadow: 0 2px 8px color-mix(in oklab, var(--brand) 35%, transparent);
 }
 [data-theme="dark"] .hero-status {
-  color: var(--gold);
-  background: rgba(224,192,121,0.10);
-  border-color: rgba(224,192,121,0.28);
+  color: #f5dc94;
+  background: rgba(245,220,148,0.14);
+  border-color: rgba(245,220,148,0.42);
 }
 [data-theme="dark"] .save-indicator { color: var(--brand); }
 [data-theme="dark"] .hadith {
