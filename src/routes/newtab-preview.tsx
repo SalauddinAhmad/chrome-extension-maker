@@ -324,6 +324,98 @@ function NewTabPreview() {
                 </div>
               </div>
 
+              {/* Prayer times card — from Muslim Prayer Times reference */}
+              <div
+                className="rounded-2xl p-5 mb-4 relative overflow-hidden"
+                style={{
+                  background: "rgba(255,255,255,0.65)",
+                  border: "1px solid rgba(122,149,118,0.3)",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#5f7a5b", fontFamily: '"Fraunces", serif', fontWeight: 700 }}>
+                      ✦ সালাতের সময়সূচী · ঢাকা
+                    </div>
+                    <div className="mt-1" style={{ fontFamily: '"Fraunces", serif', fontWeight: 600, color: "#1c2a20", fontSize: 15 }}>
+                      পরবর্তী: {PRAYER_LABELS[prayers.nextKey].bn} —{" "}
+                      <span style={{ color: "#3d5638" }}>
+                        {toBn(fmtCountdown(prayers.nextTime.getTime() - now.getTime()))}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={toggleAdhan}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full transition"
+                    style={{
+                      background: playing ? "#1c2a20" : "#3d5638",
+                      color: "#ffffff",
+                      fontFamily: '"Fraunces", serif',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: "0.05em",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <span style={{ fontSize: 14 }}>{playing ? "■" : "▶"}</span>
+                    {playing ? "আযান বন্ধ" : "আযান শুনুন"}
+                  </button>
+                  <audio ref={audioRef} src="/adhan.mp3" onEnded={() => setPlaying(false)} preload="none" />
+                </div>
+                <div className="grid grid-cols-6 gap-2">
+                  {prayers.list.map((p) => {
+                    const t = fmtTime(p.time);
+                    const isNext = p.key === prayers.nextKey;
+                    const isCurrent = p.key === prayers.currentKey;
+                    return (
+                      <div
+                        key={p.key}
+                        className="rounded-xl px-2 py-3 text-center transition"
+                        style={{
+                          background: isNext
+                            ? "#3d5638"
+                            : isCurrent
+                              ? "rgba(122,149,118,0.28)"
+                              : "rgba(255,255,255,0.55)",
+                          color: isNext ? "#ffffff" : "#1c2a20",
+                          border: "1px solid",
+                          borderColor: isNext ? "#3d5638" : "rgba(122,149,118,0.25)",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: 10,
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            opacity: 0.75,
+                            fontFamily: '"Fraunces", serif',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {PRAYER_LABELS[p.key].en}
+                        </div>
+                        <div style={{ fontFamily: '"Tiro Bangla", serif', fontSize: 12, marginTop: 2, opacity: 0.9 }}>
+                          {PRAYER_LABELS[p.key].bn}
+                        </div>
+                        <div
+                          className="mt-1"
+                          style={{
+                            fontFamily: '"Fraunces", serif',
+                            fontWeight: 700,
+                            fontSize: 16,
+                          }}
+                        >
+                          {toBn(fmtTime(p.time).hm)}
+                          <span style={{ fontSize: 10, marginLeft: 2, opacity: 0.7 }}>{t.ap}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* 2-column grid — top row */}
               <div className="grid md:grid-cols-2 gap-4 mb-4">
                 {/* Location + Hijri card */}
