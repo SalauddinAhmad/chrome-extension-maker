@@ -52,7 +52,27 @@ export function ProjectDetail({ projectId, onBack }: { projectId: string; onBack
   const setActiveProject = useProjectStore((s) => s.setActiveProject);
   const setActiveModule = useUIStore((s) => s.setActiveModule);
 
-  const project = useLiveQuery(() => db.projects.get(projectId), [projectId]);
+  const project = useLiveQuery(() => db.projects.get(projectId), [projectId], undefined);
+
+  if (project === undefined) {
+    return (
+      <div className="space-y-3 p-3">
+        <BackHeader onBack={onBack} />
+        <div className="overflow-hidden rounded-lg border bg-card">
+          <div className="h-20 w-full animate-pulse bg-muted" />
+          <div className="space-y-2 p-3">
+            <div className="h-3 w-1/3 animate-pulse rounded bg-muted" />
+            <div className="h-2 w-1/2 animate-pulse rounded bg-muted" />
+          </div>
+        </div>
+        <div className="grid grid-cols-5 gap-1.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-12 animate-pulse rounded-md bg-muted" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
