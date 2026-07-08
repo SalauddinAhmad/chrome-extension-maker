@@ -1,4 +1,4 @@
-// Durud Reminder v2.0 — popup logic
+// Durud Reminder v2.0 — Premium popup
 const DEFAULT_SETTINGS = {
   enabled: true,
   interval: 15,
@@ -6,8 +6,6 @@ const DEFAULT_SETTINGS = {
   dnd: true,
   friday: true,
   idleOnly: false,
-  goal: 100,
-  theme: "light",
   audioEnabled: true,
   audioChoice: "random",
   volume: 0.9,
@@ -17,13 +15,12 @@ const state = {
   duruds: [],
   settings: { ...DEFAULT_SETTINGS },
   currentIndex: 0,
-  stats: { streak: 0, total: 0, days: {} },
-  today: 0,
 };
 
 const $ = (s) => document.querySelector(s);
-const toBn = (n) =>
-  String(n).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[+d]);
+const toBn = (n) => String(n).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[+d]);
+
+let previewAudio = null;
 
 async function loadDuruds() {
   const res = await fetch(chrome.runtime.getURL("data/duruds.json"));
@@ -31,26 +28,31 @@ async function loadDuruds() {
 }
 
 async function loadStorage() {
-  const data = await chrome.storage.local.get(["settings", "stats", "today", "todayDate"]);
+  const data = await chrome.storage.local.get(["settings"]);
   state.settings = { ...DEFAULT_SETTINGS, ...(data.settings || {}) };
-  state.stats = data.stats || { streak: 0, total: 0, days: {} };
-  const todayKey = new Date().toISOString().slice(0, 10);
-  state.today = data.todayDate === todayKey ? data.today || 0 : 0;
-  if (data.todayDate !== todayKey) {
-    await chrome.storage.local.set({ today: 0, todayDate: todayKey });
-  }
 }
 
 async function saveSettings() {
+  showSaving();
   await chrome.storage.local.set({ settings: state.settings });
   chrome.runtime.sendMessage({ type: "settings-updated" });
+  setTimeout(hideSaving, 500);
 }
-async function saveStats() {
-  await chrome.storage.local.set({
-    stats: state.stats,
-    today: state.today,
-    todayDate: new Date().toISOString().slice(0, 10),
-  });
+
+function showSaving() {
+  $("#save-text").textContent = "Saving…";
+  $("#save-icon").classList.add("spin");
+}
+function hideSaving() {
+  $("#save-text").textContent = "Auto-saved";
+  $("#save-icon").classList.remove("spin");
+}
+
+function intervalToLabel(min) {
+  if (min < 60) return `${toBn(min)} মিনিট`;
+  if (min === 60) return "১ ঘণ্টা";
+  if (min === 90) return "১.৫ ঘণ্টা";
+  return `${toBn(min / 60)} ঘণ্টা`;
 }
 
 function renderDurud() {
@@ -67,8 +69,8 @@ function renderDurud() {
 
 function renderSettings() {
   $("#toggle-enabled").checked = state.settings.enabled;
-  $("#interval").value = state.settings.interval;
-  $("#interval-val").textContent = `${toBn(state.settings.interval)} মিনিট`;
+  $("#interval-select").value = String(state.settings.interval);
+  $("#interval-val").textContent = intervalToLabel(state.settings.interval);
   $("#toggle-dnd").checked = state.settings.dnd;
   $("#toggle-friday").checked = state.settings.friday;
   $("#toggle-idle").checked = state.settings.idleOnly;
@@ -82,46 +84,15 @@ function renderSettings() {
     .map((d) => `<option value="${d.id}">${d.name}</option>`)
     .join("");
   sel.value = state.settings.durudId;
-}
-
-function renderTasbih() {
-  const goal = state.settings.goal || 100;
-  $("#tasbih-goal").textContent = toBn(goal);
-  $("#tasbih-count").textContent = toBn(state.today);
-  const pct = Math.min(state.today / goal, 1);
-  const dash = 326.7;
-  $("#ring-fg").style.strokeDashoffset = dash * (1 - pct);
-}
-
-function renderStats() {
-  $("#stat-streak").textContent = toBn(state.stats.streak || 0);
-  $("#stat-today").textContent = toBn(state.today);
-  $("#stat-total").textContent = toBn(state.stats.total || 0);
-  const heat = $("#heatmap");
-  heat.innerHTML = "";
-  const goal = state.settings.goal || 100;
-  const now = new Date();
-  const cells = 56; // 8 weeks * 7
-  for (let i = cells - 1; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
-    const key = d.toISOString().slice(0, 10);
-    const v = state.stats.days?.[key] || 0;
-    const ratio = v / goal;
-    let cls = "";
-    if (ratio > 1) cls = "l4";
-    else if (ratio > 0.66) cls = "l3";
-    else if (ratio > 0.33) cls = "l2";
-    else if (ratio > 0) cls = "l1";
-    heat.innerHTML += `<div class="cell ${cls}" title="${key}: ${v}"></div>`;
-  }
+  $("#hero-status").textContent = state.settings.enabled ? "চালু" : "বন্ধ";
+  $("#hero-status").classList.toggle("off", !state.settings.enabled);
 }
 
 async function renderNext() {
   const alarms = await chrome.alarms.getAll();
   const a = alarms.find((x) => x.name === "durud-reminder");
   if (!a || !state.settings.enabled) {
-    $("#next-time").textContent = state.settings.enabled ? "শীঘ্রই" : "বন্ধ";
+    $("#next-time").textContent = state.settings.enabled ? "শীঘ্রই" : "--:--";
     return;
   }
   const t = new Date(a.scheduledTime);
@@ -138,55 +109,42 @@ function toast(msg) {
   setTimeout(() => el.classList.remove("show"), 1600);
 }
 
-// Interactions
-function bindTabs() {
-  document.querySelectorAll(".tab").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".tab")
-        .forEach((b) => b.classList.remove("is-active"));
-      btn.classList.add("is-active");
-      const name = btn.dataset.tab;
-      document.querySelectorAll(".tab-panel").forEach((p) => {
-        p.classList.toggle("is-active", p.dataset.panel === name);
-      });
-      if (name === "stats") renderStats();
-      if (name === "tasbih") renderTasbih();
-    });
-  });
+function getAudioFile(choice) {
+  const files = [
+    "durud1.mp3","durud2.mp3","durud3.mp3","durud4.mp3","durud5.mp3",
+    "durud6.mp3","durud7.mp3","durud8.mp3","durud9.mp3",
+  ];
+  if (choice === "random" || choice == null)
+    return files[Math.floor(Math.random() * files.length)];
+  const i = parseInt(choice, 10);
+  return files[isNaN(i) ? 0 : Math.max(0, Math.min(8, i))];
 }
 
-function bindReminder() {
+function bindAll() {
+  // Enable toggle
   $("#toggle-enabled").addEventListener("change", async (e) => {
     state.settings.enabled = e.target.checked;
     await saveSettings();
-    renderNext();
+    renderSettings();
+    setTimeout(renderNext, 300);
   });
-  $("#interval").addEventListener("input", (e) => {
-    state.settings.interval = +e.target.value;
-    $("#interval-val").textContent = `${toBn(+e.target.value)} মিনিট`;
-  });
-  $("#interval").addEventListener("change", async () => {
+
+  // Interval
+  $("#interval-select").addEventListener("change", async (e) => {
+    state.settings.interval = parseInt(e.target.value, 10);
+    $("#interval-val").textContent = intervalToLabel(state.settings.interval);
     await saveSettings();
     setTimeout(renderNext, 300);
   });
+
+  // Durud select
   $("#select-durud").addEventListener("change", async (e) => {
     state.settings.durudId = e.target.value;
     await saveSettings();
     renderDurud();
   });
-  $("#toggle-dnd").addEventListener("change", async (e) => {
-    state.settings.dnd = e.target.checked;
-    await saveSettings();
-  });
-  $("#toggle-friday").addEventListener("change", async (e) => {
-    state.settings.friday = e.target.checked;
-    await saveSettings();
-  });
-  $("#toggle-idle").addEventListener("change", async (e) => {
-    state.settings.idleOnly = e.target.checked;
-    await saveSettings();
-  });
+
+  // Prev/Next/Copy
   $("#btn-prev").addEventListener("click", async () => {
     state.currentIndex =
       (state.currentIndex - 1 + state.duruds.length) % state.duruds.length;
@@ -207,76 +165,59 @@ function bindReminder() {
     await navigator.clipboard.writeText(
       `${d.arabic}\n\n${d.translit}\n\n${d.bangla}\n— ${d.reference}`,
     );
-    toast("কপি হয়েছে");
+    toast("দুরুদ কপি হয়েছে");
+  });
+
+  // Audio controls
+  $("#select-audio").addEventListener("change", async (e) => {
+    state.settings.audioChoice = e.target.value;
+    await saveSettings();
   });
   $("#toggle-audio").addEventListener("change", async (e) => {
     state.settings.audioEnabled = e.target.checked;
     await saveSettings();
     toast(e.target.checked ? "অডিও চালু" : "অডিও বন্ধ");
   });
-  $("#select-audio").addEventListener("change", async (e) => {
-    state.settings.audioChoice = e.target.value;
-    await saveSettings();
-  });
   $("#volume").addEventListener("input", (e) => {
     const v = +e.target.value;
     state.settings.volume = v / 100;
     $("#volume-val").textContent = `${toBn(v)}%`;
+    if (previewAudio) previewAudio.volume = state.settings.volume;
   });
   $("#volume").addEventListener("change", saveSettings);
-  $("#btn-test-audio").addEventListener("click", () => {
-    chrome.runtime.sendMessage({ type: "test-audio" });
-    toast("অডিও বাজানো হচ্ছে…");
-  });
-}
 
-function bindTasbih() {
-  const btn = $("#btn-count");
-  btn.addEventListener("click", async () => {
-    state.today += 1;
-    state.stats.total = (state.stats.total || 0) + 1;
-    const key = new Date().toISOString().slice(0, 10);
-    state.stats.days = state.stats.days || {};
-    state.stats.days[key] = (state.stats.days[key] || 0) + 1;
-    // streak
-    if (state.stats.days[key] === state.settings.goal) {
-      const yKey = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-      const prevMet = (state.stats.days[yKey] || 0) >= state.settings.goal;
-      state.stats.streak = prevMet ? (state.stats.streak || 0) + 1 : 1;
-      toast("দৈনিক লক্ষ্য পূর্ণ! 🌿");
+  // Play preview (in popup context)
+  $("#btn-play").addEventListener("click", () => {
+    if (previewAudio) {
+      previewAudio.pause();
+      previewAudio = null;
     }
-    await saveStats();
-    renderTasbih();
-    btn.style.transform = "scale(0.97)";
-    setTimeout(() => (btn.style.transform = ""), 90);
+    const file = getAudioFile(state.settings.audioChoice);
+    previewAudio = new Audio(chrome.runtime.getURL(`assets/audios/${file}`));
+    previewAudio.volume = state.settings.volume ?? 0.9;
+    previewAudio.play().catch((e) => toast("প্লে করা যায়নি"));
   });
-  $("#btn-reset").addEventListener("click", async () => {
-    state.today = 0;
-    const key = new Date().toISOString().slice(0, 10);
-    if (state.stats.days) state.stats.days[key] = 0;
-    await saveStats();
-    renderTasbih();
-  });
-  $("#btn-goal").addEventListener("click", async () => {
-    const v = prompt("দৈনিক লক্ষ্য (সংখ্যা):", state.settings.goal);
-    const n = parseInt(v, 10);
-    if (n > 0 && n < 10000) {
-      state.settings.goal = n;
-      await saveSettings();
-      renderTasbih();
-    }
-  });
-}
 
-function bindTheme() {
-  const apply = () => {
-    document.body.classList.toggle("dark-theme", state.settings.theme === "dark");
-  };
-  apply();
-  $("#btn-theme").addEventListener("click", async () => {
-    state.settings.theme = state.settings.theme === "dark" ? "light" : "dark";
+  // Other toggles
+  $("#toggle-dnd").addEventListener("change", async (e) => {
+    state.settings.dnd = e.target.checked;
     await saveSettings();
-    apply();
+  });
+  $("#toggle-friday").addEventListener("change", async (e) => {
+    state.settings.friday = e.target.checked;
+    await saveSettings();
+  });
+  $("#toggle-idle").addEventListener("change", async (e) => {
+    state.settings.idleOnly = e.target.checked;
+    await saveSettings();
+  });
+
+  // Share
+  $("#btn-share").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(
+      "https://chromewebstore.google.com/detail/durud-reminder/bngakbdgjllamghdaidjndadpnangmaj",
+    );
+    toast("লিংক কপি হয়েছে");
   });
 }
 
@@ -285,11 +226,6 @@ function bindTheme() {
   await loadStorage();
   renderDurud();
   renderSettings();
-  renderTasbih();
-  renderStats();
   renderNext();
-  bindTabs();
-  bindReminder();
-  bindTasbih();
-  bindTheme();
+  bindAll();
 })();
