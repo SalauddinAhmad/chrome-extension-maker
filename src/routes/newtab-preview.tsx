@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Coordinates, CalculationMethod, PrayerTimes, SunnahTimes } from "adhan";
 
@@ -38,6 +38,8 @@ const sampleDurud = {
   reference: "প্রচলিত মাসনূন দুরুদ",
 };
 
+const HYDRATION_SAFE_NOW = new Date("2026-01-01T06:00:00+06:00");
+
 
 const PRAYER_LABELS: Record<string, { bn: string; en: string }> = {
   fajr: { bn: "ফজর", en: "Fajr" },
@@ -66,10 +68,19 @@ function fmtCountdown(ms: number) {
 }
 
 function NewTabPreview() {
-  const [now, setNow] = useState(new Date());
+  return (
+    <ClientOnly fallback={<div className="min-h-screen" style={{ background: "#eef3ea" }} />}>
+      <NewTabPreviewContent />
+    </ClientOnly>
+  );
+}
+
+function NewTabPreviewContent() {
+  const [now, setNow] = useState(HYDRATION_SAFE_NOW);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
+    setNow(new Date());
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
