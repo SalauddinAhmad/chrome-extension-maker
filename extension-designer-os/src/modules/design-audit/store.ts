@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { designInspectorRepository } from "@/modules/design-inspector/repository";
 import { useInspectorStore } from "@/modules/design-inspector/store";
+import { accessibilityRepository } from "@/modules/accessibility/repository";
 import { designAuditRepository, type AuditFilters } from "./repository";
 import { auditReport } from "./logic/scoring";
 import type { DesignAudit, DesignReport } from "@/types";
@@ -28,8 +29,15 @@ interface AuditState {
   deleteAudit: (id: string) => Promise<void>;
 }
 
-function buildAudit(report: DesignReport): Omit<DesignAudit, "id" | "createdAt" | "updatedAt"> {
-  const { scores, issues, recommendations, overall, grade } = auditReport(report);
+async function buildAudit(report: DesignReport): Promise<Omit<DesignAudit, "id" | "createdAt" | "updatedAt">> {
+  // Consume the latest Accessibility Center report for this design report,
+  // when available, instead of re-running heuristic contrast checks.
+  const a11y = report.id && !report.id.startsWith("preview-")
+    ? await accessibilityRepository.latestForReport(report.id)
+    : undefined;
+  const { scores, issues, recommendations, overall, grade } = auditReport(report, {
+    accessibility: a11y ? { score: a11y.overall, notes: `From Accessibility Center · grade ${a11y.grade}` } : undefined,
+  });
   return {
     projectId: report.projectId,
     reportId: report.id,
@@ -63,7 +71,7 @@ export const useAuditStore = create<AuditState>((set, get) => ({
   async runFromReport(report, opts) {
     set({ isRunning: true, error: null });
     try {
-      const data = buildAudit(report);
+      const data = await buildAudit(report);
       if (opts?.save !== false) {
         const saved = await designAuditRepository.create(data);
         set({ current: saved });

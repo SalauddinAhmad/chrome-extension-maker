@@ -11,6 +11,7 @@ const Color = lazy(() => import("@/modules/color-studio"));
 const Typography = lazy(() => import("@/modules/typography-studio"));
 const Inspector = lazy(() => import("@/modules/design-inspector"));
 const Audit = lazy(() => import("@/modules/design-audit"));
+const A11y = lazy(() => import("@/modules/accessibility"));
 const Vault = lazy(() => import("@/modules/inspiration-vault"));
 const Assets = lazy(() => import("@/modules/asset-extractor"));
 const Resources = lazy(() => import("@/modules/resource-hub"));
@@ -27,6 +28,7 @@ const REGISTRY: Record<ModuleId, React.ComponentType> = {
   "typography-studio": Typography,
   "design-inspector": Inspector,
   "design-audit": Audit,
+  accessibility: A11y,
   "inspiration-vault": Vault,
   "asset-extractor": Assets,
   "resource-hub": Resources,

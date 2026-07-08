@@ -34,8 +34,9 @@ import { typographyRepository } from "@/modules/typography-studio/repository";
 import { useTypographyLibraryStore } from "@/modules/typography-studio/library-store";
 import { useTypeStore } from "@/modules/typography-studio/store";
 import { designAuditRepository } from "@/modules/design-audit/repository";
+import { accessibilityRepository } from "@/modules/accessibility/repository";
 import { ASSET_TYPE_LABEL, FONT_CATEGORY_LABEL } from "@/types";
-import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory, DesignAudit } from "@/types";
+import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory, DesignAudit, AccessibilityReport } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
@@ -252,6 +253,9 @@ export default function Dashboard() {
 
       {/* Design audits summary */}
       <AuditSummary onOpen={() => setActiveModule("design-audit")} />
+
+      {/* Accessibility summary */}
+      <A11ySummary onOpen={() => setActiveModule("accessibility")} />
 
       {/* Collections */}
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
@@ -765,6 +769,80 @@ function AuditSummary({ onOpen }: { onOpen: () => void }) {
 }
 
 function StatChip({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-md border bg-background/50 p-1.5 text-center">
+      <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="text-sm font-semibold tabular-nums">{value}</div>
+    </div>
+  );
+}
+
+function A11ySummary({ onOpen }: { onOpen: () => void }) {
+  const [recent, setRecent] = useState<AccessibilityReport[]>([]);
+  const [stats, setStats] = useState<{
+    total: number; averageScore: number; bestScore: number; worstScore: number;
+    gradeCounts: Record<string, number>;
+  } | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const [r, s] = await Promise.all([
+        accessibilityRepository.listRecent(4),
+        accessibilityRepository.statistics(),
+      ]);
+      if (!alive) return;
+      setRecent(r);
+      setStats(s);
+    })().catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  if (!stats || stats.total === 0) return null;
+
+  return (
+    <section className="rounded-xl border bg-card p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Search className="h-3.5 w-3.5 text-muted-foreground" />
+          <div className="text-xs font-semibold">Accessibility</div>
+          <div className="text-[10px] text-muted-foreground">avg {stats.averageScore}</div>
+        </div>
+        <button onClick={onOpen} className="text-[10px] text-muted-foreground hover:text-foreground">
+          Open →
+        </button>
+      </div>
+
+      <div className="mb-2 grid grid-cols-4 gap-1.5">
+        <StatChip2 label="Total" value={stats.total} />
+        <StatChip2 label="Avg" value={stats.averageScore} />
+        <StatChip2 label="Best" value={stats.bestScore} />
+        <StatChip2 label="Worst" value={stats.worstScore} />
+      </div>
+
+      <div className="space-y-1">
+        {recent.map((r) => (
+          <button
+            key={r.id}
+            onClick={onOpen}
+            className="flex w-full items-center gap-2 rounded border bg-background/50 px-2 py-1.5 text-left hover:bg-muted"
+          >
+            <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full border text-[10px] font-bold tabular-nums">
+              {r.overall}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-xs">{r.title}</div>
+              <div className="truncate text-[10px] text-muted-foreground">{r.url}</div>
+            </div>
+            <div className="shrink-0 text-[10px] font-semibold text-muted-foreground">{r.grade}</div>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function StatChip2({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-md border bg-background/50 p-1.5 text-center">
       <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</div>
