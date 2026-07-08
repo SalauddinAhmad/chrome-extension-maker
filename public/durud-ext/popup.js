@@ -406,10 +406,10 @@ function bindAll() {
     $("#onb-step-1").hidden = true;
     $("#onb-step-2").hidden = false;
   });
-  $("#onb-start").addEventListener("click", async () => {
-    state.settings.onboarded = true;
-    await saveSettings();
+  $("#onb-start").addEventListener("click", () => {
     hideOnboarding();
+    state.settings.onboarded = true;
+    saveSettings();
   });
 }
 
