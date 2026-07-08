@@ -58,6 +58,8 @@ const I18N = {
     endLbl: "শেষ",
     onlyActive: "শুধু সক্রিয় থাকলে",
     onlyActiveSub: "Idle অবস্থায় রিমাইন্ডার বন্ধ",
+    language: "ভাষা",
+    languageSub: "ইন্টারফেস ও হাদিসের ভাষা",
     randomAudio: "র‍্যান্ডম (৯টি থেকে)",
     durud1: "দুরুদ ১", durud2: "দুরুদ ২", durud3: "দুরুদ ৩",
     durud4: "দুরুদ ৪", durud5: "দুরুদ ৫", durud6: "দুরুদ ৬",
