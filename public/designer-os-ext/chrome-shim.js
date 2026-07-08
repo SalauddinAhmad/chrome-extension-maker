@@ -1,11 +1,12 @@
-// Minimal chrome.* shim so popup.js runs inside a preview iframe (no extension APIs).
+// Minimal chrome.* shim so the sidepanel runs inside a preview iframe.
 (function () {
   const store = {};
   window.chrome = {
     runtime: {
       getURL: (p) => new URL(p, location.href).toString(),
-      sendMessage: () => {},
+      sendMessage: (_m, cb) => { if (cb) cb({}); },
       onMessage: { addListener: () => {} },
+      lastError: null,
     },
     storage: {
       local: {
@@ -20,19 +21,26 @@
           return out;
         },
         async set(obj) { Object.assign(store, obj); },
-        async remove(k) { delete store[Array.isArray(k) ? k[0] : k]; },
+        async remove(k) { (Array.isArray(k) ? k : [k]).forEach((x) => delete store[x]); },
+        async clear() { Object.keys(store).forEach((k) => delete store[k]); },
+      },
+      sync: {
+        async get() { return {}; },
+        async set() {},
       },
     },
+    tabs: {
+      query: async () => [{ id: 1, url: location.href, title: document.title }],
+      sendMessage: (_id, _m, cb) => { if (cb) cb({}); },
+    },
+    scripting: {
+      executeScript: async () => [{ result: null }],
+    },
     alarms: {
-      create: () => {},
-      clear: () => {},
-      clearAll: () => {},
-      get: async () => null,
-      getAll: async () => [],
+      create: () => {}, clear: () => {}, clearAll: () => {},
+      get: async () => null, getAll: async () => [],
       onAlarm: { addListener: () => {} },
     },
     notifications: { create: () => {}, clear: () => {} },
-    idle: { queryState: (_s, cb) => cb && cb("active"), onStateChanged: { addListener: () => {} } },
-    offscreen: { hasDocument: async () => false, createDocument: async () => {}, closeDocument: async () => {} },
   };
 })();
