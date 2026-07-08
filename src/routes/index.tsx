@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 const features = [
   {
     title: "সমৃদ্ধ দুরুদ লাইব্রেরি",
-    body: "ছোট দুরুদ, দুরুদে তাজ ও আরও — আরবি, উচ্চারণ, বাংলা অনুবাদ ও রেফারেন্স সহ।",
+    body: "দুরুদে তাজ, দুরুদে শাফা'আত ও আরও — আরবি, উচ্চারণ, বাংলা অনুবাদ ও রেফারেন্স সহ।",
   },
   {
     title: "ডিজিটাল তাসবিহ কাউন্টার",
@@ -219,26 +219,6 @@ function Index() {
                 style={{ color: "#14201b" }}
               >
                 ৩:২৪ PM
-              </div>
-              <div
-                className="mx-auto max-w-md rounded-xl border border-border bg-white p-5 text-left shadow-sm"
-              >
-                <div
-                  className="mb-2 text-[10px] font-semibold uppercase tracking-widest"
-                  style={{ color: "var(--primary)" }}
-                >
-                  ✦ ছোট দুরুদ
-                </div>
-                <div
-                  dir="rtl"
-                  className="mb-2 text-lg leading-loose"
-                  style={{ fontFamily: '"Amiri Quran", serif' }}
-                >
-                  اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ
-                </div>
-                <div className="text-xs text-muted-foreground italic">
-                  আল্লাহুম্মা সাল্লি আলা মুহাম্মাদ…
-                </div>
               </div>
             </div>
           </div>
