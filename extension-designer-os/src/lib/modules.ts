@@ -43,8 +43,8 @@ export const MODULES: ModuleMeta[] = [
   { id: "notes", name: "Notes", tagline: "Ideas · briefs · todos", icon: StickyNote, phase: 3, status: "ready" },
   { id: "asset-extractor", name: "Asset Extractor", tagline: "Images · SVG · icons", icon: ImageIcon, phase: 4, status: "ready" },
   { id: "screenshot", name: "Screenshot Studio", tagline: "Capture · crop · mockup", icon: Camera, phase: 4, status: "ready" },
-  { id: "design-inspector", name: "Design Inspector", tagline: "Full design DNA", icon: Search, phase: 5, status: "scaffolded" },
-  { id: "tech-stack", name: "Tech Stack", tagline: "Framework · CMS · CDN", icon: Cpu, phase: 5, status: "scaffolded" },
+  { id: "design-inspector", name: "Design Inspector", tagline: "Full design DNA", icon: Search, phase: 5, status: "ready" },
+  { id: "tech-stack", name: "Tech Stack", tagline: "Framework · CMS · CDN", icon: Cpu, phase: 5, status: "ready" },
   { id: "resource-hub", name: "Resource Hub", tagline: "Icons · fonts · mockups", icon: Layers, phase: 6, status: "scaffolded" },
 ];
 
