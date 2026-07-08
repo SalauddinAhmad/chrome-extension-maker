@@ -22,6 +22,8 @@ import type { ModuleId } from "@/lib/modules";
 import { cn } from "@/lib/cn";
 import { EmptyState } from "@/components/shared/empty-state";
 import { fetchRecentActivity, type ActivityItem } from "@/modules/projects/logic/activity";
+import { computeProjectStats, EMPTY_STATS } from "@/modules/projects/logic/stats";
+import type { Project } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
@@ -64,6 +66,7 @@ const KIND_ICON = {
 export default function Dashboard() {
   const setActiveModule = useUIStore((s) => s.setActiveModule);
   const openProjectDetail = useProjectStore((s) => s.openProjectDetail);
+  const requestNewProject = useProjectStore((s) => s.requestNewProject);
   const activeProject = useProjectStore((s) => s.activeProjectId);
 
   const totals = {
@@ -89,6 +92,12 @@ export default function Dashboard() {
   }, [activityTick]);
 
   const isEmpty = activityTick === 0;
+  const hasNoProjects = totals.projects === 0;
+
+  function createProject() {
+    setActiveModule("projects");
+    requestNewProject();
+  }
 
   return (
     <div className="space-y-4 p-3">
@@ -145,13 +154,29 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {isEmpty && (
+      {hasNoProjects ? (
+        <div className="rounded-lg border bg-gradient-to-br from-primary/10 via-card to-card p-4 text-center">
+          <div className="mx-auto grid h-9 w-9 place-items-center rounded-full bg-primary/15 text-primary">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <div className="mt-2 text-sm font-semibold">Welcome to Designer OS</div>
+          <div className="mx-auto mt-1 max-w-[280px] text-[11px] leading-snug text-muted-foreground">
+            Create your first project to start organizing inspirations, assets, colors, fonts, and notes.
+          </div>
+          <button
+            onClick={createProject}
+            className="mt-2.5 inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            <FolderKanban className="h-3 w-3" /> Create Project
+          </button>
+        </div>
+      ) : isEmpty ? (
         <EmptyState
           icon={Sparkles}
           title="Your library is empty"
           description="Pick a color, scan a page, save an inspiration — everything you capture appears here."
         />
-      )}
+      ) : null}
 
       {/* Recent projects */}
       {recentProjects.length > 0 && (
@@ -162,25 +187,12 @@ export default function Dashboard() {
           </div>
           <div className="mt-1.5 grid grid-cols-2 gap-1.5">
             {recentProjects.map((p) => (
-              <button
+              <RecentProjectCard
                 key={p.id}
-                onClick={() => { setActiveModule("projects"); openProjectDetail(p.id); }}
-                className={cn(
-                  "flex items-center gap-2 rounded-md border bg-card p-2 text-left hover:border-primary/40",
-                  activeProject === p.id && "border-primary/60",
-                )}
-              >
-                <div
-                  className="h-6 w-6 shrink-0 rounded-md border"
-                  style={{ background: p.color ?? "hsl(var(--muted))" }}
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[11px] font-medium">{p.name}</div>
-                  {p.clientName && (
-                    <div className="truncate text-[9px] text-muted-foreground">{p.clientName}</div>
-                  )}
-                </div>
-              </button>
+                project={p}
+                isActive={activeProject === p.id}
+                onOpen={() => { setActiveModule("projects"); openProjectDetail(p.id); }}
+              />
             ))}
           </div>
         </div>
@@ -258,6 +270,42 @@ function OpenLink({ onClick }: { onClick: () => void }) {
   return (
     <button onClick={onClick} className="text-[10px] font-medium text-muted-foreground hover:text-foreground">
       Open →
+    </button>
+  );
+}
+
+function RecentProjectCard({
+  project,
+  isActive,
+  onOpen,
+}: {
+  project: Project;
+  isActive: boolean;
+  onOpen: () => void;
+}) {
+  const stats = useLiveQuery(() => computeProjectStats(project.id), [project.id], EMPTY_STATS);
+  return (
+    <button
+      onClick={onOpen}
+      className={cn(
+        "flex items-center gap-2 rounded-md border bg-card p-2 text-left hover:border-primary/40",
+        isActive && "border-primary/60",
+      )}
+    >
+      <div
+        className="h-8 w-8 shrink-0 rounded-md border"
+        style={{
+          background: project.coverImage
+            ? `url(${project.coverImage}) center/cover`
+            : project.color ?? "hsl(var(--muted))",
+        }}
+      />
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[11px] font-medium">{project.name}</div>
+        <div className="truncate text-[9px] text-muted-foreground">
+          {stats.total === 0 ? (project.clientName ?? "empty") : `${stats.total} items`}
+        </div>
+      </div>
     </button>
   );
 }

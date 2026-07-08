@@ -1,29 +1,55 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { useState } from "react";
-import { FolderKanban, Plus, Star, ArrowLeft, Archive, ArchiveRestore, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  FolderKanban,
+  Plus,
+  Star,
+  Archive,
+  ArchiveRestore,
+  Trash2,
+  Grid3x3,
+  List as ListIcon,
+} from "lucide-react";
 import { toast } from "sonner";
-import { db, projectsRepo } from "@/storage";
+import { db } from "@/storage";
 import { useProjectStore } from "@/stores/project-store";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { ProjectDialog } from "./ui/project-dialog";
 import { ProjectDetail } from "./detail";
+import { computeProjectStats, EMPTY_STATS } from "./logic/stats";
+import type { Project } from "@/types";
+
+type View = "grid" | "list";
 
 export default function Projects() {
   const detailProjectId = useProjectStore((s) => s.detailProjectId);
   const openProjectDetail = useProjectStore((s) => s.openProjectDetail);
   const activeProjectId = useProjectStore((s) => s.activeProjectId);
   const setActiveProject = useProjectStore((s) => s.setActiveProject);
+  const deleteProject = useProjectStore((s) => s.deleteProject);
+  const archiveProject = useProjectStore((s) => s.archiveProject);
+  const newProjectRequestId = useProjectStore((s) => s.newProjectRequestId);
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [view, setView] = useState<View>("grid");
 
   const projects = useLiveQuery(
     () => db.projects.orderBy("createdAt").reverse().toArray(),
     [],
     [],
   );
+
+  // React to dashboard "Create Project" trigger.
+  useEffect(() => {
+    if (newProjectRequestId > 0) {
+      setEditId(null);
+      setDialogOpen(true);
+    }
+  }, [newProjectRequestId]);
 
   if (detailProjectId) {
     return <ProjectDetail projectId={detailProjectId} onBack={() => openProjectDetail(null)} />;
@@ -42,6 +68,28 @@ export default function Projects() {
           <div className="text-[10px] text-muted-foreground">
             {projects.length} total{activeProjectId ? " · active set" : ""}
           </div>
+        </div>
+        <div className="flex rounded-md border p-0.5">
+          <button
+            onClick={() => setView("grid")}
+            className={cn(
+              "grid h-6 w-6 place-items-center rounded",
+              view === "grid" ? "bg-muted text-foreground" : "text-muted-foreground",
+            )}
+            title="Grid view"
+          >
+            <Grid3x3 className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => setView("list")}
+            className={cn(
+              "grid h-6 w-6 place-items-center rounded",
+              view === "list" ? "bg-muted text-foreground" : "text-muted-foreground",
+            )}
+            title="List view"
+          >
+            <ListIcon className="h-3 w-3" />
+          </button>
         </div>
         <Button size="sm" onClick={() => { setEditId(null); setDialogOpen(true); }}>
           <Plus className="h-3.5 w-3.5" />
@@ -78,10 +126,21 @@ export default function Projects() {
               : "Toggle archived projects to see them here."
           }
         />
+      ) : view === "grid" ? (
+        <div className="grid grid-cols-2 gap-2">
+          {visible.map((p) => (
+            <ProjectGridCard
+              key={p.id}
+              project={p}
+              isActive={activeProjectId === p.id}
+              onOpen={() => openProjectDetail(p.id)}
+            />
+          ))}
+        </div>
       ) : (
         <div className="grid grid-cols-1 gap-2">
           {visible.map((p) => (
-            <ProjectCard
+            <ProjectListCard
               key={p.id}
               project={p}
               isActive={activeProjectId === p.id}
@@ -92,12 +151,11 @@ export default function Projects() {
               }}
               onEdit={() => { setEditId(p.id); setDialogOpen(true); }}
               onArchive={async () => {
-                await projectsRepo.update(p.id, { archived: !p.archived });
+                await archiveProject(p.id, !p.archived);
                 toast.success(p.archived ? "Restored" : "Archived");
               }}
               onDelete={async () => {
-                await projectsRepo.remove(p.id);
-                if (activeProjectId === p.id) setActiveProject(null);
+                await deleteProject(p.id);
                 toast.success("Project deleted");
               }}
             />
@@ -114,7 +172,57 @@ export default function Projects() {
   );
 }
 
-function ProjectCard({
+function useStats(projectId: string) {
+  return useLiveQuery(() => computeProjectStats(projectId), [projectId], EMPTY_STATS);
+}
+
+function ProjectGridCard({
+  project,
+  isActive,
+  onOpen,
+}: {
+  project: Project;
+  isActive: boolean;
+  onOpen: () => void;
+}) {
+  const stats = useStats(project.id);
+  return (
+    <button
+      onClick={onOpen}
+      className={cn(
+        "flex flex-col overflow-hidden rounded-lg border bg-card text-left transition-colors hover:border-primary/50",
+        isActive && "border-primary/60 ring-1 ring-primary/30",
+        project.archived && "opacity-60",
+      )}
+    >
+      <div
+        className="relative h-16 w-full"
+        style={{
+          background: project.coverImage
+            ? `url(${project.coverImage}) center/cover`
+            : project.color ?? "hsl(var(--muted))",
+        }}
+      >
+        {isActive && (
+          <span className="absolute right-1 top-1 rounded bg-background/90 px-1 py-0.5 text-[8px] font-semibold text-primary">
+            ACTIVE
+          </span>
+        )}
+      </div>
+      <div className="min-w-0 flex-1 p-2">
+        <div className="truncate text-[11px] font-semibold">{project.name}</div>
+        {project.clientName && (
+          <div className="truncate text-[9px] text-muted-foreground">{project.clientName}</div>
+        )}
+        <div className="mt-1.5 text-[9px] text-muted-foreground">
+          {stats.total === 0 ? "empty" : `${stats.total} items`}
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function ProjectListCard({
   project,
   isActive,
   onOpen,
@@ -123,7 +231,7 @@ function ProjectCard({
   onArchive,
   onDelete,
 }: {
-  project: import("@/types").Project;
+  project: Project;
   isActive: boolean;
   onOpen: () => void;
   onSetActive: () => void;
@@ -131,22 +239,7 @@ function ProjectCard({
   onArchive: () => void;
   onDelete: () => void;
 }) {
-  const counts = useLiveQuery(
-    async () => {
-      const [inspirations, colors, fonts, assets, notes] = await Promise.all([
-        db.inspirations.filter((i) => i.projectId === project.id).count(),
-        db.colors.filter((c) => c.projectId === project.id).count(),
-        db.fonts.filter((f) => f.projectId === project.id).count(),
-        db.assets.filter((a) => a.projectId === project.id).count(),
-        db.notes.filter((n) => n.projectId === project.id).count(),
-      ]);
-      return { inspirations, colors, fonts, assets, notes };
-    },
-    [project.id],
-    { inspirations: 0, colors: 0, fonts: 0, assets: 0, notes: 0 },
-  );
-
-  const total = counts.inspirations + counts.colors + counts.fonts + counts.assets + counts.notes;
+  const stats = useStats(project.id);
 
   return (
     <div
@@ -161,8 +254,12 @@ function ProjectCard({
         className="flex w-full items-start gap-2.5 text-left"
       >
         <div
-          className="mt-0.5 h-8 w-8 shrink-0 rounded-md border"
-          style={{ background: project.color ?? "hsl(var(--muted))" }}
+          className="mt-0.5 h-10 w-10 shrink-0 rounded-md border bg-cover bg-center"
+          style={{
+            background: project.coverImage
+              ? `url(${project.coverImage}) center/cover`
+              : project.color ?? "hsl(var(--muted))",
+          }}
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
@@ -182,12 +279,13 @@ function ProjectCard({
             </div>
           )}
           <div className="mt-2 flex flex-wrap gap-1.5 text-[9px] text-muted-foreground">
-            <Chip label="Insp" value={counts.inspirations} />
-            <Chip label="Colors" value={counts.colors} />
-            <Chip label="Fonts" value={counts.fonts} />
-            <Chip label="Assets" value={counts.assets} />
-            <Chip label="Notes" value={counts.notes} />
-            {total === 0 && <span className="text-[9px]">empty</span>}
+            <Chip label="Insp" value={stats.inspirations} />
+            <Chip label="Colors" value={stats.colors} />
+            <Chip label="Fonts" value={stats.fonts} />
+            <Chip label="Assets" value={stats.assets} />
+            <Chip label="Notes" value={stats.notes} />
+            {stats.total === 0 && <span>empty</span>}
+            <span className="ml-auto">Updated {timeAgo(project.updatedAt)}</span>
           </div>
         </div>
       </button>
@@ -230,5 +328,13 @@ function IconAction({ children, title, onClick }: { children: React.ReactNode; t
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _icon = ArrowLeft; // ensure import kept for detail
+function timeAgo(ts: number): string {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return "just now";
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  return `${d}d ago`;
+}

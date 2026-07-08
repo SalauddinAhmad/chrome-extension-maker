@@ -5,5 +5,15 @@ export interface Project extends Entity {
   clientName?: string;
   description?: string;
   color?: string;            // accent hex
+  coverImage?: string;       // data URL or remote URL
   archived: boolean;
+}
+
+export interface ProjectStats {
+  inspirations: number;
+  assets: number;
+  colors: number;
+  fonts: number;
+  notes: number;
+  total: number;
 }
