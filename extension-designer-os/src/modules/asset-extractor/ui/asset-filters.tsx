@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Search, X, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { db } from "@/storage";
+import { projectRepository } from "@/modules/projects/repository";
 import { useLibraryStore } from "../library-store";
-import { ASSET_TYPE_LABEL, ASSET_SOURCE_LABEL } from "@/types";
+import { ASSET_SOURCE_LABEL } from "@/types";
 import type { AssetSort, AssetDateRange } from "../repository";
 import type { AssetType, AssetSource } from "@/types";
 
@@ -46,7 +46,7 @@ const SORT_OPTIONS: Array<{ id: AssetSort; label: string }> = [
 export function AssetFiltersBar() {
   const { filters, setFilters, resetFilters } = useLibraryStore();
   const projects = useLiveQuery(
-    () => db.projects.filter((p) => !p.archived).sortBy("name"),
+    () => projectRepository.listActive(),
     [],
     [],
   );

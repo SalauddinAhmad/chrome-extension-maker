@@ -11,11 +11,11 @@ export function ColorPicker() {
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
-        <Button className="flex-1" onClick={pickFromPage} disabled={isPicking}>
+        <Button className="flex-1" onClick={() => void pickFromPage()} disabled={isPicking}>
           <Pipette className="h-4 w-4" />
           {isPicking ? "Picking…" : "Pick from page"}
         </Button>
-        <Button variant="outline" size="icon" onClick={saveCurrent} title="Save color">
+        <Button variant="outline" size="icon" onClick={() => void saveCurrent()} title="Save color">
           <Save className="h-4 w-4" />
         </Button>
       </div>

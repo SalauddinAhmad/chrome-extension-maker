@@ -5,7 +5,12 @@ import { Download, Upload, Trash2, Sun, Moon, Monitor, Palette, Info } from "luc
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useThemeStore } from "@/stores/theme-store";
-import { getSettings, updateSettings, db } from "@/storage";
+import { getSettings, updateSettings } from "@/storage";
+import { colorRepository } from "@/modules/color-studio/repository";
+import { typographyRepository } from "@/modules/typography-studio/repository";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { assetRepository } from "@/modules/asset-extractor/repository";
+import { noteRepository } from "@/modules/notes/repository";
 import { cn } from "@/lib/cn";
 import type { ThemeMode, Settings } from "@/types";
 import {
@@ -44,12 +49,12 @@ export default function SettingsModule() {
 
   const counts = useLiveQuery(async () => {
     const [colors, palettes, fonts, insp, assets, notes] = await Promise.all([
-      db.colors.count(),
-      db.palettes.count(),
-      db.fonts.count(),
-      db.inspirations.count(),
-      db.assets.count(),
-      db.notes.count(),
+      colorRepository.getAll().then((r) => r.length),
+      colorRepository.paletteCount(),
+      typographyRepository.getAll().then((r) => r.length),
+      inspirationRepository.getAll().then((r) => r.length),
+      assetRepository.getAll().then((r) => r.length),
+      noteRepository.count(),
     ]);
     return { colors, palettes, fonts, insp, assets, notes };
   }, []);
