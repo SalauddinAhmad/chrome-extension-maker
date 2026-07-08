@@ -4,6 +4,7 @@
  */
 import { hexToRgb, rgbToHex, rgbToHsl, hslToRgb, normalizeHex } from "./convert";
 import type { HSL } from "./convert";
+import type { BrandRole } from "@/types";
 
 function fromHsl(h: HSL): string {
   return rgbToHex(hslToRgb(h));
@@ -14,7 +15,11 @@ export function generateScale(hex: string, steps = 5): string[] {
   const base = rgbToHsl(hexToRgb(normalizeHex(hex)));
   const out: string[] = [];
   for (let i = -steps; i <= steps; i++) {
-    const l = clamp(base.l + i * (i < 0 ? (base.l / (steps + 1)) : ((100 - base.l) / (steps + 1))), 4, 96);
+    const l = clamp(
+      base.l + i * (i < 0 ? base.l / (steps + 1) : (100 - base.l) / (steps + 1)),
+      4,
+      96,
+    );
     out.push(fromHsl({ h: base.h, s: base.s, l }));
   }
   return out;
@@ -60,4 +65,27 @@ export function generateHarmony(hex: string, kind: HarmonyKind): string[] {
   }
 }
 
-function clamp(n: number, min: number, max: number) { return Math.max(min, Math.min(max, n)); }
+/**
+ * Generate a semantic brand palette from a single primary hex.
+ * Semantic colors (success/warning/danger) use fixed hues; secondary/accent
+ * rotate around the primary hue; neutral desaturates the base.
+ */
+export function generateBrandPalette(hex: string): Record<BrandRole, string> {
+  const base = rgbToHsl(hexToRgb(normalizeHex(hex)));
+  const withSL = (h: number, s: number, l: number) =>
+    fromHsl({ h: ((h % 360) + 360) % 360, s: clamp(s, 0, 100), l: clamp(l, 0, 100) });
+
+  return {
+    primary: fromHsl(base),
+    secondary: withSL(base.h + 210, Math.max(base.s - 10, 25), base.l),
+    accent: withSL(base.h + 45, Math.min(base.s + 15, 90), Math.min(base.l + 8, 62)),
+    success: withSL(142, 65, 40),
+    warning: withSL(38, 92, 50),
+    danger: withSL(0, 78, 52),
+    neutral: withSL(base.h, 6, 45),
+  };
+}
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
