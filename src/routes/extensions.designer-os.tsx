@@ -36,15 +36,38 @@ function DesignerOSPage() {
             <div className="text-xs text-muted-foreground">v1.0.0 · imported from GitHub</div>
           </div>
         </div>
-        <a
-          href="https://github.com/SalauddinAhmad/Designer-OS"
-          target="_blank"
-          rel="noreferrer"
-          className="text-xs text-muted-foreground hover:text-foreground"
-        >
-          GitHub ↗
-        </a>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              fetch("/designer-os.zip")
+                .then((res) => {
+                  if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+                  return res.blob();
+                })
+                .then((blob) => {
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = "designer-os.zip";
+                  a.click();
+                  URL.revokeObjectURL(a.href);
+                })
+                .catch((err) => alert(err.message));
+            }}
+            className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:opacity-90"
+          >
+            ⬇ Download .zip
+          </button>
+          <a
+            href="https://github.com/SalauddinAhmad/Designer-OS"
+            target="_blank"
+            rel="noreferrer"
+            className="text-xs text-muted-foreground hover:text-foreground"
+          >
+            GitHub ↗
+          </a>
+        </div>
       </header>
+
 
       <section className="mx-auto max-w-6xl px-6 pb-16">
         <div className="mb-6">
@@ -120,19 +143,20 @@ function DesignerOSPage() {
               </pre>
             </div>
 
-            <div className="rounded-2xl border border-dashed border-border bg-card/50 p-6">
-              <div className="text-xs tracking-[0.2em] text-primary uppercase mb-2">
-                Phase 1 complete · awaiting approval
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="text-xs tracking-[0.2em] text-primary uppercase mb-3">
+                Install unpacked · Chrome / Edge / Brave / Arc
               </div>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Architecture, types, storage schema, stores, and UI foundation are ready.
-                Business logic is intentionally omitted per spec. Approve to start
-                <strong className="text-foreground"> Phase 2 · Color Studio</strong>.
-              </p>
-              <p className="mt-3 text-xs text-muted-foreground">
-                Preview iframe above still shows the vanilla prototype for reference.
-                Run <code>bun install &amp;&amp; bun run build</code> inside
-                <code> extension-designer-os/</code> to build the new React version.
+              <ol className="space-y-2 text-xs leading-relaxed text-muted-foreground list-decimal pl-4">
+                <li>উপরের <strong className="text-foreground">⬇ Download .zip</strong> চাপুন — <code>designer-os.zip</code> নামব।</li>
+                <li>ZIP আনজিপ করুন যেকোনো ফোল্ডারে।</li>
+                <li>ব্রাউজারে <code>chrome://extensions</code> খুলুন।</li>
+                <li>উপর-ডানে <strong className="text-foreground">Developer mode</strong> টগল অন করুন।</li>
+                <li><strong className="text-foreground">Load unpacked</strong> চাপুন → আনজিপ করা ফোল্ডার সিলেক্ট করুন।</li>
+                <li>টুলবার আইকনে ক্লিক করে popup — অথবা রাইট-ক্লিক → <em>Open side panel</em>।</li>
+              </ol>
+              <p className="mt-3 text-[11px] text-muted-foreground/70">
+                Chrome Web Store publish ছাড়া one-click install সম্ভব না — এটাই standard unpacked flow।
               </p>
             </div>
           </div>
@@ -141,3 +165,4 @@ function DesignerOSPage() {
     </div>
   );
 }
+
