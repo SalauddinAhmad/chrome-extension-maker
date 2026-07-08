@@ -1,0 +1,366 @@
+/* Durud Reminder v2.0 — Premium minimal & elegant */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Tiro+Bangla&family=Amiri+Quran&display=swap");
+
+:root {
+  --bg: #faf7f2;
+  --bg-2: #f3ede3;
+  --surface: #ffffff;
+  --ink: #14201b;
+  --ink-soft: #5a655f;
+  --ink-mute: #8a938e;
+  --line: #eae3d6;
+  --line-2: #e2d9c7;
+  --brand: #0f5f4c;
+  --brand-2: #0a4536;
+  --brand-soft: #e6efeb;
+  --brand-ink: #ffffff;
+  --gold: #b8944a;
+  --gold-soft: #f3ead4;
+  --shadow-sm: 0 1px 2px rgba(15, 95, 76, 0.04);
+  --shadow: 0 2px 14px rgba(15, 95, 76, 0.06);
+  --shadow-lg: 0 8px 30px rgba(15, 95, 76, 0.09);
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 400px;
+  font-family: "Inter", "Tiro Bangla", system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 2px 14px;
+}
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-mark {
+  width: 38px; height: 38px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+  color: var(--gold);
+  display: grid; place-items: center;
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.brand-mark svg { width: 22px; height: 22px; }
+.brand-name {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.brand-sub {
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  margin-top: 1px;
+  font-family: "Tiro Bangla", serif;
+}
+.header-actions { display: flex; align-items: center; gap: 10px; }
+
+/* ---------- Switch ---------- */
+.switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+.switch.small { width: 32px; height: 18px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: var(--line-2);
+  border-radius: 999px;
+  transition: 0.2s;
+}
+.slider::before {
+  content: ""; position: absolute;
+  height: 16px; width: 16px; left: 3px; top: 3px;
+  background: #fff; border-radius: 50%;
+  transition: 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.switch.small .slider::before { height: 12px; width: 12px; }
+input:checked + .slider { background: var(--brand); }
+input:checked + .slider::before { transform: translateX(18px); }
+.switch.small input:checked + .slider::before { transform: translateX(14px); }
+
+/* ---------- Hero (next reminder) ---------- */
+.hero {
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(184,148,74,0.10) 0%, transparent 60%),
+    linear-gradient(160deg, var(--brand) 0%, var(--brand-2) 100%);
+  color: #fff;
+  border-radius: 18px;
+  padding: 22px 20px 20px;
+  margin-bottom: 14px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 20px, rgba(255,255,255,0.02) 20px 21px);
+  pointer-events: none;
+}
+.hero-label {
+  font-family: "Tiro Bangla", serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero-time {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 38px;
+  letter-spacing: -0.02em;
+  margin: 4px 0 2px;
+  color: #fff;
+}
+.hero-status {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--gold);
+  background: rgba(184,148,74,0.15);
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(184,148,74,0.3);
+  font-family: "Tiro Bangla", serif;
+}
+.hero-status.off {
+  color: #f0c4c4;
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Durud card ---------- */
+.durud-card { padding: 16px 16px 14px; }
+.durud-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+.durud-name {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  color: var(--brand);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.durud-actions { display: flex; gap: 4px; }
+
+.icon-btn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.15s;
+  display: inline-grid;
+  place-items: center;
+  padding: 6px;
+}
+.icon-btn:hover { color: var(--brand); border-color: var(--brand); background: var(--brand-soft); }
+.icon-btn.sm { padding: 5px; }
+
+.durud-arabic {
+  font-family: "Amiri Quran", serif;
+  font-size: 22px;
+  line-height: 2;
+  text-align: right;
+  color: var(--ink);
+  margin: 4px 0 12px;
+}
+.durud-translit {
+  font-family: "Tiro Bangla", serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+.durud-bangla {
+  font-family: "Tiro Bangla", serif;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.durud-ref {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  font-size: 10.5px;
+  color: var(--ink-mute);
+  text-align: right;
+  font-family: "Tiro Bangla", serif;
+}
+
+/* ---------- Settings card ---------- */
+.control-group { margin-bottom: 14px; }
+.control-group:last-of-type { margin-bottom: 0; }
+
+.control-label {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.control-val {
+  color: var(--brand);
+  font-weight: 600;
+  font-family: "Fraunces", serif;
+  font-size: 13px;
+}
+
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: "⌄";
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-60%);
+  color: var(--ink-mute);
+  pointer-events: none;
+  font-size: 14px;
+}
+.select {
+  width: 100%;
+  padding: 10px 32px 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  appearance: none;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.select:hover, .select:focus { border-color: var(--brand); outline: none; }
+
+.play-btn {
+  background: var(--brand);
+  color: #fff;
+  border: 0;
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-grid; place-items: center;
+  transition: 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+.play-btn:hover { background: var(--brand-2); transform: scale(1.05); }
+
+.range {
+  width: 100%;
+  accent-color: var(--brand);
+  height: 4px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 16px 0 4px;
+}
+
+/* Toggle rows */
+.toggle-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.toggle-row:last-child { border-bottom: 0; padding-bottom: 4px; }
+.toggle-info { flex: 1; }
+.toggle-title {
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.toggle-sub {
+  font-size: 11px;
+  color: var(--ink-mute);
+  margin-top: 1px;
+  font-family: "Tiro Bangla", serif;
+}
+
+/* ---------- Footer ---------- */
+.app-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 4px 12px;
+  color: var(--ink-mute);
+  font-size: 11px;
+}
+.save-indicator { display: flex; align-items: center; gap: 5px; color: var(--brand); }
+.save-indicator .spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.version { font-family: "Fraunces", serif; font-style: italic; }
+
+/* ---------- Hadith ---------- */
+.hadith {
+  background: var(--gold-soft);
+  border: 1px solid rgba(184, 148, 74, 0.25);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  text-align: center;
+  color: var(--ink);
+  font-family: "Tiro Bangla", serif;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.hadith-text em {
+  font-style: italic;
+  color: var(--brand-2);
+  font-weight: 500;
+}
+.hadith-ref {
+  margin-top: 6px;
+  font-size: 10.5px;
+  color: var(--gold);
+  font-family: "Fraunces", serif;
+  font-style: italic;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-family: "Tiro Bangla", serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s;
+  box-shadow: var(--shadow-lg);
+  z-index: 999;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
