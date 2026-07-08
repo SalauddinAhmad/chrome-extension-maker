@@ -40,6 +40,24 @@ async function loadDuruds() {
   } catch { state.duruds = []; }
 }
 
+async function loadHadiths() {
+  try {
+    const res = await fetch(chrome.runtime.getURL("data/hadiths.json"));
+    state.hadiths = await res.json();
+  } catch { state.hadiths = []; }
+}
+
+function renderHadith() {
+  if (!state.hadiths || !state.hadiths.length) return;
+  // Different each open, but deterministic per open session (rotate through)
+  const idx = Math.floor(Math.random() * state.hadiths.length);
+  const h = state.hadiths[idx];
+  const textEl = document.getElementById("hadith-text");
+  const refEl = document.getElementById("hadith-ref");
+  if (textEl) textEl.innerHTML = `<em>"${h.bn}"</em>`;
+  if (refEl) refEl.textContent = `— হাদিস #${h.id}`;
+}
+
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
