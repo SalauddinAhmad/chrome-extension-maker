@@ -17,9 +17,11 @@ const Notes = lazy(() => import("@/modules/notes"));
 const Tech = lazy(() => import("@/modules/tech-stack"));
 const Screenshot = lazy(() => import("@/modules/screenshot"));
 const SettingsMod = lazy(() => import("@/modules/settings"));
+const Projects = lazy(() => import("@/modules/projects"));
 
 const REGISTRY: Record<ModuleId, React.ComponentType> = {
   dashboard: Dashboard,
+  projects: Projects,
   "color-studio": Color,
   "typography-studio": Typography,
   "design-inspector": Inspector,
