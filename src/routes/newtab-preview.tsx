@@ -228,7 +228,7 @@ function NewTabPreview() {
           <iframe
             src="/durud-ext/popup.html"
             title="Durud Reminder v2 popup preview"
-            style={{ width: "100%", height: 900, border: 0, display: "block", background: "#faf8f5" }}
+            style={{ width: "100%", height: 1150, border: 0, display: "block", background: "#faf8f5" }}
           />
         </div>
       </section>
