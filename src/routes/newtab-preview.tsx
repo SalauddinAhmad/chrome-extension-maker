@@ -551,10 +551,9 @@ function NewTabPreview() {
               {/* suppress unused warnings */}
               <span className="hidden">{playing ? "" : ""}{toggleAdhan.name}{sampleDurud.name}{dateStr}</span>
             </div>
-
-            </div>
           </div>
         </div>
+
 
         {/* Feature callouts */}
         <div className="mt-10 grid md:grid-cols-3 gap-4">
