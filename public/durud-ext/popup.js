@@ -2,7 +2,7 @@
 const DEFAULT_SETTINGS = {
   enabled: true,
   interval: 15,
-  durudId: "ibrahim",
+  durudId: "short",
   dnd: true,
   friday: true,
   idleOnly: false,

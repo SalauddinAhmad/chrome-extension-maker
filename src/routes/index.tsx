@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 const features = [
   {
     title: "সমৃদ্ধ দুরুদ লাইব্রেরি",
-    body: "দুরুদে ইব্রাহিম, দুরুদে তাজ ও আরও — আরবি, উচ্চারণ, বাংলা অনুবাদ ও রেফারেন্স সহ।",
+    body: "ছোট দুরুদ, দুরুদে তাজ ও আরও — আরবি, উচ্চারণ, বাংলা অনুবাদ ও রেফারেন্স সহ।",
   },
   {
     title: "ডিজিটাল তাসবিহ কাউন্টার",
@@ -227,7 +227,7 @@ function Index() {
                   className="mb-2 text-[10px] font-semibold uppercase tracking-widest"
                   style={{ color: "var(--primary)" }}
                 >
-                  ✦ দুরুদে ইব্রাহিম
+                  ✦ ছোট দুরুদ
                 </div>
                 <div
                   dir="rtl"
