@@ -172,7 +172,23 @@ function scoreComponents(r: DesignReport, b: Bucket) {
   push(b, "components", s, `${buttons} btn · ${inputs} input · ${forms} form`);
 }
 
-function scoreAccessibility(r: DesignReport, b: Bucket) {
+function scoreAccessibility(
+  r: DesignReport,
+  b: Bucket,
+  external?: { score: number; notes?: string },
+) {
+  // Prefer external accessibility score from Accessibility Center when
+  // available — avoids duplicating the deeper WCAG analysis.
+  if (external) {
+    push(b, "accessibility", external.score, external.notes ?? "From Accessibility Center");
+    if (external.score < 70) {
+      issue(b, "accessibility", "warning", "Accessibility below target",
+        `Accessibility Center scored ${external.score}/100. Open the Accessibility module for details.`);
+      rec(b, "accessibility", "Review Accessibility Center findings",
+        "Address WCAG issues detailed in the latest accessibility report.");
+    }
+    return;
+  }
   let s = 100;
   const bg = r.colors.find((c) => c.roles.includes("bg"))?.hex;
   const fg = r.colors.find((c) => c.roles.includes("text"))?.hex;
@@ -232,7 +248,10 @@ export function computeGrade(overall: number): AuditGrade {
   return "F";
 }
 
-export function auditReport(report: DesignReport): {
+export function auditReport(
+  report: DesignReport,
+  opts?: { accessibility?: { score: number; notes?: string } },
+): {
   scores: AuditScore[];
   issues: AuditIssue[];
   recommendations: AuditRecommendation[];
@@ -244,7 +263,7 @@ export function auditReport(report: DesignReport): {
   scoreTypography(report, b);
   scoreLayout(report, b);
   scoreComponents(report, b);
-  scoreAccessibility(report, b);
+  scoreAccessibility(report, b, opts?.accessibility);
   scoreVisual(report, b);
 
   const overall = Math.round(
