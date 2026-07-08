@@ -60,7 +60,7 @@ function renderDurud() {
     state.duruds.find((x) => x.id === state.settings.durudId) ||
     state.duruds[0];
   state.currentIndex = state.duruds.indexOf(d);
-  $("#durud-name").textContent = d.name;
+  const _n = $("#durud-name"); if (_n) _n.textContent = d.name;
   $("#durud-arabic").textContent = d.arabic;
   $("#durud-translit").textContent = d.translit;
   $("#durud-bangla").textContent = d.bangla;
@@ -89,18 +89,25 @@ function renderSettings() {
 }
 
 async function renderNext() {
-  const alarms = await chrome.alarms.getAll();
-  const a = alarms.find((x) => x.name === "durud-reminder");
-  if (!a || !state.settings.enabled) {
-    $("#next-time").textContent = state.settings.enabled ? "শীঘ্রই" : "--:--";
+  if (!state.settings.enabled) {
+    $("#next-time").textContent = "--:--";
     return;
   }
-  const t = new Date(a.scheduledTime);
+  let scheduled = null;
+  try {
+    const alarms = await chrome.alarms.getAll();
+    const a = alarms && alarms.find((x) => x.name === "durud-reminder");
+    if (a) scheduled = a.scheduledTime;
+  } catch (e) {}
+  const t = scheduled
+    ? new Date(scheduled)
+    : new Date(Date.now() + (state.settings.interval || 15) * 60000);
   const h = t.getHours() % 12 || 12;
   const m = String(t.getMinutes()).padStart(2, "0");
   const ap = t.getHours() >= 12 ? "PM" : "AM";
   $("#next-time").textContent = `${toBn(h)}:${toBn(m)} ${ap}`;
 }
+
 
 function toast(msg) {
   const el = $("#toast");

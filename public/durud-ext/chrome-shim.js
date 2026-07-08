@@ -28,6 +28,7 @@
       clear: () => {},
       clearAll: () => {},
       get: async () => null,
+      getAll: async () => [],
       onAlarm: { addListener: () => {} },
     },
     notifications: { create: () => {}, clear: () => {} },
