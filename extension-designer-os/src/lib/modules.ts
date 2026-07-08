@@ -36,7 +36,7 @@ export interface ModuleMeta {
 }
 
 export const MODULES: ModuleMeta[] = [
-  { id: "dashboard", name: "Dashboard", tagline: "Home · activity · favorites", icon: LayoutDashboard, phase: 1, status: "scaffolded" },
+  { id: "dashboard", name: "Dashboard", tagline: "Home · activity · favorites", icon: LayoutDashboard, phase: 1, status: "ready" },
   { id: "color-studio", name: "Color Studio", tagline: "Pick · palette · gradient", icon: Palette, phase: 2, status: "ready" },
   { id: "typography-studio", name: "Typography", tagline: "Detect · pair · scale", icon: Type, phase: 2, status: "ready" },
   { id: "inspiration-vault", name: "Inspiration Vault", tagline: "Save · tag · moodboard", icon: Bookmark, phase: 3, status: "ready" },
