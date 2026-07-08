@@ -23,7 +23,10 @@ import { cn } from "@/lib/cn";
 import { EmptyState } from "@/components/shared/empty-state";
 import { fetchRecentActivity, type ActivityItem } from "@/modules/projects/logic/activity";
 import { computeProjectStats, EMPTY_STATS } from "@/modules/projects/logic/stats";
-import type { Project } from "@/types";
+import { inspirationRepository } from "@/modules/inspiration-vault/repository";
+import { useVaultStore } from "@/modules/inspiration-vault/store";
+import { DEFAULT_COLLECTIONS, collectionLabel } from "@/modules/inspiration-vault/logic/collections";
+import type { Project, Inspiration } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
