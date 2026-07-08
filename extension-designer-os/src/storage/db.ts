@@ -78,6 +78,11 @@ export class DesignerOSDB extends Dexie {
       designReports:
         "id, projectId, url, saved, createdAt, updatedAt",
     });
+    // v7: add designAudits table (Phase 7).
+    this.version(7).stores({
+      designAudits:
+        "id, projectId, reportId, url, overall, grade, createdAt, updatedAt",
+    });
   }
 }
 
