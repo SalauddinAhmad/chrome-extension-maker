@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Coordinates, CalculationMethod, PrayerTimes, SunnahTimes } from "adhan";
 
 export const Route = createFileRoute("/newtab-preview")({
   head: () => ({
@@ -45,12 +46,86 @@ const upcomingDuruds = [
   { t: "দুরুদে হাজার", v: "01:02" },
 ];
 
+const PRAYER_LABELS: Record<string, { bn: string; en: string }> = {
+  fajr: { bn: "ফজর", en: "Fajr" },
+  sunrise: { bn: "সূর্যোদয়", en: "Sunrise" },
+  dhuhr: { bn: "যোহর", en: "Dhuhr" },
+  asr: { bn: "আসর", en: "Asr" },
+  maghrib: { bn: "মাগরিব", en: "Maghrib" },
+  isha: { bn: "ইশা", en: "Isha" },
+};
+const PRAYER_ORDER = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"] as const;
+
+function fmtTime(d: Date) {
+  let h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2, "0");
+  const ap = h >= 12 ? "pm" : "am";
+  h = h % 12 || 12;
+  return { hm: `${h}:${m}`, ap };
+}
+function fmtCountdown(ms: number) {
+  if (ms < 0) ms = 0;
+  const s = Math.floor(ms / 1000);
+  const hh = String(Math.floor(s / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
+  const ss = String(s % 60).padStart(2, "0");
+  return `${hh}:${mm}:${ss}`;
+}
+
 function NewTabPreview() {
   const [now, setNow] = useState(new Date());
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  // Dhaka coordinates — Karachi method fits South Asia well
+  const prayers = useMemo(() => {
+    const coords = new Coordinates(23.8103, 90.4125);
+    const params = CalculationMethod.Karachi();
+    const today = new PrayerTimes(coords, now, params);
+    const tomorrow = new PrayerTimes(
+      coords,
+      new Date(now.getTime() + 24 * 3600 * 1000),
+      params,
+    );
+    const sunnah = new SunnahTimes(today);
+    const list = PRAYER_ORDER.map((k) => ({
+      key: k,
+      time: (today as any)[k] as Date,
+    }));
+    // Find next prayer
+    let nextKey: string = "fajr";
+    let nextTime: Date = tomorrow.fajr;
+    for (const p of list) {
+      if (p.time > now) {
+        nextKey = p.key;
+        nextTime = p.time;
+        break;
+      }
+    }
+    let currentKey: string = "isha";
+    for (let i = list.length - 1; i >= 0; i--) {
+      if (list[i].time <= now) {
+        currentKey = list[i].key;
+        break;
+      }
+    }
+    return { list, nextKey, nextTime, currentKey, sunnah };
+  }, [now]);
+
+  const toggleAdhan = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setPlaying(false);
+    } else {
+      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    }
+  };
 
   const dateStr = `${bnDays[now.getDay()]} · ${toBn(now.getDate())} ${bnMonths[now.getMonth()]} ${toBn(now.getFullYear())}`;
   const h = now.getHours() % 12 || 12;
@@ -246,6 +321,98 @@ function NewTabPreview() {
                   }}
                 >
                   {dateStr}
+                </div>
+              </div>
+
+              {/* Prayer times card — from Muslim Prayer Times reference */}
+              <div
+                className="rounded-2xl p-5 mb-4 relative overflow-hidden"
+                style={{
+                  background: "rgba(255,255,255,0.65)",
+                  border: "1px solid rgba(122,149,118,0.3)",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#5f7a5b", fontFamily: '"Fraunces", serif', fontWeight: 700 }}>
+                      ✦ সালাতের সময়সূচী · ঢাকা
+                    </div>
+                    <div className="mt-1" style={{ fontFamily: '"Fraunces", serif', fontWeight: 600, color: "#1c2a20", fontSize: 15 }}>
+                      পরবর্তী: {PRAYER_LABELS[prayers.nextKey].bn} —{" "}
+                      <span style={{ color: "#3d5638" }}>
+                        {toBn(fmtCountdown(prayers.nextTime.getTime() - now.getTime()))}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={toggleAdhan}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full transition"
+                    style={{
+                      background: playing ? "#1c2a20" : "#3d5638",
+                      color: "#ffffff",
+                      fontFamily: '"Fraunces", serif',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: "0.05em",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <span style={{ fontSize: 14 }}>{playing ? "■" : "▶"}</span>
+                    {playing ? "আযান বন্ধ" : "আযান শুনুন"}
+                  </button>
+                  <audio ref={audioRef} src="/adhan.mp3" onEnded={() => setPlaying(false)} preload="none" />
+                </div>
+                <div className="grid grid-cols-6 gap-2">
+                  {prayers.list.map((p) => {
+                    const t = fmtTime(p.time);
+                    const isNext = p.key === prayers.nextKey;
+                    const isCurrent = p.key === prayers.currentKey;
+                    return (
+                      <div
+                        key={p.key}
+                        className="rounded-xl px-2 py-3 text-center transition"
+                        style={{
+                          background: isNext
+                            ? "#3d5638"
+                            : isCurrent
+                              ? "rgba(122,149,118,0.28)"
+                              : "rgba(255,255,255,0.55)",
+                          color: isNext ? "#ffffff" : "#1c2a20",
+                          border: "1px solid",
+                          borderColor: isNext ? "#3d5638" : "rgba(122,149,118,0.25)",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: 10,
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            opacity: 0.75,
+                            fontFamily: '"Fraunces", serif',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {PRAYER_LABELS[p.key].en}
+                        </div>
+                        <div style={{ fontFamily: '"Tiro Bangla", serif', fontSize: 12, marginTop: 2, opacity: 0.9 }}>
+                          {PRAYER_LABELS[p.key].bn}
+                        </div>
+                        <div
+                          className="mt-1"
+                          style={{
+                            fontFamily: '"Fraunces", serif',
+                            fontWeight: 700,
+                            fontSize: 16,
+                          }}
+                        >
+                          {toBn(fmtTime(p.time).hm)}
+                          <span style={{ fontSize: 10, marginLeft: 2, opacity: 0.7 }}>{t.ap}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
