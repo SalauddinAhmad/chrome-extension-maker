@@ -211,64 +211,24 @@ function NewTabPreview() {
               minHeight: 640,
             }}
           >
-            {/* Sky decor: clouds + sparkles + birds */}
-            <svg
-              className="absolute top-0 left-0 w-full pointer-events-none"
-              viewBox="0 0 1200 260"
-              fill="none"
+            {/* Header decor (clouds / birds / sparkles from provided SVG) */}
+            <img
+              src="/pattern.svg"
+              alt=""
               aria-hidden
-            >
-              <g fill="#ffffff" opacity="0.9">
-                <ellipse cx="120" cy="60" rx="90" ry="22" />
-                <ellipse cx="200" cy="40" rx="60" ry="16" />
-                <ellipse cx="1050" cy="80" rx="110" ry="26" />
-                <ellipse cx="960" cy="50" rx="70" ry="18" />
-                <ellipse cx="1130" cy="180" rx="80" ry="20" />
-              </g>
-              <g fill="#7a9576" opacity="0.55">
-                {[
-                  [280, 90], [420, 40], [640, 130], [780, 70],
-                  [880, 160], [520, 200], [340, 210], [720, 200],
-                ].map(([x, y], i) => (
-                  <path
-                    key={i}
-                    d={`M${x} ${y - 6} L${x + 1.2} ${y - 1.2} L${x + 6} ${y} L${x + 1.2} ${y + 1.2} L${x} ${y + 6} L${x - 1.2} ${y + 1.2} L${x - 6} ${y} L${x - 1.2} ${y - 1.2} Z`}
-                  />
-                ))}
-              </g>
-              <g stroke="#4a6b48" strokeWidth="1.6" fill="none" strokeLinecap="round">
-                <path d="M950 150 q6 -8 12 0 q6 -8 12 0" />
-                <path d="M990 170 q5 -7 10 0 q5 -7 10 0" opacity="0.7" />
-                <path d="M1030 145 q6 -8 12 0 q6 -8 12 0" opacity="0.85" />
-              </g>
-            </svg>
+              className="absolute top-0 left-0 w-full pointer-events-none select-none"
+              style={{ opacity: 0.9, height: "auto", maxHeight: 260, objectFit: "cover", objectPosition: "top" }}
+            />
 
-            {/* Mountain silhouettes at bottom */}
-            <svg
-              className="absolute bottom-0 left-0 w-full pointer-events-none"
-              viewBox="0 0 1200 220"
-              preserveAspectRatio="none"
-              fill="none"
+            {/* Footer decor (mountains / grass from provided SVG) */}
+            <img
+              src="/footer-bg.svg"
+              alt=""
               aria-hidden
-              style={{ height: 180 }}
-            >
-              <path
-                d="M0 180 L120 120 L220 160 L340 90 L470 150 L600 100 L740 155 L860 110 L980 150 L1100 105 L1200 140 L1200 220 L0 220 Z"
-                fill="#b7c9b0"
-                opacity="0.6"
-              />
-              <path
-                d="M0 200 L100 160 L200 185 L320 140 L450 180 L580 150 L700 185 L820 155 L940 185 L1060 155 L1200 180 L1200 220 L0 220 Z"
-                fill="#8ea888"
-                opacity="0.6"
-              />
-              <g stroke="#5f7a5b" strokeWidth="0.6" opacity="0.4">
-                {Array.from({ length: 60 }).map((_, i) => {
-                  const x = 20 + i * 20;
-                  return <line key={i} x1={x} y1="215" x2={x} y2="207" />;
-                })}
-              </g>
-            </svg>
+              className="absolute bottom-0 left-0 w-full pointer-events-none select-none"
+              style={{ opacity: 0.95, height: "auto", maxHeight: 220, objectFit: "cover", objectPosition: "bottom" }}
+            />
+
 
             {/* Settings gear top-right */}
             <div className="absolute top-4 right-6" style={{ color: "#5f7a5b" }}>
