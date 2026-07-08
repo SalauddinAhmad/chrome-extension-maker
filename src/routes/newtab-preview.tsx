@@ -533,27 +533,20 @@ function NewTabPreview() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* Note */}
         <div
-          className="mt-10 p-8 rounded-2xl text-center"
-          style={{ background: "linear-gradient(135deg, #3d5638 0%, #1c2a20 100%)", color: "#ffffff" }}
+          className="mt-10 p-6 rounded-2xl text-center"
+          style={{ background: "#ffffff", border: "1px solid #dae5d3" }}
         >
-          <div className="text-xl mb-3" style={{ fontFamily: '"Fraunces", serif', fontWeight: 700 }}>
-            ডিজাইন পছন্দ হয়েছে?
-          </div>
           <p
-            className="text-sm mb-2"
-            style={{ fontFamily: '"Tiro Bangla", serif', color: "rgba(255,255,255,0.85)", lineHeight: 1.7 }}
+            className="text-sm"
+            style={{ fontFamily: '"Tiro Bangla", serif', color: "#3d5638", lineHeight: 1.7 }}
           >
-            "হ্যাঁ" বললে এই ডিজাইনটি Extension-এর নতুন ট্যাবে যোগ করে দেব।
-          </p>
-          <p
-            className="text-xs"
-            style={{ color: "#b7c9b0", fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
-          >
-            রঙ, লেআউট, টেক্সট — যেকোনো পরিবর্তনের অনুরোধ জানাতে পারেন।
+            এই ডিজাইনটি শুধুমাত্র landing page-এর একটি শোকেস প্রিভিউ —
+            Extension-এর নতুন ট্যাবে যোগ করা হবে না।
           </p>
         </div>
+
       </section>
     </div>
   );
