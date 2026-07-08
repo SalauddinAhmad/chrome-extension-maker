@@ -698,3 +698,77 @@ function FontChip({ font, onClick }: { font: StoredFont; onClick: () => void }) 
   );
 }
 
+
+function AuditSummary({ onOpen }: { onOpen: () => void }) {
+  const [recent, setRecent] = useState<DesignAudit[]>([]);
+  const [stats, setStats] = useState<{
+    total: number; averageScore: number; bestScore: number; worstScore: number;
+    gradeCounts: Record<string, number>;
+  } | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const [r, s] = await Promise.all([
+        designAuditRepository.listRecent(4),
+        designAuditRepository.statistics(),
+      ]);
+      if (!alive) return;
+      setRecent(r);
+      setStats(s);
+    })().catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  if (!stats || stats.total === 0) return null;
+
+  return (
+    <section className="rounded-xl border bg-card p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Search className="h-3.5 w-3.5 text-muted-foreground" />
+          <div className="text-xs font-semibold">Design Audits</div>
+          <div className="text-[10px] text-muted-foreground">avg {stats.averageScore}</div>
+        </div>
+        <button onClick={onOpen} className="text-[10px] text-muted-foreground hover:text-foreground">
+          Open →
+        </button>
+      </div>
+
+      <div className="mb-2 grid grid-cols-4 gap-1.5">
+        <StatChip label="Total" value={stats.total} />
+        <StatChip label="Avg" value={stats.averageScore} />
+        <StatChip label="Best" value={stats.bestScore} />
+        <StatChip label="Worst" value={stats.worstScore} />
+      </div>
+
+      <div className="space-y-1">
+        {recent.map((a) => (
+          <button
+            key={a.id}
+            onClick={onOpen}
+            className="flex w-full items-center gap-2 rounded border bg-background/50 px-2 py-1.5 text-left hover:bg-muted"
+          >
+            <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full border text-[10px] font-bold tabular-nums">
+              {a.overall}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-xs">{a.title}</div>
+              <div className="truncate text-[10px] text-muted-foreground">{a.url}</div>
+            </div>
+            <div className="shrink-0 text-[10px] font-semibold text-muted-foreground">{a.grade}</div>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function StatChip({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-md border bg-background/50 p-1.5 text-center">
+      <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="text-sm font-semibold tabular-nums">{value}</div>
+    </div>
+  );
+}
