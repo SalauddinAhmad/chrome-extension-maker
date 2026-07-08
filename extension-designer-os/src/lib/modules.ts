@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   Settings as SettingsIcon,
   FolderKanban,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,6 +21,7 @@ export type ModuleId =
   | "color-studio"
   | "typography-studio"
   | "design-inspector"
+  | "design-audit"
   | "inspiration-vault"
   | "asset-extractor"
   | "resource-hub"
@@ -28,7 +30,7 @@ export type ModuleId =
   | "screenshot"
   | "settings";
 
-export type ModulePhase = 1 | 2 | 3 | 4 | 5 | 6;
+export type ModulePhase = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type ModuleGroup = "dashboard" | "workspace" | "tools" | "library" | "utilities";
 
 export interface ModuleMeta {
