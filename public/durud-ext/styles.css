@@ -298,12 +298,14 @@ input:checked + .slider::before { transform: translateX(18px); }
 .hero-status {
   display: inline-block;
   font-size: 11px;
-  color: var(--gold);
-  background: rgba(184,148,74,0.15);
+  font-weight: 600;
+  color: #f2d98a;
+  background: rgba(242,217,138,0.18);
   padding: 3px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(184,148,74,0.3);
+  border: 1px solid rgba(242,217,138,0.45);
   font-family: "Tiro Bangla", serif;
+  letter-spacing: 0.02em;
 }
 .hero-status.off {
   color: #f0c4c4;
