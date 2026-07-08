@@ -46,12 +46,86 @@ const upcomingDuruds = [
   { t: "দুরুদে হাজার", v: "01:02" },
 ];
 
+const PRAYER_LABELS: Record<string, { bn: string; en: string }> = {
+  fajr: { bn: "ফজর", en: "Fajr" },
+  sunrise: { bn: "সূর্যোদয়", en: "Sunrise" },
+  dhuhr: { bn: "যোহর", en: "Dhuhr" },
+  asr: { bn: "আসর", en: "Asr" },
+  maghrib: { bn: "মাগরিব", en: "Maghrib" },
+  isha: { bn: "ইশা", en: "Isha" },
+};
+const PRAYER_ORDER = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"] as const;
+
+function fmtTime(d: Date) {
+  let h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2, "0");
+  const ap = h >= 12 ? "pm" : "am";
+  h = h % 12 || 12;
+  return { hm: `${h}:${m}`, ap };
+}
+function fmtCountdown(ms: number) {
+  if (ms < 0) ms = 0;
+  const s = Math.floor(ms / 1000);
+  const hh = String(Math.floor(s / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
+  const ss = String(s % 60).padStart(2, "0");
+  return `${hh}:${mm}:${ss}`;
+}
+
 function NewTabPreview() {
   const [now, setNow] = useState(new Date());
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  // Dhaka coordinates — Karachi method fits South Asia well
+  const prayers = useMemo(() => {
+    const coords = new Coordinates(23.8103, 90.4125);
+    const params = CalculationMethod.Karachi();
+    const today = new PrayerTimes(coords, now, params);
+    const tomorrow = new PrayerTimes(
+      coords,
+      new Date(now.getTime() + 24 * 3600 * 1000),
+      params,
+    );
+    const sunnah = new SunnahTimes(today);
+    const list = PRAYER_ORDER.map((k) => ({
+      key: k,
+      time: (today as any)[k] as Date,
+    }));
+    // Find next prayer
+    let nextKey: string = "fajr";
+    let nextTime: Date = tomorrow.fajr;
+    for (const p of list) {
+      if (p.time > now) {
+        nextKey = p.key;
+        nextTime = p.time;
+        break;
+      }
+    }
+    let currentKey: string = "isha";
+    for (let i = list.length - 1; i >= 0; i--) {
+      if (list[i].time <= now) {
+        currentKey = list[i].key;
+        break;
+      }
+    }
+    return { list, nextKey, nextTime, currentKey, sunnah };
+  }, [now]);
+
+  const toggleAdhan = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setPlaying(false);
+    } else {
+      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    }
+  };
 
   const dateStr = `${bnDays[now.getDay()]} · ${toBn(now.getDate())} ${bnMonths[now.getMonth()]} ${toBn(now.getFullYear())}`;
   const h = now.getHours() % 12 || 12;
