@@ -1,5 +1,6 @@
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { cn } from "@/lib/cn";
 
 interface CopyChipProps {
@@ -11,9 +12,14 @@ interface CopyChipProps {
 export function CopyChip({ label, value, className }: CopyChipProps) {
   const [copied, setCopied] = useState(false);
   const handle = async () => {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 900);
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      toast.success(`Copied ${label}`, { description: value });
+      window.setTimeout(() => setCopied(false), 900);
+    } catch {
+      toast.error("Copy failed");
+    }
   };
   return (
     <button

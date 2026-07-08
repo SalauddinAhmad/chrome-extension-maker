@@ -1,4 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
+import { toast } from "sonner";
 import {
   Bookmark,
   Camera,
@@ -7,6 +8,7 @@ import {
   LayoutDashboard,
   Palette,
   Search,
+  Sparkles,
   StickyNote,
   Type,
 } from "lucide-react";
@@ -14,6 +16,7 @@ import { db } from "@/storage";
 import { useUIStore } from "@/stores/ui-store";
 import type { ModuleId } from "@/lib/modules";
 import { cn } from "@/lib/cn";
+import { EmptyState } from "@/components/shared/empty-state";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
@@ -134,11 +137,11 @@ export default function Dashboard() {
       </div>
 
       {isEmpty && (
-        <div className="rounded-md border border-dashed p-6 text-center text-xs text-muted-foreground">
-          Everything you save appears here.
-          <br />
-          Try picking a color or scanning a page.
-        </div>
+        <EmptyState
+          icon={Sparkles}
+          title="Your library is empty"
+          description="Pick a color, scan a page, or save an inspiration — everything you capture appears here."
+        />
       )}
 
       {/* Recent colors */}
@@ -156,6 +159,7 @@ export default function Dashboard() {
                 key={c.id}
                 onClick={() => {
                   navigator.clipboard.writeText(c.hex);
+                  toast.success(`Copied ${c.hex}`);
                 }}
                 className={cn(
                   "aspect-square rounded-md border shadow-sm transition-transform hover:scale-105",
@@ -181,7 +185,10 @@ export default function Dashboard() {
             {fonts.map((f) => (
               <button
                 key={f.id}
-                onClick={() => navigator.clipboard.writeText(f.family)}
+                onClick={() => {
+                  navigator.clipboard.writeText(f.family);
+                  toast.success(`Copied ${f.family}`);
+                }}
                 className="flex w-full items-center justify-between rounded border bg-card px-2 py-1.5 text-left hover:bg-muted"
               >
                 <span

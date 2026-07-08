@@ -3,6 +3,8 @@ import { useUIStore } from "@/stores/ui-store";
 import { useTheme } from "@/hooks/use-theme";
 import type { ModuleId } from "@/lib/modules";
 import Dashboard from "@/modules/dashboard";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy-load feature modules so the popup boots < 1 s.
 const Color = lazy(() => import("@/modules/color-studio"));
@@ -30,13 +32,31 @@ const REGISTRY: Record<ModuleId, React.ComponentType> = {
   settings: SettingsMod,
 };
 
+function ModuleSkeleton() {
+  return (
+    <div className="space-y-3 p-4">
+      <Skeleton className="h-6 w-1/3" />
+      <Skeleton className="h-3 w-2/3" />
+      <div className="grid grid-cols-3 gap-2 pt-2">
+        <Skeleton className="h-16" />
+        <Skeleton className="h-16" />
+        <Skeleton className="h-16" />
+      </div>
+      <Skeleton className="h-24 w-full" />
+      <Skeleton className="h-24 w-full" />
+    </div>
+  );
+}
+
 export function ActiveModule() {
   const id = useUIStore((s) => s.activeModule);
   useTheme();
   const Component = REGISTRY[id];
   return (
-    <Suspense fallback={<div className="p-4 text-xs text-muted-foreground">Loading…</div>}>
-      <Component />
-    </Suspense>
+    <ErrorBoundary resetKey={id}>
+      <Suspense fallback={<ModuleSkeleton />}>
+        <Component />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
