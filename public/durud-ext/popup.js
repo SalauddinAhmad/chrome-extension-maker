@@ -56,15 +56,7 @@ function intervalToLabel(min) {
 }
 
 function renderDurud() {
-  const d =
-    state.duruds.find((x) => x.id === state.settings.durudId) ||
-    state.duruds[0];
-  state.currentIndex = state.duruds.indexOf(d);
-  const _n = $("#durud-name"); if (_n) _n.textContent = d.name;
-  $("#durud-arabic").textContent = d.arabic;
-  $("#durud-translit").textContent = d.translit;
-  $("#durud-bangla").textContent = d.bangla;
-  $("#durud-ref").textContent = d.reference;
+  // Durud card removed from UI
 }
 
 function renderSettings() {
@@ -155,7 +147,7 @@ function bindAll() {
   });
 
   // Prev/Next/Copy
-  $("#btn-prev").addEventListener("click", async () => {
+  const _bp = $("#btn-prev"); if (_bp) _bp.addEventListener("click", async () => {
     state.currentIndex =
       (state.currentIndex - 1 + state.duruds.length) % state.duruds.length;
     state.settings.durudId = state.duruds[state.currentIndex].id;
@@ -163,14 +155,14 @@ function bindAll() {
     renderDurud();
     { const _s = $("#select-durud"); if (_s) _s.value = state.settings.durudId; }
   });
-  $("#btn-next").addEventListener("click", async () => {
+  const _bn = $("#btn-next"); if (_bn) _bn.addEventListener("click", async () => {
     state.currentIndex = (state.currentIndex + 1) % state.duruds.length;
     state.settings.durudId = state.duruds[state.currentIndex].id;
     await saveSettings();
     renderDurud();
     { const _s = $("#select-durud"); if (_s) _s.value = state.settings.durudId; }
   });
-  $("#btn-copy").addEventListener("click", async () => {
+  const _bc = $("#btn-copy"); if (_bc) _bc.addEventListener("click", async () => {
     const d = state.duruds[state.currentIndex];
     await navigator.clipboard.writeText(
       `${d.arabic}\n\n${d.translit}\n\n${d.bangla}\n— ${d.reference}`,
