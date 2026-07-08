@@ -33,8 +33,9 @@ import { useColorStudioStore } from "@/modules/color-studio/store";
 import { typographyRepository } from "@/modules/typography-studio/repository";
 import { useTypographyLibraryStore } from "@/modules/typography-studio/library-store";
 import { useTypeStore } from "@/modules/typography-studio/store";
+import { designAuditRepository } from "@/modules/design-audit/repository";
 import { ASSET_TYPE_LABEL, FONT_CATEGORY_LABEL } from "@/types";
-import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory } from "@/types";
+import type { Project, Inspiration, Asset, AssetType, StoredFont, FontCategory, DesignAudit } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
