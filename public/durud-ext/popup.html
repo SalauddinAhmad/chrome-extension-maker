@@ -217,14 +217,14 @@
                 <circle cx="12" cy="12" r="3"/>
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
               </svg>
-              <span>অ্যাডভান্সড</span>
+              <span data-i18n="advanced">অ্যাডভান্সড</span>
             </div>
             <svg class="section-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="section-body">
             <div class="toggle-row">
               <div class="toggle-info">
-                <div class="toggle-title">রাতে সাইলেন্স</div>
+                <div class="toggle-title" data-i18n="nightSilence">রাতে সাইলেন্স</div>
                 <div class="toggle-sub" id="dnd-sub">১১:০০ – ভোর ৬:০০</div>
               </div>
               <label class="switch small">
@@ -236,11 +236,11 @@
             <div class="control-group dnd-times" id="dnd-times" hidden>
               <div class="time-row">
                 <label>
-                  <span>শুরু</span>
+                  <span data-i18n="startLbl">শুরু</span>
                   <input type="time" id="dnd-start" value="23:00" class="time-input" />
                 </label>
                 <label>
-                  <span>শেষ</span>
+                  <span data-i18n="endLbl">শেষ</span>
                   <input type="time" id="dnd-end" value="06:00" class="time-input" />
                 </label>
               </div>
@@ -248,8 +248,8 @@
 
             <div class="toggle-row">
               <div class="toggle-info">
-                <div class="toggle-title">শুধু সক্রিয় থাকলে</div>
-                <div class="toggle-sub">Idle অবস্থায় রিমাইন্ডার বন্ধ</div>
+                <div class="toggle-title" data-i18n="onlyActive">শুধু সক্রিয় থাকলে</div>
+                <div class="toggle-sub" data-i18n="onlyActiveSub">Idle অবস্থায় রিমাইন্ডার বন্ধ</div>
               </div>
               <label class="switch small">
                 <input type="checkbox" id="toggle-idle" />
