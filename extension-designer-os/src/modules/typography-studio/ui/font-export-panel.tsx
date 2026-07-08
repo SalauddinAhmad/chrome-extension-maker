@@ -5,9 +5,19 @@ import { Copy, Download } from "lucide-react";
 import { db } from "@/storage";
 import { useProjectStore } from "@/stores/project-store";
 import { exportFontsCss, exportFontsJson } from "../logic/scale";
+import { exportFontsTailwind } from "../logic/system";
+import type { StoredFont } from "@/types";
 import { cn } from "@/lib/cn";
 
-type Format = "css" | "json";
+type Format = "css" | "scss" | "json" | "tailwind";
+
+function exportFontsScss(fonts: StoredFont[]): string {
+  if (fonts.length === 0) return "// no fonts saved";
+  return fonts.map((f, i) => {
+    const key = f.family.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `font-${i + 1}`;
+    return `$font-${key}: "${f.family}", ${f.category === "monospace" ? "monospace" : f.category === "serif" ? "serif" : "sans-serif"};`;
+  }).join("\n") + "\n";
+}
 
 export function FontExportPanel() {
   const [format, setFormat] = useState<Format>("css");
@@ -20,31 +30,42 @@ export function FontExportPanel() {
     return all;
   }, [activeProjectId, onlyProject], []);
 
-  const output = format === "css" ? exportFontsCss(fonts) : exportFontsJson(fonts);
+  const output =
+    format === "css" ? exportFontsCss(fonts) :
+    format === "scss" ? exportFontsScss(fonts) :
+    format === "json" ? exportFontsJson(fonts) :
+    exportFontsTailwind(fonts);
+
+  const mime =
+    format === "css" ? "text/css" :
+    format === "scss" ? "text/x-scss" :
+    format === "json" ? "application/json" : "text/javascript";
+
+  const ext = format === "tailwind" ? "js" : format;
 
   function copy() { navigator.clipboard.writeText(output); toast.success("Copied"); }
   function download() {
-    const blob = new Blob([output], { type: format === "css" ? "text/css" : "application/json" });
+    const blob = new Blob([output], { type: mime });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `fonts.${format}`;
+    a.download = `fonts.${ext}`;
     a.click();
     URL.revokeObjectURL(a.href);
   }
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-1 rounded-md border bg-muted/40 p-1">
-        {(["css", "json"] as Format[]).map((f) => (
+      <div className="grid grid-cols-4 gap-1 rounded-md border bg-muted/40 p-1">
+        {(["css", "scss", "json", "tailwind"] as Format[]).map((f) => (
           <button
             key={f}
             onClick={() => setFormat(f)}
             className={cn(
-              "rounded px-2 py-1 text-[10px] font-medium",
+              "rounded px-2 py-1 text-[10px] font-medium uppercase",
               format === f ? "bg-background text-foreground shadow-sm" : "text-muted-foreground",
             )}
           >
-            {f.toUpperCase()}
+            {f}
           </button>
         ))}
       </div>

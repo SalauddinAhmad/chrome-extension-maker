@@ -2,17 +2,23 @@ import { Type } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useTypeStore } from "./store";
 import { DetectPanel } from "./ui/detect-panel";
-import { LibraryPanel } from "./ui/library-panel";
+import { FontLibrary } from "./ui/font-library";
+import { InspectorPanel } from "./ui/inspector-panel";
+import { SystemBuilder } from "./ui/system-builder";
 import { PairsPanel } from "./ui/pairs-panel";
 import { ScalePanel } from "./ui/scale-panel";
+import { ReadabilityAnalyzer } from "./ui/readability-analyzer";
 import { FontExportPanel } from "./ui/font-export-panel";
 import type { TypeTab } from "./types";
 
 const TABS: Array<{ id: TypeTab; label: string }> = [
   { id: "detect", label: "Detect" },
   { id: "library", label: "Library" },
+  { id: "inspector", label: "Inspect" },
+  { id: "system", label: "System" },
   { id: "pairs", label: "Pairs" },
   { id: "scale", label: "Scale" },
+  { id: "readability", label: "Read" },
   { id: "export", label: "Export" },
 ];
 
@@ -28,11 +34,11 @@ export default function TypographyStudio() {
         </div>
         <div className="flex-1">
           <div className="text-sm font-semibold leading-tight">Typography</div>
-          <div className="text-[10px] text-muted-foreground">Detect · pair · scale · export</div>
+          <div className="text-[10px] text-muted-foreground">Detect · inspect · systemize · export</div>
         </div>
       </header>
 
-      <div className="grid grid-cols-5 gap-1 rounded-md border bg-muted/40 p-1">
+      <div className="grid grid-cols-4 gap-1 rounded-md border bg-muted/40 p-1">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -50,9 +56,12 @@ export default function TypographyStudio() {
       </div>
 
       {tab === "detect" && <DetectPanel />}
-      {tab === "library" && <LibraryPanel />}
+      {tab === "library" && <FontLibrary />}
+      {tab === "inspector" && <InspectorPanel />}
+      {tab === "system" && <SystemBuilder />}
       {tab === "pairs" && <PairsPanel />}
       {tab === "scale" && <ScalePanel />}
+      {tab === "readability" && <ReadabilityAnalyzer />}
       {tab === "export" && <FontExportPanel />}
     </div>
   );
