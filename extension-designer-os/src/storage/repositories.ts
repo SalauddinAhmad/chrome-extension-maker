@@ -46,7 +46,7 @@ export function createRepo<T extends Entity>(tableName: keyof typeof db): Repo<T
       return entity;
     },
     async update(id, patch) {
-      await table.update(id, { ...(patch as object), updatedAt: now() } as Partial<T>);
+      await table.update(id, { ...(patch as object), updatedAt: now() } as unknown as import("dexie").UpdateSpec<T>);
     },
     async remove(id) {
       await table.delete(id);

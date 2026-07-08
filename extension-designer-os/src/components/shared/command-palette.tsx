@@ -77,26 +77,22 @@ export function CommandPalette() {
   };
 
   // Live data (only when palette is open to keep it cheap)
-  const colors = useLiveQuery<StoredColor[]>(
-    () => (open ? colorRepository.listRecent(20) : Promise.resolve([])),
+  const colors = useLiveQuery(
+    () => (open ? colorRepository.listRecent(20) : Promise.resolve([] as StoredColor[])),
     [open],
-    [],
-  );
-  const fonts = useLiveQuery<StoredFont[]>(
-    () => (open ? typographyRepository.listRecent(20) : Promise.resolve([])),
+  ) ?? [];
+  const fonts = useLiveQuery(
+    () => (open ? typographyRepository.listRecent(20) : Promise.resolve([] as StoredFont[])),
     [open],
-    [],
-  );
-  const inspirations = useLiveQuery<Inspiration[]>(
-    () => (open ? inspirationRepository.listRecent(30) : Promise.resolve([])),
+  ) ?? [];
+  const inspirations = useLiveQuery(
+    () => (open ? inspirationRepository.listRecent(30) : Promise.resolve([] as Inspiration[])),
     [open],
-    [],
-  );
-  const notes = useLiveQuery<Note[]>(
-    () => (open ? noteRepository.listRecent(30) : Promise.resolve([])),
+  ) ?? [];
+  const notes = useLiveQuery(
+    () => (open ? noteRepository.listRecent(30) : Promise.resolve([] as Note[])),
     [open],
-    [],
-  );
+  ) ?? [];
 
   const navActions = useMemo<Action[]>(
     () =>

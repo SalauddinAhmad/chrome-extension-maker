@@ -79,11 +79,10 @@ export default function Dashboard() {
     notes: useLiveQuery(() => noteRepository.count(), [], 0),
   };
 
-  const recentProjects = useLiveQuery<Project[]>(
+  const recentProjects = useLiveQuery(
     () => projectRepository.listRecentActive(4),
     [],
-    [],
-  );
+  ) ?? [];
 
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const activityTick = totals.colors + totals.fonts + totals.inspirations + totals.assets + totals.notes + totals.projects;
