@@ -600,3 +600,98 @@ function ColorSummary({ onOpen }: { onOpen: () => void }) {
     </div>
   );
 }
+
+function FontSummary({ onOpen }: { onOpen: () => void }) {
+  const setLibFilters = useTypographyLibraryStore((s) => s.setFilters);
+  const setTypeTab = useTypeStore((s) => s.setTab);
+  const recent = useLiveQuery(() => typographyRepository.listRecent(6), [], []);
+  const favorites = useLiveQuery(() => typographyRepository.listFavorites(6), [], []);
+  const catStats = useLiveQuery(() => typographyRepository.categoryStats(), [], {} as Record<string, number>);
+
+  if (recent.length === 0 && favorites.length === 0) return null;
+
+  const openLibrary = () => { setTypeTab("library"); onOpen(); };
+  const openFavorites = () => {
+    setTypeTab("library");
+    setLibFilters({ favoritesOnly: true });
+    onOpen();
+  };
+  const openByCat = (c: FontCategory) => {
+    setTypeTab("library");
+    setLibFilters({ category: c });
+    onOpen();
+  };
+
+  const topCats = (Object.entries(catStats) as Array<[FontCategory, number]>)
+    .filter(([, n]) => n > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4);
+
+  return (
+    <div className="space-y-3">
+      {recent.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={Type}>Recent fonts</SectionLabel>
+            <OpenLink onClick={openLibrary} />
+          </div>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+            {recent.map((f) => <FontChip key={f.id} font={f} onClick={openLibrary} />)}
+          </div>
+        </div>
+      )}
+      {favorites.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between">
+            <SectionLabel icon={Type}>Favorite fonts</SectionLabel>
+            <OpenLink onClick={openFavorites} />
+          </div>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+            {favorites.map((f) => <FontChip key={f.id} font={f} onClick={openFavorites} />)}
+          </div>
+        </div>
+      )}
+      {topCats.length > 0 && (
+        <div>
+          <SectionLabel icon={Type}>Typography statistics</SectionLabel>
+          <div className="mt-1.5 grid grid-cols-4 gap-1.5">
+            {topCats.map(([cat, n]) => (
+              <button
+                key={cat}
+                onClick={() => openByCat(cat)}
+                className="rounded-md border bg-card px-2 py-2 text-left hover:border-primary/40 hover:bg-accent/40"
+              >
+                <div className="text-sm font-semibold leading-tight">{n}</div>
+                <div className="text-[9px] uppercase tracking-wide text-muted-foreground">
+                  {FONT_CATEGORY_LABEL[cat]}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FontChip({ font, onClick }: { font: StoredFont; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center gap-2 overflow-hidden rounded-md border bg-card p-2 text-left hover:border-primary/40"
+      title={font.family}
+    >
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[13px] leading-tight" style={{ fontFamily: `"${font.family}", sans-serif` }}>
+          {font.family}
+        </div>
+        {font.category && (
+          <div className="truncate text-[9px] text-muted-foreground">
+            {FONT_CATEGORY_LABEL[font.category]}
+          </div>
+        )}
+      </div>
+    </button>
+  );
+}
+
