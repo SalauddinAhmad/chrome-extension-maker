@@ -22,6 +22,8 @@ import type { ModuleId } from "@/lib/modules";
 import { cn } from "@/lib/cn";
 import { EmptyState } from "@/components/shared/empty-state";
 import { fetchRecentActivity, type ActivityItem } from "@/modules/projects/logic/activity";
+import { computeProjectStats, EMPTY_STATS } from "@/modules/projects/logic/stats";
+import type { Project } from "@/types";
 
 const QUICK_ACTIONS: Array<{ id: ModuleId; label: string; icon: typeof Palette }> = [
   { id: "color-studio", label: "Pick color", icon: Palette },
