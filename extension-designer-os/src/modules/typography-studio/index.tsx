@@ -4,12 +4,16 @@ import { useTypeStore } from "./store";
 import { DetectPanel } from "./ui/detect-panel";
 import { LibraryPanel } from "./ui/library-panel";
 import { PairsPanel } from "./ui/pairs-panel";
+import { ScalePanel } from "./ui/scale-panel";
+import { FontExportPanel } from "./ui/font-export-panel";
 import type { TypeTab } from "./types";
 
 const TABS: Array<{ id: TypeTab; label: string }> = [
   { id: "detect", label: "Detect" },
   { id: "library", label: "Library" },
   { id: "pairs", label: "Pairs" },
+  { id: "scale", label: "Scale" },
+  { id: "export", label: "Export" },
 ];
 
 export default function TypographyStudio() {
@@ -24,17 +28,17 @@ export default function TypographyStudio() {
         </div>
         <div className="flex-1">
           <div className="text-sm font-semibold leading-tight">Typography</div>
-          <div className="text-[10px] text-muted-foreground">Detect · library · pairs</div>
+          <div className="text-[10px] text-muted-foreground">Detect · pair · scale · export</div>
         </div>
       </header>
 
-      <div className="grid grid-cols-3 gap-1 rounded-md border bg-muted/40 p-1">
+      <div className="grid grid-cols-5 gap-1 rounded-md border bg-muted/40 p-1">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              "rounded px-2 py-1.5 text-[11px] font-medium transition-colors",
+              "rounded px-1 py-1.5 text-[10px] font-medium transition-colors",
               tab === t.id
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
@@ -48,6 +52,8 @@ export default function TypographyStudio() {
       {tab === "detect" && <DetectPanel />}
       {tab === "library" && <LibraryPanel />}
       {tab === "pairs" && <PairsPanel />}
+      {tab === "scale" && <ScalePanel />}
+      {tab === "export" && <FontExportPanel />}
     </div>
   );
 }
