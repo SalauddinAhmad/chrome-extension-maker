@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Designer OS",
+  "version": "0.1.0",
+  "description": "Designer OS — ডিজাইনারদের জন্য একটি অল-ইন-ওয়ান ব্রাউজার টুলকিট (WIP)।",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Designer OS"
+  },
+  "permissions": ["storage"],
+  "icons": {}
+}
