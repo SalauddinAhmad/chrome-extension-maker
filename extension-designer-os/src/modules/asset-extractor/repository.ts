@@ -90,12 +90,19 @@ export const assetRepository = {
     return assetsRepo.update(id, patch);
   },
 
+  /** Cascade delete: also drops the paired binary in `assetBlobs`. */
   async remove(id: string): Promise<void> {
-    return assetsRepo.remove(id);
+    await db.transaction("rw", [db.assets, db.assetBlobs], async () => {
+      await db.assetBlobs.delete(id);
+      await db.assets.delete(id);
+    });
   },
 
   async removeMany(ids: string[]): Promise<void> {
-    await db.assets.bulkDelete(ids);
+    await db.transaction("rw", [db.assets, db.assetBlobs], async () => {
+      await db.assetBlobs.bulkDelete(ids);
+      await db.assets.bulkDelete(ids);
+    });
   },
 
   async toggleFavorite(id: string): Promise<void> {
