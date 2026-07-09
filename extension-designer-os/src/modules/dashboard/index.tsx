@@ -89,7 +89,7 @@ export default function Dashboard() {
   ) ?? [];
 
   const [activity, setActivity] = useState<ActivityItem[]>([]);
-  const settings = useLiveQuery<Settings | undefined>(() => getSettings(), [], undefined);
+  const settings = useLiveQuery(() => getSettings(), []);
   const activityTick = totals.colors + totals.fonts + totals.inspirations + totals.assets + totals.notes + totals.projects;
 
   useEffect(() => {
