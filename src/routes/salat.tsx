@@ -222,16 +222,15 @@ function SalatHome() {
       {/* Ambient mihrab silhouette */}
       <Mihrab
         className="breathe pointer-events-none absolute top-0 left-1/2 h-[92vh] w-[min(90vw,720px)] -translate-x-1/2 opacity-60"
-        // gold tint
-        // @ts-expect-error inline style
         style={{ color: "var(--gold)" }}
       />
 
       {/* Corner marks */}
-      <CornerMark className="absolute top-6 left-6 h-8 w-8 opacity-40" style={{ color: "var(--gold)" } as any} />
-      <CornerMark className="absolute top-6 right-6 h-8 w-8 -scale-x-100 opacity-40" style={{ color: "var(--gold)" } as any} />
-      <CornerMark className="absolute bottom-6 left-6 h-8 w-8 -scale-y-100 opacity-40" style={{ color: "var(--gold)" } as any} />
-      <CornerMark className="absolute right-6 bottom-6 h-8 w-8 -scale-100 opacity-40" style={{ color: "var(--gold)" } as any} />
+      <CornerMark className="absolute top-6 left-6 h-8 w-8 opacity-40" style={{ color: "var(--gold)" }} />
+      <CornerMark className="absolute top-6 right-6 h-8 w-8 -scale-x-100 opacity-40" style={{ color: "var(--gold)" }} />
+      <CornerMark className="absolute bottom-6 left-6 h-8 w-8 -scale-y-100 opacity-40" style={{ color: "var(--gold)" }} />
+      <CornerMark className="absolute right-6 bottom-6 h-8 w-8 -scale-100 opacity-40" style={{ color: "var(--gold)" }} />
+
 
       <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-8 pt-12 pb-14 md:px-16 md:pt-16">
         {/* ── Masthead ─────────────────────────────────────────────── */}
