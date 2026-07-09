@@ -35,7 +35,7 @@ describe("backup versioning", () => {
         schemaVersion: db.verno + 5,
         data: {},
       }),
-    ).toThrow(/newer/);
+    ).toThrow(/only supports up to/);
   });
 
   test("rejects a backup with a newer file version", () => {
