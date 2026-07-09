@@ -248,164 +248,31 @@ function LeadPilot() {
 
           {/* Content */}
           <div className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 lg:px-6">
-            {/* KPI cards */}
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              <Kpi label="Total Leads" value={totals.total.toLocaleString()} delta="+18%" up />
-              <Kpi label="Hot Leads" value={totals.hot.toString()} delta="+4" up accent={T.hot} />
-              <Kpi label="Opportunities" value={totals.opps.toString()} delta="+12" up />
-              <Kpi label="Avg Lead Score" value={totals.avg.toString()} delta="+6.2" up />
-            </div>
+            {active === "dashboard" && <DashboardView totals={totals} onGo={setActive} />}
 
-            {/* Finder toolbar */}
-            <section className="mt-6 rounded-xl border" style={{ borderColor: T.border, background: T.surface }}>
-              <div className="border-b p-4" style={{ borderColor: T.border }}>
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="relative min-w-[260px] flex-1">
-                    <IconSearch className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" style={{ color: T.faint }} />
-                    <input
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Try: Dental clinic in Sylhet with no website"
-                      className="w-full rounded-md border py-2 pr-3 pl-9 text-[13px] outline-none transition focus:ring-2"
-                      style={{
-                        background: T.bg,
-                        borderColor: T.border,
-                        color: T.ink,
-                      }}
-                    />
-                  </div>
-                  <Select value={city} onChange={setCity} options={["All cities", "Sylhet", "Dhaka", "Chittagong", "New York", "Dubai", "London", "Toronto", "Tokyo"]} />
-                  <Segment
-                    value={temp}
-                    onChange={(v) => setTemp(v as typeof temp)}
-                    options={[
-                      { v: "all", label: "All" },
-                      { v: "hot", label: "Hot", color: T.hot },
-                      { v: "warm", label: "Warm", color: T.warm },
-                      { v: "cold", label: "Cold", color: T.cold },
-                    ]}
-                  />
-                  <div className="flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-[12px]" style={{ borderColor: T.border, color: T.mute, background: T.bg }}>
-                    <span>Min rating</span>
-                    <input
-                      type="range" min={0} max={5} step={0.5}
-                      value={minRating}
-                      onChange={(e) => setMinRating(parseFloat(e.target.value))}
-                      className="w-20 accent-current"
-                      style={{ color: T.brand }}
-                    />
-                    <span className="tabular-nums" style={{ color: T.ink }}>{minRating.toFixed(1)}</span>
-                  </div>
-                  <button
-                    className="ml-auto inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
-                    style={{ background: T.brand, boxShadow: `0 4px 14px -4px ${T.brand}` }}
-                  >
-                    <IconPlus className="h-3.5 w-3.5" />
-                    Discover leads
-                  </button>
-                </div>
-              </div>
+            {active === "finder" && (
+              <FinderView
+                totals={totals}
+                query={query} setQuery={setQuery}
+                city={city} setCity={setCity}
+                temp={temp} setTemp={setTemp}
+                minRating={minRating} setMinRating={setMinRating}
+                filtered={filtered}
+                selected={selected} setSelected={setSelected}
+                activeLead={activeLead}
+              />
+            )}
 
-              {/* Table + detail split */}
-              <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px]">
-                {/* Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-[12.5px]">
-                    <thead>
-                      <tr style={{ color: T.faint }}>
-                        {["Business", "Category", "Location", "Rating", "Website", "Score", "Opportunities"].map((h) => (
-                          <th key={h} className="px-4 py-2.5 text-[10.5px] font-medium uppercase tracking-[0.08em]" style={{ borderBottom: `1px solid ${T.border}` }}>
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.map((l) => {
-                        const on = selected === l.id;
-                        return (
-                          <tr
-                            key={l.id}
-                            onClick={() => setSelected(l.id)}
-                            className="cursor-pointer transition"
-                            style={{
-                              background: on ? "rgba(59,130,246,0.06)" : "transparent",
-                              borderBottom: `1px solid ${T.border}`,
-                            }}
-                          >
-                            <td className="px-4 py-3">
-                              <div className="flex items-center gap-2.5">
-                                <div
-                                  className="grid h-8 w-8 flex-none place-items-center rounded-md text-[11px] font-semibold"
-                                  style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}
-                                >
-                                  {l.name.split(" ").slice(0, 2).map((s) => s[0]).join("")}
-                                </div>
-                                <div className="min-w-0">
-                                  <div className="truncate font-medium" style={{ color: T.ink }}>{l.name}</div>
-                                  <div className="truncate text-[11px]" style={{ color: T.faint }}>{l.phone}</div>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3" style={{ color: T.mute }}>{l.category}</td>
-                            <td className="px-4 py-3" style={{ color: T.mute }}>{l.city}</td>
-                            <td className="px-4 py-3">
-                              <div className="flex items-center gap-1">
-                                <IconStar className="h-3 w-3" style={{ color: T.warm }} />
-                                <span className="tabular-nums" style={{ color: T.ink }}>{l.rating}</span>
-                                <span className="tabular-nums text-[11px]" style={{ color: T.faint }}>({l.reviews})</span>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3">
-                              {l.website ? (
-                                <span className="inline-flex items-center gap-1 text-[12px]" style={{ color: T.mute }}>
-                                  <IconGlobe className="h-3 w-3" style={{ color: l.ssl ? T.ok : T.danger }} />
-                                  <span className="truncate">{l.website}</span>
-                                </span>
-                              ) : (
-                                <span
-                                  className="rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider"
-                                  style={{ background: "rgba(239,68,68,0.12)", color: T.danger }}
-                                >
-                                  No site
-                                </span>
-                              )}
-                            </td>
-                            <td className="px-4 py-3">
-                              <ScorePill score={l.score} temp={l.temp} />
-                            </td>
-                            <td className="px-4 py-3">
-                              <div className="flex flex-wrap gap-1">
-                                {l.opps.slice(0, 2).map((o) => (
-                                  <span
-                                    key={o}
-                                    className="rounded-md px-1.5 py-0.5 text-[10.5px]"
-                                    style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}
-                                  >
-                                    {o}
-                                  </span>
-                                ))}
-                                {l.opps.length > 2 && (
-                                  <span className="text-[10.5px]" style={{ color: T.faint }}>+{l.opps.length - 2}</span>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+            {active === "crm" && <CRMView />}
+            {active === "audits" && <AuditsView />}
+            {active === "outreach" && <OutreachView />}
 
-                {/* Detail panel */}
-                <aside className="border-t xl:border-t-0 xl:border-l" style={{ borderColor: T.border, background: T.surface2 }}>
-                  <LeadDetail lead={activeLead} />
-                </aside>
-              </div>
-            </section>
+            {(active === "saved" || active === "competitors" || active === "reports" || active === "team" || active === "settings") && (
+              <ModulePlaceholder title={NAV.find((n) => n.key === active)?.label ?? ""} />
+            )}
 
             <p className="mt-6 text-center text-[10.5px] uppercase tracking-[0.24em]" style={{ color: T.faint }}>
-              LeadPilot AI · v0.1 · Phase 1 Foundation
+              LeadPilot AI · v0.2 · Finder · CRM · Audit · Outreach
             </p>
           </div>
         </main>
