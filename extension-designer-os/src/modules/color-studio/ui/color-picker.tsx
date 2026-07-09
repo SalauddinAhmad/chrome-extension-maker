@@ -15,8 +15,14 @@ export function ColorPicker() {
           <Pipette className="h-4 w-4" />
           {isPicking ? "Picking…" : "Pick from page"}
         </Button>
-        <Button variant="outline" size="icon" onClick={() => void saveCurrent()} title="Save color">
-          <Save className="h-4 w-4" />
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => void saveCurrent()}
+          title="Save color"
+          aria-label="Save color"
+        >
+          <Save className="h-4 w-4" aria-hidden="true" />
         </Button>
       </div>
 
