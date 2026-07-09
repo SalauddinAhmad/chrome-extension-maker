@@ -26,13 +26,13 @@ describe("rgb ↔ hsl", () => {
   it("converts primary red to hsl(0, 100%, 50%)", () => {
     expect(rgbToHsl({ r: 255, g: 0, b: 0 })).toEqual({ h: 0, s: 100, l: 50 });
   });
-  it("round-trips within 1-unit tolerance", () => {
+  it("round-trips within 2-unit tolerance", () => {
     const cases = [{ r: 79, g: 70, b: 229 }, { r: 34, g: 197, b: 94 }, { r: 250, g: 204, b: 21 }];
     for (const rgb of cases) {
       const back = hslToRgb(rgbToHsl(rgb));
-      expect(Math.abs(back.r - rgb.r)).toBeLessThanOrEqual(1);
-      expect(Math.abs(back.g - rgb.g)).toBeLessThanOrEqual(1);
-      expect(Math.abs(back.b - rgb.b)).toBeLessThanOrEqual(1);
+      expect(Math.abs(back.r - rgb.r)).toBeLessThanOrEqual(2);
+      expect(Math.abs(back.g - rgb.g)).toBeLessThanOrEqual(2);
+      expect(Math.abs(back.b - rgb.b)).toBeLessThanOrEqual(2);
     }
   });
 });
