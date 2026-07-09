@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import {
   Bookmark,
+  ChevronRight,
   FolderKanban,
   Image as ImageIcon,
   LayoutDashboard,
@@ -12,6 +13,9 @@ import {
   Type,
   Clock,
 } from "lucide-react";
+import { GettingStartedChecklist } from "@/components/shared/getting-started-checklist";
+import { getSettings } from "@/storage";
+import type { Settings } from "@/types";
 import { useUIStore } from "@/stores/ui-store";
 import { useProjectStore } from "@/stores/project-store";
 import type { ModuleId } from "@/lib/modules";
