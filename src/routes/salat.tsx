@@ -258,7 +258,7 @@ function SalatHome() {
           </button>
           <div className="text-center">
             <div
-              className="font-serif text-[15px] tracking-[0.42em]"
+              className="text-[15px] tracking-[0.42em]"
               style={{ color: "#4a2f14" }}
             >
               DEEN MUSLIM
@@ -290,7 +290,7 @@ function SalatHome() {
 
           <div className="relative flex h-full flex-col items-center justify-center pt-6">
             <div
-              className="tabular flex items-center gap-6 font-serif leading-none"
+              className="tabular flex items-center gap-6 leading-none"
               style={{ color: "#3a2510", letterSpacing: "-0.04em" }}
             >
               <span className="rise text-[112px]">{toBn(pad(cH || 18))}</span>
@@ -307,7 +307,7 @@ function SalatHome() {
                   Remaining Time
                 </div>
                 <div
-                  className="tabular font-serif mt-1 text-2xl"
+                  className="tabular mt-1 text-2xl"
                   style={{ color: "#3a2510" }}
                 >
                   {next.bn} {toBn(cH)}:{toBn(pad(cM))}:{toBn(pad(cS))}
@@ -318,7 +318,7 @@ function SalatHome() {
                   {gregDate}
                 </div>
                 <div
-                  className="font-serif mt-1 text-2xl"
+                  className="mt-1 text-2xl"
                   style={{ color: "#3a2510" }}
                 >
                   Sylhet, Bangladesh
@@ -374,7 +374,7 @@ function SalatHome() {
         <section className="mt-8">
           <div className="mb-3 flex items-baseline justify-between">
             <div
-              className="font-serif text-lg"
+              className="text-lg"
               style={{ color: "#3a2510" }}
             >
               Today's Prayers
@@ -409,7 +409,7 @@ function SalatHome() {
                 >
                   <div className="flex items-center gap-3">
                     <span
-                      className="grid h-9 w-9 place-items-center rounded-full font-serif text-sm"
+                      className="grid h-9 w-9 place-items-center rounded-full text-sm"
                       style={{
                         background: isCurrent ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.5)",
                         color: "#7a4a14",
@@ -418,7 +418,7 @@ function SalatHome() {
                       {toBn(i + 1)}
                     </span>
                     <div>
-                      <div className="font-serif text-lg leading-tight">{p.bn}</div>
+                      <div className="text-lg leading-tight">{p.bn}</div>
                       <div className="text-[11px] tracking-[0.2em] uppercase" style={{ color: "#7a4a14" }}>
                         {p.en}
                       </div>
@@ -428,7 +428,7 @@ function SalatHome() {
                     <span className="font-arabic text-xl" style={{ color: "#7a4a14" }}>
                       {p.ar}
                     </span>
-                    <span className="tabular font-serif text-xl">
+                    <span className="tabular text-xl">
                       {toBn(p.h > 12 ? p.h - 12 : p.h)}:{toBn(pad(p.m))}
                     </span>
                   </div>
@@ -449,7 +449,7 @@ function SalatHome() {
           }}
         >
           <div className="mb-3 flex items-center justify-between">
-            <div className="font-serif text-xl" style={{ color: "#3a2510" }}>
+            <div className="text-xl" style={{ color: "#3a2510" }}>
               Al Quran
             </div>
             <div
@@ -484,7 +484,7 @@ function SalatHome() {
               <div className="text-[10px] tracking-[0.3em] uppercase" style={{ color: "#7a4a14" }}>
                 Last Read
               </div>
-              <div className="font-serif mt-0.5 text-2xl italic">Al-Fatiah</div>
+              <div className="mt-0.5 text-2xl italic">Al-Fatiah</div>
               <div className="text-[11px]" style={{ color: "#7a4a14" }}>
                 Ayah No: 1
               </div>
@@ -502,13 +502,13 @@ function SalatHome() {
               >
                 <div className="flex items-center gap-3">
                   <span
-                    className="tabular font-serif w-8 text-sm"
+                    className="tabular w-8 text-sm"
                     style={{ color: "#8a5a20" }}
                   >
                     {String(s.no).padStart(2, "0")}
                   </span>
                   <div>
-                    <div className="font-serif text-lg" style={{ color: "#3a2510" }}>
+                    <div className="text-lg" style={{ color: "#3a2510" }}>
                       {s.en}
                     </div>
                     <div className="text-[11px]" style={{ color: "#8a5a20" }}>
