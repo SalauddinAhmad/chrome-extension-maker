@@ -113,28 +113,16 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Workspace overview stats */}
-      <div className="grid grid-cols-3 gap-1.5">
-        {[
-          { label: "Projects", value: totals.projects, module: "projects" as ModuleId },
-          { label: "Inspiration", value: totals.inspirations, module: "inspiration-vault" as ModuleId },
-          { label: "Assets", value: totals.assets, module: "asset-extractor" as ModuleId },
-          { label: "Colors", value: totals.colors, module: "color-studio" as ModuleId },
-          { label: "Fonts", value: totals.fonts, module: "typography-studio" as ModuleId },
-          { label: "Notes", value: totals.notes, module: "notes" as ModuleId },
-        ].map((s) => (
-          <button
-            key={s.label}
-            onClick={() => setActiveModule(s.module)}
-            className="rounded-md border bg-card p-2 text-left transition-colors hover:border-primary/40 hover:bg-accent/40"
-          >
-            <div className="text-sm font-semibold leading-tight">{s.value}</div>
-            <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{s.label}</div>
-          </button>
-        ))}
-      </div>
+      {/* 1. Getting Started checklist (auto-hidden when complete or dismissed) */}
+      <GettingStartedChecklist dismissed={settings?.checklistDismissed ?? false} />
 
-      {/* Quick actions */}
+      {/* 2. Active project — Continue Working */}
+      <ActiveProjectCard
+        activeProjectId={activeProject}
+        onContinue={(id) => { setActiveModule("projects"); openProjectDetail(id); }}
+      />
+
+      {/* 3. Quick actions */}
       <div>
         <SectionLabel>Quick actions</SectionLabel>
         <div className="mt-1.5 grid grid-cols-3 gap-1.5">
@@ -144,9 +132,10 @@ export default function Dashboard() {
               <button
                 key={a.id}
                 onClick={() => setActiveModule(a.id)}
+                aria-label={a.label}
                 className="flex flex-col items-center gap-1 rounded-md border bg-card px-2 py-2.5 text-[10px] font-medium transition-colors hover:border-primary/50 hover:bg-accent"
               >
-                <Icon className="h-3.5 w-3.5" />
+                <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>{a.label}</span>
               </button>
             );
@@ -157,7 +146,7 @@ export default function Dashboard() {
       {hasNoProjects ? (
         <div className="rounded-lg border bg-gradient-to-br from-primary/10 via-card to-card p-4 text-center">
           <div className="mx-auto grid h-9 w-9 place-items-center rounded-full bg-primary/15 text-primary">
-            <Sparkles className="h-4 w-4" />
+            <Sparkles className="h-4 w-4" aria-hidden="true" />
           </div>
           <div className="mt-2 text-sm font-semibold">Welcome to Designer OS</div>
           <div className="mx-auto mt-1 max-w-[280px] text-[11px] leading-snug text-muted-foreground">
@@ -165,9 +154,10 @@ export default function Dashboard() {
           </div>
           <button
             onClick={createProject}
+            aria-label="Create your first project"
             className="mt-2.5 inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
           >
-            <FolderKanban className="h-3 w-3" /> Create Project
+            <FolderKanban className="h-3 w-3" aria-hidden="true" /> Create Project
           </button>
         </div>
       ) : isEmpty ? (
@@ -178,7 +168,42 @@ export default function Dashboard() {
         />
       ) : null}
 
-      {/* Recent projects */}
+      {/* 4. Recent activity */}
+      {activity.length > 0 && (
+        <div>
+          <SectionLabel icon={Clock}>Recent activity</SectionLabel>
+          <div className="mt-1.5 space-y-1">
+            {activity.map((a) => {
+              const Icon = KIND_ICON[a.kind];
+              return (
+                <div
+                  key={a.id}
+                  className="flex items-center gap-2 rounded border bg-card px-2 py-1.5"
+                >
+                  {a.color ? (
+                    <span
+                      className="h-3.5 w-3.5 shrink-0 rounded border"
+                      style={{ background: a.color }}
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  )}
+                  <span className="min-w-0 flex-1 truncate text-[11px]">{a.label}</span>
+                  {a.detail && (
+                    <span className="shrink-0 truncate rounded bg-muted px-1 py-0.5 text-[9px] text-muted-foreground">
+                      {a.detail}
+                    </span>
+                  )}
+                  <span className="shrink-0 text-[9px] text-muted-foreground">{timeAgo(a.ts)}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Recent projects (still useful directly under activity) */}
       {recentProjects.length > 0 && (
         <div>
           <div className="flex items-center justify-between">
@@ -198,66 +223,107 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Recent activity */}
-      {activity.length > 0 && (
-        <div>
-          <SectionLabel icon={Clock}>Recent activity</SectionLabel>
-          <div className="mt-1.5 space-y-1">
-            {activity.map((a) => {
-              const Icon = KIND_ICON[a.kind];
-              return (
-                <div
-                  key={a.id}
-                  className="flex items-center gap-2 rounded border bg-card px-2 py-1.5"
-                >
-                  {a.color ? (
-                    <span
-                      className="h-3.5 w-3.5 shrink-0 rounded border"
-                      style={{ background: a.color }}
-                    />
-                  ) : (
-                    <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                  )}
-                  <span className="min-w-0 flex-1 truncate text-[11px]">{a.label}</span>
-                  {a.detail && (
-                    <span className="shrink-0 truncate rounded bg-muted px-1 py-0.5 text-[9px] text-muted-foreground">
-                      {a.detail}
-                    </span>
-                  )}
-                  <span className="shrink-0 text-[9px] text-muted-foreground">{timeAgo(a.ts)}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Recent + favorite inspirations */}
-      <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
-
-      {/* Recent + favorite inspirations */}
-      <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
-
-      {/* Asset library summary */}
-      <AssetSummary onOpen={() => setActiveModule("asset-extractor")} />
-
-      {/* Color library summary */}
-      <ColorSummary onOpen={() => setActiveModule("color-studio")} />
-
-      {/* Typography library summary */}
-      <FontSummary onOpen={() => setActiveModule("typography-studio")} />
-
-      {/* Design audits summary */}
+      {/* 5. Audit summary */}
       <AuditSummary onOpen={() => setActiveModule("design-audit")} />
 
-      {/* Accessibility summary */}
+      {/* 6. Accessibility summary */}
       <A11ySummary onOpen={() => setActiveModule("accessibility")} />
 
-      {/* Collections */}
+      {/* Module summaries */}
+      <InspirationSummary onOpen={() => setActiveModule("inspiration-vault")} />
+      <AssetSummary onOpen={() => setActiveModule("asset-extractor")} />
+      <ColorSummary onOpen={() => setActiveModule("color-studio")} />
+      <FontSummary onOpen={() => setActiveModule("typography-studio")} />
       <CollectionStats onOpen={() => setActiveModule("inspiration-vault")} />
+
+      {/* Statistics — moved to the bottom per Phase 12 hierarchy */}
+      <div>
+        <SectionLabel>Statistics</SectionLabel>
+        <div className="mt-1.5 grid grid-cols-3 gap-1.5">
+          {[
+            { label: "Projects", value: totals.projects, module: "projects" as ModuleId },
+            { label: "Inspiration", value: totals.inspirations, module: "inspiration-vault" as ModuleId },
+            { label: "Assets", value: totals.assets, module: "asset-extractor" as ModuleId },
+            { label: "Colors", value: totals.colors, module: "color-studio" as ModuleId },
+            { label: "Fonts", value: totals.fonts, module: "typography-studio" as ModuleId },
+            { label: "Notes", value: totals.notes, module: "notes" as ModuleId },
+          ].map((s) => (
+            <button
+              key={s.label}
+              onClick={() => setActiveModule(s.module)}
+              aria-label={`${s.value} ${s.label} — open module`}
+              className="rounded-md border bg-card p-2 text-left transition-colors hover:border-primary/40 hover:bg-accent/40"
+            >
+              <div className="text-sm font-semibold leading-tight">{s.value}</div>
+              <div className="text-[9px] uppercase tracking-wide text-muted-foreground">{s.label}</div>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
+
+function ActiveProjectCard({
+  activeProjectId,
+  onContinue,
+}: {
+  activeProjectId: string | null;
+  onContinue: (id: string) => void;
+}) {
+  const project = useLiveQuery(
+    () => (activeProjectId ? projectRepository.getById(activeProjectId) : Promise.resolve(undefined)),
+    [activeProjectId],
+    undefined,
+  );
+  const stats = useLiveQuery(
+    () => (activeProjectId ? computeProjectStats(activeProjectId) : Promise.resolve(EMPTY_STATS)),
+    [activeProjectId],
+    EMPTY_STATS,
+  );
+  if (!project) return null;
+  return (
+    <section
+      aria-labelledby="active-project-heading"
+      className="rounded-lg border bg-card p-3"
+    >
+      <div className="flex items-center gap-2.5">
+        <div
+          className="h-9 w-9 shrink-0 rounded-md border"
+          style={{
+            background: project.coverImage
+              ? `url(${project.coverImage}) center/cover`
+              : project.color ?? "hsl(var(--muted))",
+          }}
+          aria-hidden="true"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="text-[9px] uppercase tracking-wider text-muted-foreground">
+            Active project
+          </div>
+          <h2
+            id="active-project-heading"
+            className="truncate text-xs font-semibold leading-tight"
+          >
+            {project.name}
+          </h2>
+          <div className="truncate text-[10px] text-muted-foreground">
+            {stats.total === 0 ? "No items yet" : `${stats.total} items across the workspace`}
+          </div>
+        </div>
+        <button
+          onClick={() => onContinue(project.id)}
+          aria-label={`Continue working on ${project.name}`}
+          className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary px-2.5 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
+        >
+          Continue
+          <ChevronRight className="h-3 w-3" aria-hidden="true" />
+        </button>
+      </div>
+    </section>
+  );
+}
+
 
 function InspirationSummary({ onOpen }: { onOpen: () => void }) {
   const setFilters = useVaultStore((s) => s.setFilters);
