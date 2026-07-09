@@ -126,17 +126,42 @@
 }
 
 @keyframes salat-rise {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes salat-shimmer {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes salat-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.03); opacity: 1; }
+}
+@keyframes salat-draw {
+  from { stroke-dashoffset: 400; }
+  to { stroke-dashoffset: 0; }
 }
 
 @utility rise {
-  animation: salat-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: salat-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+@utility shimmer {
+  animation: salat-shimmer 3.6s ease-in-out infinite;
+}
+@utility breathe {
+  animation: salat-breathe 6s ease-in-out infinite;
+}
+@utility gold-text {
+  background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold) 40%, #e6d59a 55%, var(--gold) 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility paper-grain {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklab, var(--gold) 6%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, color-mix(in oklab, var(--gold) 4%, transparent), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.07  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
 
