@@ -1,109 +1,117 @@
 # Designer OS
 
-Everything a designer needs inside the browser.
-Open-source · Offline-first · Privacy-first · No subscription · No backend.
+**Everything a designer needs inside the browser.**
+Open-source · Offline-first · Privacy-first · No account · No subscription · No backend.
 
-## Stack
+Designer OS is a Chrome extension that turns your browser into a designer's
+workspace: capture inspiration, extract assets, analyze design systems, build
+color and typography systems, and run accessibility & design audits — all
+without sending a single byte off your machine.
 
-- **Framework**: React 18 + TypeScript (strict)
-- **Build**: Vite + `@crxjs/vite-plugin` (MV3)
-- **Styling**: TailwindCSS + shadcn/ui + Lucide Icons
-- **State**: Zustand
-- **Storage**: Dexie (IndexedDB), local only
-- **Animation**: Framer Motion
-- **Target**: Chrome Extension Manifest V3 (popup + side panel + content scripts)
+---
 
-## Design System
+## Product Overview
 
-- Font: Inter (400/500/600/700), JetBrains Mono for numbers/hex
-- Spacing scale: 4 px
-- Border radius: 12 px
-- Popup width: **400 px**
-- Side panel width: **320 px**
-- Light + Dark mode (class-based)
-- Inspired by: Linear · Raycast · Arc Browser
+Designer OS is the open-source alternative to fragmented design tooling. It
+lives in your browser (Popup + Side Panel), stores everything locally in
+IndexedDB, and never phones home. One extension replaces a dozen tabs, plugins,
+and SaaS subscriptions.
 
-## Folder Structure
+## Core Features
 
-```
-extension-designer-os/
-├── manifest.json                 MV3 config
-├── popup.html                    Popup entry (React)
-├── sidepanel.html                Side panel entry (React)
-├── vite.config.ts                CRX plugin + aliases
-├── tailwind.config.ts
-├── tsconfig.json
-├── components.json               shadcn config
-└── src/
-    ├── background/               MV3 service worker
-    ├── content/                  Injected content scripts
-    ├── popup/                    Popup app (main.tsx + App.tsx)
-    ├── sidepanel/                Side panel app
-    ├── modules/                  Feature modules (self-contained)
-    │   ├── dashboard/
-    │   ├── color-studio/
-    │   ├── typography-studio/
-    │   ├── design-inspector/
-    │   ├── inspiration-vault/
-    │   ├── asset-extractor/
-    │   ├── resource-hub/
-    │   ├── notes/
-    │   ├── tech-stack/
-    │   └── screenshot/
-    ├── components/               Cross-module UI
-    │   ├── ui/                   shadcn primitives
-    │   ├── layout/               Shells (popup/sidepanel)
-    │   └── shared/               Reusable app widgets
-    ├── hooks/                    React hooks
-    ├── lib/                      Utilities (cn, chrome wrapper)
-    ├── storage/                  Dexie schema + repositories
-    ├── stores/                   Zustand stores
-    ├── types/                    Domain types (one file per collection)
-    └── styles/                   Global CSS + tokens
-```
+| Module | What it does |
+|---|---|
+| **Projects** | Group inspiration, colors, fonts, assets, and reports per client/product |
+| **Inspiration Vault** | Save URLs, screenshots, and notes into visual collections |
+| **Asset Manager** | Extract images/SVGs from any page; upload local assets; bulk export |
+| **Color Studio** | Pick colors, build 7-role brand systems, export CSS/SCSS/JSON/Tailwind |
+| **Typography Studio** | Detect fonts on any page, build modular type scales, export systems |
+| **Design Inspector** | One-click Design DNA report for any site (colors, fonts, components, layout) |
+| **Design Audit** | 0–100 Design Quality Score across 6 categories with actionable issues |
+| **Accessibility Center** | WCAG 2.1 scanner with tagged issues and severity |
+| **Notes** | Lightweight project-scoped notes |
+| **Backup & Restore** | Versioned JSON export/import of the entire local database |
 
-## Module Contract
+## Screenshots
 
-Every module lives in `src/modules/<name>/` and exposes:
+Screenshots for the Chrome Web Store listing live in `docs/screenshots/`:
 
-```
-<name>/
-├── index.tsx        Entry component (default export)
-├── types.ts         Module-local types (extends /types/*)
-├── store.ts         Zustand slice (optional)
-├── logic/           Pure functions, no React
-├── ui/              Presentational components
-└── README.md        What this module does + status
-```
+- `popup.png` — 1280×800 — Popup home
+- `dashboard.png` — 1280×800 — Dashboard with checklist & active project
+- `inspector.png` — 1280×800 — Design Inspector report
+- `audit.png` — 1280×800 — Design Audit score breakdown
+- `accessibility.png` — 1280×800 — Accessibility Center report
 
-## Development Order (Phased)
+## Installation
 
-- **Phase 1** — Project setup · UI framework · Database layer · Dashboard  ← _current_
-- **Phase 2** — Color Studio · Typography Studio
-- **Phase 3** — Inspiration Vault · Notes Workspace
-- **Phase 4** — Asset Extractor · Screenshot Studio
-- **Phase 5** — Design Inspector · Tech Stack Detector
-- **Phase 6** — Resource Hub
-
-**Rule**: one module at a time — architecture → types → UI → logic → storage → tests → **stop for approval**.
-
-## Getting Started
+### From source (unpacked)
 
 ```bash
-bun install                # or: npm install
-bun run dev                # Vite dev server + CRX HMR
-bun run build              # Production build to dist/
-bun run zip                # Package dist/ into designer-os.zip
+bun install
+bun run build
 ```
 
-Load unpacked in `chrome://extensions` → Developer mode → **Load unpacked** → select `dist/`.
+1. Open `chrome://extensions`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked** → select the `dist/` folder
 
-## Non-Functional Requirements
+Works in any Chromium browser: Chrome, Edge, Brave, Arc, Opera.
 
-- Extension size < 15 MB · Startup < 1 s
-- Zero tracking · zero analytics · zero background network
-- Minimum permissions only (see `manifest.json`)
+### Packaged ZIP
+
+```bash
+bun run build
+bun run zip     # → designer-os.zip
+```
+
+## Development Setup
+
+```bash
+bun install
+bun run dev          # Vite + CRX HMR
+bun run typecheck    # tsc --noEmit
+bun run test         # vitest
+bun run lint
+bun run build
+```
+
+Requirements: Bun ≥ 1.0 (or Node ≥ 20 + npm). Chrome/Chromium ≥ 116.
+
+## Architecture
+
+- **Framework**: React 18 + TypeScript (strict)
+- **Build**: Vite + `@crxjs/vite-plugin` (Manifest V3)
+- **Styling**: TailwindCSS + shadcn/ui + Lucide icons
+- **State**: Zustand
+- **Storage**: Dexie (IndexedDB) — schema v8, versioned migrations
+- **Testing**: Vitest + fake-indexeddb + jsdom
+
+Layered structure per module: `types → storage → repository → logic → store → ui → index`.
+All DB access flows through repositories — components never touch Dexie directly.
+See `implementation_plan.md` for the phased build history.
+
+## Data Privacy
+
+Designer OS is privacy-first by design:
+
+- **No telemetry.** Zero analytics, zero crash reporting.
+- **No external tracking.** No third-party scripts, no beacons.
+- **No cloud storage.** All data lives in your browser's IndexedDB.
+- **No account.** Nothing to sign up for.
+- **Minimum permissions.** See `PRIVACY.md` for the full breakdown.
+
+Full policy: [PRIVACY.md](./PRIVACY.md).
+
+## Roadmap
+
+Post-1.0 candidates (not committed):
+
+- Figma / Framer export bridges
+- Cross-device backup via user-provided WebDAV
+- Firefox / Safari ports
+- Team-shared read-only report links (opt-in, self-hosted)
+- Additional WCAG 2.2 rules
 
 ## License
 
-MIT — see LICENSE.
+MIT — see [LICENSE](./LICENSE).
