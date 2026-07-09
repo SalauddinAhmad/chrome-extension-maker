@@ -99,7 +99,7 @@ function CornerMark({ className = "", style }: { className?: string; style?: Rea
 }
 
 
-function Mihrab({ className = "" }: { className?: string }) {
+function Mihrab({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg viewBox="0 0 400 520" className={className} fill="none" aria-hidden>
       <defs>
