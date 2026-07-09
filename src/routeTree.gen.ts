@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewtabPreviewRouteImport } from './routes/newtab-preview'
+import { Route as DesignerOsRouteImport } from './routes/designer-os'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExtensionsDesignerOsRouteImport } from './routes/extensions.designer-os'
 
 const NewtabPreviewRoute = NewtabPreviewRouteImport.update({
   id: '/newtab-preview',
   path: '/newtab-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignerOsRoute = DesignerOsRouteImport.update({
+  id: '/designer-os',
+  path: '/designer-os',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,30 +37,43 @@ const ExtensionsDesignerOsRoute = ExtensionsDesignerOsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/designer-os': typeof DesignerOsRoute
   '/newtab-preview': typeof NewtabPreviewRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/designer-os': typeof DesignerOsRoute
   '/newtab-preview': typeof NewtabPreviewRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/designer-os': typeof DesignerOsRoute
   '/newtab-preview': typeof NewtabPreviewRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/newtab-preview' | '/extensions/designer-os'
+  fullPaths:
+    | '/'
+    | '/designer-os'
+    | '/newtab-preview'
+    | '/extensions/designer-os'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/newtab-preview' | '/extensions/designer-os'
-  id: '__root__' | '/' | '/newtab-preview' | '/extensions/designer-os'
+  to: '/' | '/designer-os' | '/newtab-preview' | '/extensions/designer-os'
+  id:
+    | '__root__'
+    | '/'
+    | '/designer-os'
+    | '/newtab-preview'
+    | '/extensions/designer-os'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DesignerOsRoute: typeof DesignerOsRoute
   NewtabPreviewRoute: typeof NewtabPreviewRoute
   ExtensionsDesignerOsRoute: typeof ExtensionsDesignerOsRoute
 }
@@ -66,6 +85,13 @@ declare module '@tanstack/react-router' {
       path: '/newtab-preview'
       fullPath: '/newtab-preview'
       preLoaderRoute: typeof NewtabPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/designer-os': {
+      id: '/designer-os'
+      path: '/designer-os'
+      fullPath: '/designer-os'
+      preLoaderRoute: typeof DesignerOsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,6 +113,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DesignerOsRoute: DesignerOsRoute,
   NewtabPreviewRoute: NewtabPreviewRoute,
   ExtensionsDesignerOsRoute: ExtensionsDesignerOsRoute,
 }
