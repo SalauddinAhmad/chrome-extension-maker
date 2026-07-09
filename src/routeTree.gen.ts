@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SalatRouteImport } from './routes/salat'
 import { Route as NewtabPreviewRouteImport } from './routes/newtab-preview'
 import { Route as DesignerOsRouteImport } from './routes/designer-os'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExtensionsDesignerOsRouteImport } from './routes/extensions.designer-os'
 
+const SalatRoute = SalatRouteImport.update({
+  id: '/salat',
+  path: '/salat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewtabPreviewRoute = NewtabPreviewRouteImport.update({
   id: '/newtab-preview',
   path: '/newtab-preview',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/designer-os': typeof DesignerOsRoute
   '/newtab-preview': typeof NewtabPreviewRoute
+  '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/designer-os': typeof DesignerOsRoute
   '/newtab-preview': typeof NewtabPreviewRoute
+  '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
 export interface FileRoutesById {
@@ -52,6 +60,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/designer-os': typeof DesignerOsRoute
   '/newtab-preview': typeof NewtabPreviewRoute
+  '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
 export interface FileRouteTypes {
@@ -60,14 +69,21 @@ export interface FileRouteTypes {
     | '/'
     | '/designer-os'
     | '/newtab-preview'
+    | '/salat'
     | '/extensions/designer-os'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/designer-os' | '/newtab-preview' | '/extensions/designer-os'
+  to:
+    | '/'
+    | '/designer-os'
+    | '/newtab-preview'
+    | '/salat'
+    | '/extensions/designer-os'
   id:
     | '__root__'
     | '/'
     | '/designer-os'
     | '/newtab-preview'
+    | '/salat'
     | '/extensions/designer-os'
   fileRoutesById: FileRoutesById
 }
@@ -75,11 +91,19 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignerOsRoute: typeof DesignerOsRoute
   NewtabPreviewRoute: typeof NewtabPreviewRoute
+  SalatRoute: typeof SalatRoute
   ExtensionsDesignerOsRoute: typeof ExtensionsDesignerOsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/salat': {
+      id: '/salat'
+      path: '/salat'
+      fullPath: '/salat'
+      preLoaderRoute: typeof SalatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/newtab-preview': {
       id: '/newtab-preview'
       path: '/newtab-preview'
@@ -115,18 +139,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignerOsRoute: DesignerOsRoute,
   NewtabPreviewRoute: NewtabPreviewRoute,
+  SalatRoute: SalatRoute,
   ExtensionsDesignerOsRoute: ExtensionsDesignerOsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
