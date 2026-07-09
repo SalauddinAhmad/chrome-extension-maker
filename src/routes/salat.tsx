@@ -88,15 +88,16 @@ function Ornament({ className = "", style }: { className?: string; style?: React
 }
 
 
-function CornerMark({ className = "" }: { className?: string }) {
+function CornerMark({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg viewBox="0 0 64 64" className={className} fill="none" stroke="currentColor" strokeWidth="0.6" aria-hidden>
+    <svg viewBox="0 0 64 64" className={className} style={style} fill="none" stroke="currentColor" strokeWidth="0.6" aria-hidden>
       <path d="M0 20 L0 0 L20 0" />
       <path d="M8 0 L8 8 L0 8" opacity="0.5" />
       <circle cx="14" cy="14" r="1.4" fill="currentColor" stroke="none" />
     </svg>
   );
 }
+
 
 function Mihrab({ className = "" }: { className?: string }) {
   return (
