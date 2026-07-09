@@ -219,7 +219,7 @@ function LeadPilot() {
               <div className="flex items-center gap-1.5 text-[12px]" style={{ color: T.mute }}>
                 <span>Workspace</span>
                 <span style={{ color: T.faint }}>/</span>
-                <span style={{ color: T.ink }}>Lead Finder</span>
+                <span style={{ color: T.ink }}>{NAV.find((n) => n.key === active)?.label ?? "Dashboard"}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -248,164 +248,31 @@ function LeadPilot() {
 
           {/* Content */}
           <div className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 lg:px-6">
-            {/* KPI cards */}
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              <Kpi label="Total Leads" value={totals.total.toLocaleString()} delta="+18%" up />
-              <Kpi label="Hot Leads" value={totals.hot.toString()} delta="+4" up accent={T.hot} />
-              <Kpi label="Opportunities" value={totals.opps.toString()} delta="+12" up />
-              <Kpi label="Avg Lead Score" value={totals.avg.toString()} delta="+6.2" up />
-            </div>
+            {active === "dashboard" && <DashboardView totals={totals} onGo={setActive} />}
 
-            {/* Finder toolbar */}
-            <section className="mt-6 rounded-xl border" style={{ borderColor: T.border, background: T.surface }}>
-              <div className="border-b p-4" style={{ borderColor: T.border }}>
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="relative min-w-[260px] flex-1">
-                    <IconSearch className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" style={{ color: T.faint }} />
-                    <input
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Try: Dental clinic in Sylhet with no website"
-                      className="w-full rounded-md border py-2 pr-3 pl-9 text-[13px] outline-none transition focus:ring-2"
-                      style={{
-                        background: T.bg,
-                        borderColor: T.border,
-                        color: T.ink,
-                      }}
-                    />
-                  </div>
-                  <Select value={city} onChange={setCity} options={["All cities", "Sylhet", "Dhaka", "Chittagong", "New York", "Dubai", "London", "Toronto", "Tokyo"]} />
-                  <Segment
-                    value={temp}
-                    onChange={(v) => setTemp(v as typeof temp)}
-                    options={[
-                      { v: "all", label: "All" },
-                      { v: "hot", label: "Hot", color: T.hot },
-                      { v: "warm", label: "Warm", color: T.warm },
-                      { v: "cold", label: "Cold", color: T.cold },
-                    ]}
-                  />
-                  <div className="flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-[12px]" style={{ borderColor: T.border, color: T.mute, background: T.bg }}>
-                    <span>Min rating</span>
-                    <input
-                      type="range" min={0} max={5} step={0.5}
-                      value={minRating}
-                      onChange={(e) => setMinRating(parseFloat(e.target.value))}
-                      className="w-20 accent-current"
-                      style={{ color: T.brand }}
-                    />
-                    <span className="tabular-nums" style={{ color: T.ink }}>{minRating.toFixed(1)}</span>
-                  </div>
-                  <button
-                    className="ml-auto inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
-                    style={{ background: T.brand, boxShadow: `0 4px 14px -4px ${T.brand}` }}
-                  >
-                    <IconPlus className="h-3.5 w-3.5" />
-                    Discover leads
-                  </button>
-                </div>
-              </div>
+            {active === "finder" && (
+              <FinderView
+                totals={totals}
+                query={query} setQuery={setQuery}
+                city={city} setCity={setCity}
+                temp={temp} setTemp={setTemp}
+                minRating={minRating} setMinRating={setMinRating}
+                filtered={filtered}
+                selected={selected} setSelected={setSelected}
+                activeLead={activeLead}
+              />
+            )}
 
-              {/* Table + detail split */}
-              <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px]">
-                {/* Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-[12.5px]">
-                    <thead>
-                      <tr style={{ color: T.faint }}>
-                        {["Business", "Category", "Location", "Rating", "Website", "Score", "Opportunities"].map((h) => (
-                          <th key={h} className="px-4 py-2.5 text-[10.5px] font-medium uppercase tracking-[0.08em]" style={{ borderBottom: `1px solid ${T.border}` }}>
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.map((l) => {
-                        const on = selected === l.id;
-                        return (
-                          <tr
-                            key={l.id}
-                            onClick={() => setSelected(l.id)}
-                            className="cursor-pointer transition"
-                            style={{
-                              background: on ? "rgba(59,130,246,0.06)" : "transparent",
-                              borderBottom: `1px solid ${T.border}`,
-                            }}
-                          >
-                            <td className="px-4 py-3">
-                              <div className="flex items-center gap-2.5">
-                                <div
-                                  className="grid h-8 w-8 flex-none place-items-center rounded-md text-[11px] font-semibold"
-                                  style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}
-                                >
-                                  {l.name.split(" ").slice(0, 2).map((s) => s[0]).join("")}
-                                </div>
-                                <div className="min-w-0">
-                                  <div className="truncate font-medium" style={{ color: T.ink }}>{l.name}</div>
-                                  <div className="truncate text-[11px]" style={{ color: T.faint }}>{l.phone}</div>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3" style={{ color: T.mute }}>{l.category}</td>
-                            <td className="px-4 py-3" style={{ color: T.mute }}>{l.city}</td>
-                            <td className="px-4 py-3">
-                              <div className="flex items-center gap-1">
-                                <IconStar className="h-3 w-3" style={{ color: T.warm }} />
-                                <span className="tabular-nums" style={{ color: T.ink }}>{l.rating}</span>
-                                <span className="tabular-nums text-[11px]" style={{ color: T.faint }}>({l.reviews})</span>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3">
-                              {l.website ? (
-                                <span className="inline-flex items-center gap-1 text-[12px]" style={{ color: T.mute }}>
-                                  <IconGlobe className="h-3 w-3" style={{ color: l.ssl ? T.ok : T.danger }} />
-                                  <span className="truncate">{l.website}</span>
-                                </span>
-                              ) : (
-                                <span
-                                  className="rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider"
-                                  style={{ background: "rgba(239,68,68,0.12)", color: T.danger }}
-                                >
-                                  No site
-                                </span>
-                              )}
-                            </td>
-                            <td className="px-4 py-3">
-                              <ScorePill score={l.score} temp={l.temp} />
-                            </td>
-                            <td className="px-4 py-3">
-                              <div className="flex flex-wrap gap-1">
-                                {l.opps.slice(0, 2).map((o) => (
-                                  <span
-                                    key={o}
-                                    className="rounded-md px-1.5 py-0.5 text-[10.5px]"
-                                    style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}
-                                  >
-                                    {o}
-                                  </span>
-                                ))}
-                                {l.opps.length > 2 && (
-                                  <span className="text-[10.5px]" style={{ color: T.faint }}>+{l.opps.length - 2}</span>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+            {active === "crm" && <CRMView />}
+            {active === "audits" && <AuditsView />}
+            {active === "outreach" && <OutreachView />}
 
-                {/* Detail panel */}
-                <aside className="border-t xl:border-t-0 xl:border-l" style={{ borderColor: T.border, background: T.surface2 }}>
-                  <LeadDetail lead={activeLead} />
-                </aside>
-              </div>
-            </section>
+            {(active === "saved" || active === "competitors" || active === "reports" || active === "team" || active === "settings") && (
+              <ModulePlaceholder title={NAV.find((n) => n.key === active)?.label ?? ""} />
+            )}
 
             <p className="mt-6 text-center text-[10.5px] uppercase tracking-[0.24em]" style={{ color: T.faint }}>
-              LeadPilot AI · v0.1 · Phase 1 Foundation
+              LeadPilot AI · v0.2 · Finder · CRM · Audit · Outreach
             </p>
           </div>
         </main>
@@ -582,6 +449,505 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     <div>
       <div className="mb-2 text-[10px] font-medium uppercase tracking-[0.16em]" style={{ color: T.faint }}>{title}</div>
       {children}
+    </div>
+  );
+}
+
+/* ────────── Finder view (extracted) ────────── */
+function FinderView(props: {
+  totals: { total: number; hot: number; opps: number; avg: number };
+  query: string; setQuery: (v: string) => void;
+  city: string; setCity: (v: string) => void;
+  temp: "all" | "hot" | "warm" | "cold"; setTemp: (v: "all" | "hot" | "warm" | "cold") => void;
+  minRating: number; setMinRating: (v: number) => void;
+  filtered: Lead[];
+  selected: string | null; setSelected: (v: string) => void;
+  activeLead: Lead;
+}) {
+  const { totals, query, setQuery, city, setCity, temp, setTemp, minRating, setMinRating, filtered, selected, setSelected, activeLead } = props;
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Kpi label="Total Leads" value={totals.total.toLocaleString()} delta="+18%" up />
+        <Kpi label="Hot Leads" value={totals.hot.toString()} delta="+4" up accent={T.hot} />
+        <Kpi label="Opportunities" value={totals.opps.toString()} delta="+12" up />
+        <Kpi label="Avg Lead Score" value={totals.avg.toString()} delta="+6.2" up />
+      </div>
+
+      <section className="mt-6 rounded-xl border" style={{ borderColor: T.border, background: T.surface }}>
+        <div className="border-b p-4" style={{ borderColor: T.border }}>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative min-w-[260px] flex-1">
+              <IconSearch className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" style={{ color: T.faint }} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Try: Dental clinic in Sylhet with no website"
+                className="w-full rounded-md border py-2 pr-3 pl-9 text-[13px] outline-none transition focus:ring-2"
+                style={{ background: T.bg, borderColor: T.border, color: T.ink }}
+              />
+            </div>
+            <Select value={city} onChange={setCity} options={["All cities", "Sylhet", "Dhaka", "Chittagong", "New York", "Dubai", "London", "Toronto", "Tokyo"]} />
+            <Segment
+              value={temp}
+              onChange={(v) => setTemp(v as typeof temp)}
+              options={[
+                { v: "all", label: "All" },
+                { v: "hot", label: "Hot", color: T.hot },
+                { v: "warm", label: "Warm", color: T.warm },
+                { v: "cold", label: "Cold", color: T.cold },
+              ]}
+            />
+            <div className="flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-[12px]" style={{ borderColor: T.border, color: T.mute, background: T.bg }}>
+              <span>Min rating</span>
+              <input
+                type="range" min={0} max={5} step={0.5}
+                value={minRating}
+                onChange={(e) => setMinRating(parseFloat(e.target.value))}
+                className="w-20 accent-current"
+                style={{ color: T.brand }}
+              />
+              <span className="tabular-nums" style={{ color: T.ink }}>{minRating.toFixed(1)}</span>
+            </div>
+            <button
+              className="ml-auto inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
+              style={{ background: T.brand, boxShadow: `0 4px 14px -4px ${T.brand}` }}
+            >
+              <IconPlus className="h-3.5 w-3.5" />
+              Discover leads
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-[12.5px]">
+              <thead>
+                <tr style={{ color: T.faint }}>
+                  {["Business", "Category", "Location", "Rating", "Website", "Score", "Opportunities"].map((h) => (
+                    <th key={h} className="px-4 py-2.5 text-[10.5px] font-medium uppercase tracking-[0.08em]" style={{ borderBottom: `1px solid ${T.border}` }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((l) => {
+                  const on = selected === l.id;
+                  return (
+                    <tr
+                      key={l.id}
+                      onClick={() => setSelected(l.id)}
+                      className="cursor-pointer transition"
+                      style={{
+                        background: on ? "rgba(59,130,246,0.06)" : "transparent",
+                        borderBottom: `1px solid ${T.border}`,
+                      }}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className="grid h-8 w-8 flex-none place-items-center rounded-md text-[11px] font-semibold"
+                            style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}
+                          >
+                            {l.name.split(" ").slice(0, 2).map((s) => s[0]).join("")}
+                          </div>
+                          <div className="min-w-0">
+                            <div className="truncate font-medium" style={{ color: T.ink }}>{l.name}</div>
+                            <div className="truncate text-[11px]" style={{ color: T.faint }}>{l.phone}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3" style={{ color: T.mute }}>{l.category}</td>
+                      <td className="px-4 py-3" style={{ color: T.mute }}>{l.city}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1">
+                          <IconStar className="h-3 w-3" style={{ color: T.warm }} />
+                          <span className="tabular-nums" style={{ color: T.ink }}>{l.rating}</span>
+                          <span className="tabular-nums text-[11px]" style={{ color: T.faint }}>({l.reviews})</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        {l.website ? (
+                          <span className="inline-flex items-center gap-1 text-[12px]" style={{ color: T.mute }}>
+                            <IconGlobe className="h-3 w-3" style={{ color: l.ssl ? T.ok : T.danger }} />
+                            <span className="truncate">{l.website}</span>
+                          </span>
+                        ) : (
+                          <span
+                            className="rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider"
+                            style={{ background: "rgba(239,68,68,0.12)", color: T.danger }}
+                          >
+                            No site
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <ScorePill score={l.score} temp={l.temp} />
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap gap-1">
+                          {l.opps.slice(0, 2).map((o) => (
+                            <span
+                              key={o}
+                              className="rounded-md px-1.5 py-0.5 text-[10.5px]"
+                              style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}
+                            >
+                              {o}
+                            </span>
+                          ))}
+                          {l.opps.length > 2 && (
+                            <span className="text-[10.5px]" style={{ color: T.faint }}>+{l.opps.length - 2}</span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <aside className="border-t xl:border-t-0 xl:border-l" style={{ borderColor: T.border, background: T.surface2 }}>
+            <LeadDetail lead={activeLead} />
+          </aside>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ────────── Dashboard overview ────────── */
+function DashboardView({ totals, onGo }: { totals: { total: number; hot: number; opps: number; avg: number }; onGo: (k: string) => void }) {
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Kpi label="Total Leads" value={totals.total.toString()} delta="+18%" up />
+        <Kpi label="Hot Leads" value={totals.hot.toString()} delta="+4" up accent={T.hot} />
+        <Kpi label="Pipeline Value" value="$24.8k" delta="+9.1%" up accent={T.ok} />
+        <Kpi label="Avg Score" value={totals.avg.toString()} delta="+6.2" up />
+      </div>
+      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        {[
+          { k: "finder", t: "Discover leads", d: "AI-powered search across cities & niches.", i: IconSearch },
+          { k: "audits", t: "Run website audit", d: "SEO, performance, SSL, a11y in one pass.", i: IconGauge },
+          { k: "crm", t: "Open CRM pipeline", d: "Drag leads through your sales stages.", i: IconKanban },
+        ].map(({ k, t, d, i: I }) => (
+          <button
+            key={k}
+            onClick={() => onGo(k)}
+            className="group rounded-xl border p-5 text-left transition hover:brightness-110"
+            style={{ background: T.surface, borderColor: T.border }}
+          >
+            <I className="h-5 w-5" style={{ color: T.brand }} />
+            <div className="mt-3 text-[14px] font-semibold" style={{ color: T.ink }}>{t}</div>
+            <div className="mt-1 text-[12px]" style={{ color: T.mute }}>{d}</div>
+            <div className="mt-4 inline-flex items-center gap-1 text-[11.5px]" style={{ color: T.brand }}>
+              Open <IconArrow className="h-3 w-3" />
+            </div>
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ────────── CRM Kanban ────────── */
+type CrmStage = "new" | "contacted" | "qualified" | "won" | "lost";
+const CRM_STAGES: { key: CrmStage; label: string; color: string }[] = [
+  { key: "new", label: "New", color: T.brand },
+  { key: "contacted", label: "Contacted", color: T.warm },
+  { key: "qualified", label: "Qualified", color: "#8b5cf6" },
+  { key: "won", label: "Won", color: T.ok },
+  { key: "lost", label: "Lost", color: T.danger },
+];
+
+function CRMView() {
+  const initial = useMemo<Record<CrmStage, Lead[]>>(() => ({
+    new: [LEADS[0], LEADS[6]],
+    contacted: [LEADS[1], LEADS[2]],
+    qualified: [LEADS[3]],
+    won: [LEADS[4]],
+    lost: [LEADS[7]],
+  }), []);
+  const [board, setBoard] = useState(initial);
+  const [dragId, setDragId] = useState<string | null>(null);
+
+  const move = (id: string, to: CrmStage) => {
+    setBoard((b) => {
+      const next: Record<CrmStage, Lead[]> = { new: [], contacted: [], qualified: [], won: [], lost: [] };
+      let moving: Lead | null = null;
+      (Object.keys(b) as CrmStage[]).forEach((k) => {
+        next[k] = b[k].filter((l) => {
+          if (l.id === id) { moving = l; return false; }
+          return true;
+        });
+      });
+      if (moving) next[to] = [moving, ...next[to]];
+      return next;
+    });
+  };
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <div className="text-[16px] font-semibold" style={{ color: T.ink }}>Pipeline</div>
+          <div className="text-[12px]" style={{ color: T.mute }}>Drag cards between stages · {LEADS.length} leads tracked</div>
+        </div>
+        <button className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white" style={{ background: T.brand }}>
+          <IconPlus className="h-3.5 w-3.5" /> Add lead
+        </button>
+      </div>
+
+      <div className="grid gap-3 overflow-x-auto" style={{ gridTemplateColumns: "repeat(5, minmax(220px, 1fr))" }}>
+        {CRM_STAGES.map((s) => (
+          <div
+            key={s.key}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => { if (dragId) { move(dragId, s.key); setDragId(null); } }}
+            className="flex min-h-[420px] flex-col rounded-xl border"
+            style={{ background: T.surface, borderColor: T.border }}
+          >
+            <div className="flex items-center justify-between border-b px-3 py-2.5" style={{ borderColor: T.border }}>
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: s.color }} />
+                <span className="text-[12px] font-medium" style={{ color: T.ink }}>{s.label}</span>
+              </div>
+              <span className="rounded px-1.5 py-0.5 text-[10px] tabular-nums" style={{ background: T.surface2, color: T.mute, border: `1px solid ${T.border}` }}>
+                {board[s.key].length}
+              </span>
+            </div>
+            <div className="flex-1 space-y-2 p-2">
+              {board[s.key].map((l) => (
+                <div
+                  key={l.id}
+                  draggable
+                  onDragStart={() => setDragId(l.id)}
+                  className="cursor-grab rounded-md border p-3 active:cursor-grabbing"
+                  style={{ background: T.surface2, borderColor: T.border }}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="truncate text-[12.5px] font-medium" style={{ color: T.ink }}>{l.name}</div>
+                      <div className="mt-0.5 truncate text-[10.5px]" style={{ color: T.faint }}>{l.category} · {l.city}</div>
+                    </div>
+                    <ScorePill score={l.score} temp={l.temp} />
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {l.opps.slice(0, 2).map((o) => (
+                      <span key={o} className="rounded px-1.5 py-0.5 text-[10px]" style={{ background: T.bg, color: T.mute, border: `1px solid ${T.border}` }}>{o}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {board[s.key].length === 0 && (
+                <div className="grid h-24 place-items-center rounded-md border border-dashed text-[11px]" style={{ borderColor: T.border, color: T.faint }}>
+                  Drop leads here
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ────────── Website Audits + AI Enrichment ────────── */
+function AuditsView() {
+  const [url, setUrl] = useState("zaman.com.bd");
+  const [running, setRunning] = useState(false);
+  const [report, setReport] = useState<{ url: string; scores: { seo: number; perf: number; ssl: number; a11y: number }; issues: string[]; ai: string }>({
+    url: "zaman.com.bd",
+    scores: { seo: 42, perf: 58, ssl: 0, a11y: 71 },
+    issues: ["No SSL certificate", "Missing meta description", "Largest Contentful Paint 4.8s", "Images not lazy-loaded", "No H1 tag on homepage"],
+    ai: "This site is a strong redesign candidate. Priority fixes: install SSL, optimize hero image, add structured metadata. A modern rebuild could lift organic traffic ~40% in 90 days.",
+  });
+
+  const run = () => {
+    setRunning(true);
+    setTimeout(() => {
+      const rand = (min: number, max: number) => Math.round(min + Math.random() * (max - min));
+      setReport({
+        url,
+        scores: { seo: rand(30, 90), perf: rand(40, 95), ssl: Math.random() > 0.3 ? 100 : 0, a11y: rand(50, 95) },
+        issues: ["Meta description missing", "3 images without alt text", "Render-blocking scripts detected", "CLS 0.18 (needs improvement)"],
+        ai: "Solid foundation but growth is bottlenecked by on-page SEO and performance. A 2-week sprint on Core Web Vitals + schema markup would unlock the largest wins.",
+      });
+      setRunning(false);
+    }, 900);
+  };
+
+  return (
+    <div>
+      <div className="rounded-xl border p-4" style={{ background: T.surface, borderColor: T.border }}>
+        <div className="text-[10px] uppercase tracking-[0.16em]" style={{ color: T.faint }}>Website Audit</div>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="relative min-w-[280px] flex-1">
+            <IconGlobe className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" style={{ color: T.faint }} />
+            <input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="example.com"
+              className="w-full rounded-md border py-2 pr-3 pl-9 text-[13px] outline-none"
+              style={{ background: T.bg, borderColor: T.border, color: T.ink }}
+            />
+          </div>
+          <button
+            onClick={run}
+            disabled={running}
+            className="inline-flex items-center gap-1.5 rounded-md px-4 py-2 text-[12px] font-medium text-white transition hover:brightness-110 disabled:opacity-60"
+            style={{ background: T.brand, boxShadow: `0 4px 14px -4px ${T.brand}` }}
+          >
+            <IconBolt className="h-3.5 w-3.5" />
+            {running ? "Auditing…" : "Run audit"}
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="rounded-xl border p-5" style={{ background: T.surface, borderColor: T.border }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.16em]" style={{ color: T.faint }}>Report</div>
+              <div className="mt-0.5 text-[14px] font-semibold" style={{ color: T.ink }}>{report.url}</div>
+            </div>
+            <div className="text-[10px] tabular-nums" style={{ color: T.faint }}>Just now</div>
+          </div>
+
+          <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+            <ScoreCard label="SEO" value={report.scores.seo} />
+            <ScoreCard label="Performance" value={report.scores.perf} />
+            <ScoreCard label="SSL" value={report.scores.ssl} />
+            <ScoreCard label="Accessibility" value={report.scores.a11y} />
+          </div>
+
+          <div className="mt-6">
+            <div className="mb-2 text-[10px] font-medium uppercase tracking-[0.16em]" style={{ color: T.faint }}>Issues found</div>
+            <ul className="space-y-1.5">
+              {report.issues.map((i) => (
+                <li key={i} className="flex items-start gap-2 text-[12.5px]" style={{ color: T.mute }}>
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full" style={{ background: T.danger }} />
+                  {i}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="rounded-xl border p-5" style={{ background: T.surface2, borderColor: T.border }}>
+          <div className="flex items-center gap-2">
+            <IconBolt className="h-3.5 w-3.5" style={{ color: T.brand }} />
+            <div className="text-[10px] font-medium uppercase tracking-[0.16em]" style={{ color: T.brand }}>AI enrichment</div>
+          </div>
+          <p className="mt-3 text-[12.5px] leading-relaxed" style={{ color: T.ink }}>{report.ai}</p>
+
+          <div className="mt-5 grid gap-2">
+            <div className="rounded-md border p-3" style={{ background: T.surface, borderColor: T.border }}>
+              <div className="text-[10px] uppercase tracking-[0.14em]" style={{ color: T.faint }}>Estimated deal</div>
+              <div className="mt-1 text-[16px] font-semibold tabular-nums" style={{ color: T.ok }}>$1,800 – $3,600</div>
+            </div>
+            <button className="rounded-md py-2 text-[12px] font-medium text-white" style={{ background: T.brand }}>
+              Generate outreach email
+            </button>
+            <button className="rounded-md border py-2 text-[12px] font-medium" style={{ borderColor: T.border, background: T.surface, color: T.ink }}>
+              Save to CRM
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ScoreCard({ label, value }: { label: string; value: number }) {
+  const color = value >= 80 ? T.ok : value >= 50 ? T.warm : T.danger;
+  return (
+    <div className="rounded-md border p-3" style={{ background: T.bg, borderColor: T.border }}>
+      <div className="text-[9.5px] uppercase tracking-[0.14em]" style={{ color: T.faint }}>{label}</div>
+      <div className="mt-1 text-[20px] font-semibold tabular-nums" style={{ color }}>{value}</div>
+      <div className="mt-2 h-1 w-full overflow-hidden rounded-full" style={{ background: T.border }}>
+        <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
+      </div>
+    </div>
+  );
+}
+
+/* ────────── AI Outreach ────────── */
+function OutreachView() {
+  const [lead, setLead] = useState(LEADS[0].id);
+  const [tone, setTone] = useState<"friendly" | "direct" | "premium">("friendly");
+  const [copy, setCopy] = useState("");
+  const l = LEADS.find((x) => x.id === lead)!;
+
+  const generate = () => {
+    const openers = {
+      friendly: `Hi ${l.name.split(" ")[0]} team,`,
+      direct: `${l.name} —`,
+      premium: `Dear ${l.name},`,
+    } as const;
+    setCopy(
+      `${openers[tone]}\n\nI came across ${l.name} while researching top-rated ${l.category.toLowerCase()}s in ${l.city}. Your ${l.rating}★ rating from ${l.reviews.toLocaleString()} reviews is genuinely impressive.\n\nI noticed a few opportunities: ${l.opps.join(", ")}. Fixing these usually lifts conversions 20–40% within 60 days.\n\nWould a 15-minute call next week make sense?\n\nBest,\nLeadPilot`,
+    );
+  };
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+      <div className="rounded-xl border p-4" style={{ background: T.surface, borderColor: T.border }}>
+        <div className="text-[10px] uppercase tracking-[0.16em]" style={{ color: T.faint }}>Compose</div>
+        <label className="mt-3 block text-[11px]" style={{ color: T.mute }}>Lead</label>
+        <select value={lead} onChange={(e) => setLead(e.target.value)} className="mt-1 w-full rounded-md border px-2.5 py-2 text-[12.5px]" style={{ background: T.bg, borderColor: T.border, color: T.ink }}>
+          {LEADS.map((x) => <option key={x.id} value={x.id}>{x.name}</option>)}
+        </select>
+        <label className="mt-3 block text-[11px]" style={{ color: T.mute }}>Tone</label>
+        <div className="mt-1">
+          <Segment
+            value={tone}
+            onChange={(v) => setTone(v as typeof tone)}
+            options={[
+              { v: "friendly", label: "Friendly" },
+              { v: "direct", label: "Direct" },
+              { v: "premium", label: "Premium" },
+            ]}
+          />
+        </div>
+        <button onClick={generate} className="mt-4 w-full rounded-md py-2 text-[12px] font-medium text-white" style={{ background: T.brand }}>
+          <IconBolt className="mr-1 inline h-3.5 w-3.5" /> Generate with AI
+        </button>
+      </div>
+      <div className="rounded-xl border p-5" style={{ background: T.surface, borderColor: T.border }}>
+        <div className="flex items-center justify-between">
+          <div className="text-[10px] uppercase tracking-[0.16em]" style={{ color: T.faint }}>Draft</div>
+          {copy && (
+            <button onClick={() => navigator.clipboard?.writeText(copy)} className="text-[11px]" style={{ color: T.brand }}>
+              Copy
+            </button>
+          )}
+        </div>
+        <textarea
+          value={copy}
+          onChange={(e) => setCopy(e.target.value)}
+          placeholder="Click ‘Generate with AI’ to draft a personalized outreach email…"
+          className="mt-3 min-h-[360px] w-full resize-y rounded-md border p-4 text-[13px] leading-relaxed outline-none"
+          style={{ background: T.bg, borderColor: T.border, color: T.ink, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ────────── Placeholder ────────── */
+function ModulePlaceholder({ title }: { title: string }) {
+  return (
+    <div className="grid min-h-[420px] place-items-center rounded-xl border" style={{ background: T.surface, borderColor: T.border }}>
+      <div className="text-center">
+        <div className="mx-auto grid h-10 w-10 place-items-center rounded-lg" style={{ background: T.brandSoft, color: T.brand }}>
+          <IconBolt className="h-5 w-5" />
+        </div>
+        <div className="mt-3 text-[14px] font-semibold" style={{ color: T.ink }}>{title}</div>
+        <div className="mt-1 text-[12px]" style={{ color: T.mute }}>Coming in the next phase.</div>
+      </div>
     </div>
   );
 }
