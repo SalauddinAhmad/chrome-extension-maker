@@ -5,7 +5,8 @@
  */
 import { useLiveQuery } from "dexie-react-hooks";
 import { Check, ChevronRight, Sparkles, X } from "lucide-react";
-import { CHECKLIST_STEPS, type ChecklistStep, type ModuleId } from "@/types";
+import { CHECKLIST_STEPS, type ChecklistStep } from "@/types";
+import type { ModuleId } from "@/lib/modules";
 import { projectRepository } from "@/modules/projects/repository";
 import { inspirationRepository } from "@/modules/inspiration-vault/repository";
 import { assetRepository } from "@/modules/asset-extractor/repository";
