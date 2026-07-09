@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { GettingStartedChecklist } from "@/components/shared/getting-started-checklist";
 import { getSettings } from "@/storage";
-import type { Settings } from "@/types";
+
 import { useUIStore } from "@/stores/ui-store";
 import { useProjectStore } from "@/stores/project-store";
 import type { ModuleId } from "@/lib/modules";
