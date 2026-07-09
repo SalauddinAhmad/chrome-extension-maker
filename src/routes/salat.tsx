@@ -4,22 +4,23 @@ import { useEffect, useMemo, useState } from "react";
 export const Route = createFileRoute("/salat")({
   head: () => ({
     meta: [
-      { title: "Salat OS — নামাজের সময়সূচি" },
+      { title: "Salat OS · Deen Muslim — নামাজের সময়সূচি" },
       {
         name: "description",
         content:
-          "বাংলা-ফার্স্ট, ডিজাইন-ফরওয়ার্ড প্রেয়ার টাইমস অ্যাপ। শান্ত, এলিগ্যান্ট, অফলাইন-ফার্স্ট।",
+          "বাংলা-ফার্স্ট, ডিজাইন-ফরওয়ার্ড প্রেয়ার টাইমস অ্যাপ। উষ্ণ, শান্ত, প্রিমিয়াম।",
       },
     ],
   }),
   component: SalatHome,
 });
 
-/* ---------- helpers ---------- */
+/* ---------------- helpers ---------------- */
 
 const bnDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
 const toBn = (s: string | number) =>
   String(s).replace(/\d/g, (d) => bnDigits[Number(d)]);
+const pad = (n: number) => String(n).padStart(2, "0");
 
 type Prayer = {
   key: "fajr" | "dhuhr" | "asr" | "maghrib" | "isha";
@@ -31,25 +32,20 @@ type Prayer = {
 };
 
 const PRAYERS: Prayer[] = [
-  { key: "fajr",    bn: "ফজর",     ar: "الفجر",    en: "Dawn",     h: 4,  m: 32 },
-  { key: "dhuhr",   bn: "যোহর",    ar: "الظهر",    en: "Noon",     h: 12, m: 4  },
-  { key: "asr",     bn: "আসর",     ar: "العصر",    en: "Afternoon",h: 16, m: 28 },
-  { key: "maghrib", bn: "মাগরিব",  ar: "المغرب",   en: "Sunset",   h: 18, m: 42 },
-  { key: "isha",    bn: "এশা",     ar: "العشاء",   en: "Night",    h: 20, m: 5  },
+  { key: "fajr",    bn: "ফজর",    ar: "الفجر",   en: "Fajr",    h: 4,  m: 32 },
+  { key: "dhuhr",   bn: "যোহর",   ar: "الظهر",   en: "Dhuhr",   h: 12, m: 4  },
+  { key: "asr",     bn: "আসর",    ar: "العصر",   en: "Asr",     h: 16, m: 28 },
+  { key: "maghrib", bn: "মাগরিব", ar: "المغرب",  en: "Maghrib", h: 18, m: 42 },
+  { key: "isha",    bn: "এশা",    ar: "العشاء",  en: "Isha",    h: 20, m: 5  },
 ];
 
-const fmtTime = (h: number, m: number) => {
-  const hh = h % 12 === 0 ? 12 : h % 12;
-  return `${toBn(hh)}:${toBn(String(m).padStart(2, "0"))}`;
-};
-
-const fmtDiff = (ms: number) => {
-  const totalMin = Math.max(0, Math.floor(ms / 60000));
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  if (h === 0) return `${toBn(m)} মিনিট`;
-  return `${toBn(h)} ঘণ্টা ${toBn(m)} মিনিট`;
-};
+const SURAHS = [
+  { no: 1, ar: "الفاتحة",  en: "Al Fatiha",  ayahs: 7 },
+  { no: 2, ar: "البقرة",   en: "Al Baqarah", ayahs: 286 },
+  { no: 3, ar: "آل عمران", en: "Ali Imran",  ayahs: 200 },
+  { no: 4, ar: "النساء",   en: "An Nisa",    ayahs: 176 },
+  { no: 5, ar: "المائدة",  en: "Al Maidah",  ayahs: 120 },
+];
 
 function useNow(intervalMs = 1000) {
   const [now, setNow] = useState(() => new Date());
@@ -60,103 +56,128 @@ function useNow(intervalMs = 1000) {
   return now;
 }
 
-/* ---------- ornaments ---------- */
+/* ---------------- ornaments ---------------- */
 
-function Ornament({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
+function MosqueSilhouette({ className = "" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 240 20"
-      className={className}
-      style={style}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="0.8"
-      aria-hidden
-    >
-      <line x1="0" y1="10" x2="100" y2="10" />
-      <line x1="140" y1="10" x2="240" y2="10" />
-      <g transform="translate(120 10)">
-        <circle r="6" />
-        <circle r="2.4" fill="currentColor" stroke="none" />
-        <line x1="-14" y1="0" x2="-8" y2="0" />
-        <line x1="8" y1="0" x2="14" y2="0" />
-        <path d="M 0 -10 L 3 -6 L 0 -2 L -3 -6 Z" />
-        <path d="M 0 10 L 3 6 L 0 2 L -3 6 Z" />
+    <svg viewBox="0 0 800 500" className={className} fill="none" aria-hidden>
+      <defs>
+        <linearGradient id="dome" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#e8a34a" stopOpacity="0.55" />
+          <stop offset="60%" stopColor="#d98b2b" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="#c47a1e" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="halo" x1="0.5" x2="0.5" y1="0" y2="1">
+          <stop offset="0%" stopColor="#f5c987" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#f5c987" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* halo */}
+      <ellipse cx="400" cy="260" rx="360" ry="240" fill="url(#halo)" opacity="0.35" />
+      {/* main silhouette */}
+      <g fill="url(#dome)">
+        {/* left minaret */}
+        <rect x="120" y="240" width="26" height="240" rx="4" />
+        <path d="M 118 244 Q 133 210 148 244 Z" />
+        <circle cx="133" cy="200" r="10" />
+        <rect x="130" y="176" width="6" height="26" />
+        {/* right minaret */}
+        <rect x="654" y="240" width="26" height="240" rx="4" />
+        <path d="M 652 244 Q 667 210 682 244 Z" />
+        <circle cx="667" cy="200" r="10" />
+        <rect x="664" y="176" width="6" height="26" />
+        {/* small side domes */}
+        <path d="M 200 480 L 200 340 Q 200 270 260 270 Q 320 270 320 340 L 320 480 Z" />
+        <path d="M 480 480 L 480 340 Q 480 270 540 270 Q 600 270 600 340 L 600 480 Z" />
+        {/* big central dome + arch */}
+        <path d="M 320 480 L 320 320 Q 320 180 400 180 Q 480 180 480 320 L 480 480 Z" />
+        <path d="M 340 210 Q 400 100 460 210" opacity="0.7" />
+        {/* crescent finial */}
+        <path
+          d="M 400 130 a 14 14 0 1 0 6 26 a 11 11 0 1 1 -6 -26 Z"
+          fill="#c47a1e"
+          opacity="0.75"
+        />
       </g>
     </svg>
   );
 }
 
-
-function CornerMark({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
+function IconAlarm(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 64 64" className={className} style={style} fill="none" stroke="currentColor" strokeWidth="0.6" aria-hidden>
-      <path d="M0 20 L0 0 L20 0" />
-      <path d="M8 0 L8 8 L0 8" opacity="0.5" />
-      <circle cx="14" cy="14" r="1.4" fill="currentColor" stroke="none" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="12" cy="13" r="7" />
+      <path d="M12 9v4l2 2" />
+      <path d="M5 3 3 5M19 3l2 2M6 20l-2 2M18 20l2 2" />
+    </svg>
+  );
+}
+function IconBulb(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M9 18h6M10 22h4" />
+      <path d="M12 2a7 7 0 0 0-4 12.7c.7.6 1 1.5 1 2.3v1h6v-1c0-.8.3-1.7 1-2.3A7 7 0 0 0 12 2Z" />
+    </svg>
+  );
+}
+function IconFlask(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M9 3h6M10 3v6L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 9V3" />
+      <path d="M7 14h10" />
+    </svg>
+  );
+}
+function IconChat(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12Z" />
+      <path d="M9 12h.01M13 12h.01M17 12h.01" />
+    </svg>
+  );
+}
+function IconBook(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M3 5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+    </svg>
+  );
+}
+function IconGift(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="3" y="8" width="18" height="5" rx="1" />
+      <path d="M12 8v13M5 13v8h14v-8" />
+      <path d="M12 8S10 3 7.5 3a2.5 2.5 0 0 0 0 5H12ZM12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5H12Z" />
+    </svg>
+  );
+}
+function IconMenu(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" {...props}>
+      <path d="M4 7h16M4 12h12M4 17h16" />
+    </svg>
+  );
+}
+function IconSearch(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
     </svg>
   );
 }
 
+const QUICK = [
+  { key: "reminder", label: "Reminder", bn: "রিমাইন্ডার", Icon: IconAlarm,  tint: "#f7d3b0" },
+  { key: "memorize", label: "Memorize", bn: "মুখস্থ",     Icon: IconBulb,   tint: "#f2d089" },
+  { key: "ruqiyah",  label: "Ruqiyah",  bn: "রুকিয়াহ",    Icon: IconFlask,  tint: "#e6c7ec" },
+  { key: "dua",      label: "Dua Q&A",  bn: "দোয়া",       Icon: IconChat,   tint: "#c8dcf0" },
+  { key: "books",    label: "Books",    bn: "বই",         Icon: IconBook,   tint: "#f4c98a" },
+  { key: "donate",   label: "Donate",   bn: "দান",        Icon: IconGift,   tint: "#f2a89a" },
+];
 
-function Mihrab({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
-  return (
-    <svg viewBox="0 0 400 520" className={className} fill="none" aria-hidden>
-      <defs>
-        <linearGradient id="mgold" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="currentColor" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M 40 520 L 40 200 Q 40 40 200 40 Q 360 40 360 200 L 360 520"
-        stroke="url(#mgold)"
-        strokeWidth="0.8"
-      />
-      <path
-        d="M 70 520 L 70 210 Q 70 70 200 70 Q 330 70 330 210 L 330 520"
-        stroke="currentColor"
-        strokeOpacity="0.14"
-        strokeWidth="0.6"
-      />
-      <path
-        d="M 200 40 L 200 90 M 180 60 L 220 60"
-        stroke="currentColor"
-        strokeOpacity="0.35"
-        strokeWidth="0.6"
-      />
-    </svg>
-  );
-}
-
-/* ---------- progress arc ---------- */
-
-function ProgressArc({ progress }: { progress: number }) {
-  // progress: 0 → 1
-  const R = 46;
-  const C = 2 * Math.PI * R;
-  return (
-    <svg viewBox="0 0 120 120" className="h-24 w-24">
-      <circle cx="60" cy="60" r={R} stroke="currentColor" strokeOpacity="0.12" strokeWidth="1" fill="none" />
-      <circle
-        cx="60"
-        cy="60"
-        r={R}
-        stroke="currentColor"
-        strokeWidth="1.2"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray={C}
-        strokeDashoffset={C * (1 - progress)}
-        transform="rotate(-90 60 60)"
-        style={{ transition: "stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1)" }}
-      />
-      <circle cx="60" cy="14" r="2" fill="currentColor" opacity="0.8" />
-    </svg>
-  );
-}
-
-/* ---------- component ---------- */
+/* ---------------- component ---------------- */
 
 function SalatHome() {
   const now = useNow(1000);
@@ -168,9 +189,8 @@ function SalatHome() {
         d.setHours(p.h, p.m, 0, 0);
         return { ...p, at: d };
       }),
-    // recompute per minute for the "at" timestamps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [now.getMinutes(), now.getHours(), now.getDate()],
+    [now.getDate()],
   );
 
   const nextIdx = todayPrayers.findIndex((p) => p.at.getTime() > now.getTime());
@@ -194,300 +214,322 @@ function SalatHome() {
     return -1;
   })();
 
-  // progress from previous prayer → next
-  const prev = currentIdx >= 0 ? todayPrayers[currentIdx] : null;
-  const window =
-    (next.at.getTime() - (prev ? prev.at.getTime() : now.getTime() - 3600000)) || 1;
-  const elapsed = now.getTime() - (prev ? prev.at.getTime() : now.getTime());
-  const progress = Math.max(0, Math.min(1, elapsed / window));
+  // countdown h:m:s
+  const diffMs = Math.max(0, next.at.getTime() - now.getTime());
+  const totalSec = Math.floor(diffMs / 1000);
+  const cH = Math.floor(totalSec / 3600);
+  const cM = Math.floor((totalSec % 3600) / 60);
+  const cS = totalSec % 60;
 
-  const nowH = now.getHours();
-  const nowM = now.getMinutes();
-  const nowS = now.getSeconds();
-  const clock = fmtTime(nowH === 0 ? 12 : nowH, nowM);
-  const meridiem = nowH < 12 ? "AM" : "PM";
-
-  const hijri = "১৫ জমাদিউস সানী ১৪৪৭";
-  const greg = now.toLocaleDateString("bn-BD", {
-    weekday: "long",
+  const gregDate = now.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
-  });
+    year: "numeric",
+  }).toUpperCase();
 
   return (
     <div
-      className="paper-grain relative min-h-screen overflow-hidden"
-      style={{ background: "var(--paper)", color: "var(--ink)" }}
+      className="paper-grain relative min-h-screen w-full"
+      style={{
+        background:
+          "radial-gradient(120% 90% at 50% 0%, #fff3dc 0%, #fbe4c0 28%, #f7d3a0 55%, #f2c286 78%, #ecb46e 100%)",
+        color: "#3a2a17",
+      }}
     >
-      {/* Ambient mihrab silhouette */}
-      <Mihrab
-        className="breathe pointer-events-none absolute top-0 left-1/2 h-[92vh] w-[min(90vw,720px)] -translate-x-1/2 opacity-60"
-        style={{ color: "var(--gold)" }}
+      {/* subtle top glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[60vh]"
+        style={{
+          background:
+            "radial-gradient(60% 70% at 50% 0%, rgba(255,240,210,0.9), transparent 60%)",
+        }}
       />
 
-      {/* Corner marks */}
-      <CornerMark className="absolute top-6 left-6 h-8 w-8 opacity-40" style={{ color: "var(--gold)" }} />
-      <CornerMark className="absolute top-6 right-6 h-8 w-8 -scale-x-100 opacity-40" style={{ color: "var(--gold)" }} />
-      <CornerMark className="absolute bottom-6 left-6 h-8 w-8 -scale-y-100 opacity-40" style={{ color: "var(--gold)" }} />
-      <CornerMark className="absolute right-6 bottom-6 h-8 w-8 -scale-100 opacity-40" style={{ color: "var(--gold)" }} />
-
-
-      <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-8 pt-12 pb-14 md:px-16 md:pt-16">
-        {/* ── Masthead ─────────────────────────────────────────────── */}
-        <header className="rise grid grid-cols-3 items-center gap-6 text-[12px]">
-          <div className="font-bangla" style={{ color: "var(--muted-foreground)" }}>
-            <div className="text-[10px] tracking-[0.28em] uppercase shimmer" style={{ color: "var(--gold)" }}>
-              Est. MMXXVI
-            </div>
-            <div className="mt-1.5">{hijri}</div>
-          </div>
-
+      <div className="relative mx-auto flex min-h-screen max-w-[440px] flex-col px-6 pt-8 pb-16">
+        {/* ── Top bar ─────────────────────────── */}
+        <header className="rise flex items-center justify-between">
+          <button
+            aria-label="Menu"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/40 backdrop-blur-md transition hover:bg-white/60"
+            style={{ color: "#5a3d1c" }}
+          >
+            <IconMenu className="h-5 w-5" />
+          </button>
           <div className="text-center">
             <div
-              className="gold-text font-serif text-2xl tracking-[0.22em] italic md:text-[26px]"
-              style={{ letterSpacing: "0.28em" }}
+              className="font-serif text-[15px] tracking-[0.42em]"
+              style={{ color: "#4a2f14" }}
             >
-              Salat &nbsp;OS
-            </div>
-            <div
-              className="mt-1 text-[10px] tracking-[0.32em] uppercase"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              Vol. I · No. 001
+              DEEN MUSLIM
             </div>
           </div>
-
-          <div
-            className="font-bangla text-right"
-            style={{ color: "var(--muted-foreground)" }}
+          <button
+            aria-label="Search"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/40 backdrop-blur-md transition hover:bg-white/60"
+            style={{ color: "#5a3d1c" }}
           >
-            <div className="text-[10px] tracking-[0.28em] uppercase" style={{ color: "var(--gold)" }}>
-              Dhaka · 23.81°N
-            </div>
-            <div className="mt-1.5">{greg}</div>
-          </div>
+            <IconSearch className="h-5 w-5" />
+          </button>
         </header>
 
-        <div className="rise mt-8 flex justify-center" style={{ color: "var(--gold)", animationDelay: "120ms" }}>
-          <Ornament className="h-4 w-64 opacity-70" />
-        </div>
+        {/* ── Hero: mosque + big countdown ────── */}
+        <section className="relative mt-6 h-[360px]">
+          <MosqueSilhouette className="breathe absolute inset-x-0 top-2 mx-auto h-[340px] w-full" />
 
-        {/* ── Hero clock ──────────────────────────────────────────── */}
-        <section className="mt-16 text-center md:mt-20">
-          <div
-            className="rise text-[10px] tracking-[0.4em] uppercase"
-            style={{ color: "var(--muted-foreground)", animationDelay: "200ms" }}
-          >
-            The Present Hour
+          {/* crescent moon between digits */}
+          <div className="pointer-events-none absolute inset-x-0 top-[70px] flex justify-center">
+            <svg viewBox="0 0 40 40" className="h-8 w-8" aria-hidden>
+              <path
+                d="M28 20a10 10 0 1 1-8-9.8A8 8 0 0 0 28 20Z"
+                fill="#c47a1e"
+                opacity="0.85"
+              />
+            </svg>
           </div>
-          <div
-            className="rise tabular font-serif mt-4 leading-none tracking-[-0.04em]"
-            style={{ animationDelay: "280ms" }}
-          >
-            <span className="text-[128px] md:text-[184px]">{clock}</span>
-            <span
-              className="ml-4 align-top text-[22px] tracking-[0.24em] md:text-[28px]"
-              style={{ color: "var(--gold)" }}
+
+          <div className="relative flex h-full flex-col items-center justify-center pt-6">
+            <div
+              className="tabular flex items-center gap-6 font-serif leading-none"
+              style={{ color: "#3a2510", letterSpacing: "-0.04em" }}
             >
-              {meridiem}
-            </span>
-          </div>
-          <div
-            className="rise tabular mt-3 text-[11px] tracking-[0.3em] uppercase"
-            style={{ color: "var(--muted-foreground)", animationDelay: "340ms" }}
-          >
-            {toBn(String(nowS).padStart(2, "0"))} sec · local mean time
+              <span className="rise text-[112px]">{toBn(pad(cH || 18))}</span>
+              <span className="w-8" />
+              <span className="rise text-[112px]" style={{ animationDelay: "80ms" }}>
+                {toBn(pad(cM || 36))}
+              </span>
+            </div>
+
+            {/* meta row */}
+            <div className="mt-10 grid w-full grid-cols-2 gap-8 px-4">
+              <div className="text-left">
+                <div className="text-[10px] tracking-[0.32em] uppercase" style={{ color: "#8a5a20" }}>
+                  Remaining Time
+                </div>
+                <div
+                  className="tabular font-serif mt-1 text-2xl"
+                  style={{ color: "#3a2510" }}
+                >
+                  {next.bn} {toBn(cH)}:{toBn(pad(cM))}:{toBn(pad(cS))}
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[10px] tracking-[0.32em] uppercase" style={{ color: "#8a5a20" }}>
+                  {gregDate}
+                </div>
+                <div
+                  className="font-serif mt-1 text-2xl"
+                  style={{ color: "#3a2510" }}
+                >
+                  Sylhet, Bangladesh
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ── Next prayer feature ─────────────────────────────────── */}
+        {/* ── Quick actions grid ──────────────── */}
         <section
-          className="rise relative mt-20 grid grid-cols-1 items-center gap-10 md:grid-cols-[1fr_auto_1fr]"
-          style={{ animationDelay: "420ms" }}
+          className="rise mt-6 rounded-[28px] p-5"
+          style={{
+            background: "rgba(255,247,232,0.72)",
+            backdropFilter: "blur(14px)",
+            boxShadow:
+              "0 1px 0 rgba(255,255,255,0.9) inset, 0 20px 40px -24px rgba(120,70,20,0.35)",
+            animationDelay: "240ms",
+          }}
         >
-          {/* Left: label */}
-          <div className="text-center md:text-right">
-            <div
-              className="text-[10px] tracking-[0.4em] uppercase"
-              style={{ color: "var(--gold)" }}
-            >
-              Awaiting
-            </div>
-            <div className="font-serif mt-3 text-6xl leading-[0.95] tracking-tight md:text-7xl">
-              {next.bn}
-            </div>
-            <div
-              className="font-arabic mt-4 text-4xl md:text-5xl"
-              style={{ color: "var(--gold)" }}
-            >
-              {next.ar}
-            </div>
-            <div
-              className="mt-3 font-serif text-sm italic tracking-wide"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              — the {next.en.toLowerCase()} prayer
-            </div>
-          </div>
-
-          {/* Center: arc + countdown */}
-          <div className="relative flex flex-col items-center" style={{ color: "var(--gold)" }}>
-            <ProgressArc progress={progress} />
-            <div
-              className="tabular font-serif absolute inset-0 flex items-center justify-center text-xl"
-              style={{ color: "var(--ink)" }}
-            >
-              {toBn(Math.round(progress * 100))}
-              <span className="ml-0.5 text-xs opacity-60">%</span>
-            </div>
-          </div>
-
-          {/* Right: time */}
-          <div className="text-center md:text-left">
-            <div
-              className="tabular gold-text font-serif text-5xl tracking-tight md:text-6xl"
-            >
-              {fmtTime(next.h, next.m)}
-            </div>
-            <div
-              className="font-bangla mt-3 text-sm tracking-wide"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              বাকি রয়েছে
-            </div>
-            <div
-              className="tabular font-serif mt-1 text-2xl italic"
-              style={{ color: "var(--ink)" }}
-            >
-              {fmtDiff(next.at.getTime() - now.getTime())}
-            </div>
+          <div className="grid grid-cols-3 gap-4">
+            {QUICK.map(({ key, label, bn, Icon, tint }, i) => (
+              <button
+                key={key}
+                className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition hover:-translate-y-0.5"
+              >
+                <span
+                  className="grid h-14 w-14 place-items-center rounded-2xl transition group-hover:scale-105"
+                  style={{
+                    background: `linear-gradient(160deg, ${tint} 0%, color-mix(in oklab, ${tint} 60%, white) 100%)`,
+                    boxShadow:
+                      "0 1px 0 rgba(255,255,255,0.9) inset, 0 8px 16px -8px rgba(120,70,20,0.35)",
+                    color: "#5a3d1c",
+                    animationDelay: `${300 + i * 60}ms`,
+                  }}
+                >
+                  <Icon className="h-6 w-6" />
+                </span>
+                <div className="text-center leading-tight">
+                  <div className="text-[13px] font-medium" style={{ color: "#3a2510" }}>
+                    {label}
+                  </div>
+                  <div className="font-bangla text-[11px]" style={{ color: "#8a5a20" }}>
+                    {bn}
+                  </div>
+                </div>
+              </button>
+            ))}
           </div>
         </section>
 
-        {/* ── Prayer schedule (magazine ledger) ───────────────────── */}
-        <section className="mt-24">
-          <div className="rise mb-8 flex items-baseline justify-between">
+        {/* ── Prayer ledger ───────────────────── */}
+        <section className="mt-8">
+          <div className="mb-3 flex items-baseline justify-between">
             <div
-              className="text-[10px] tracking-[0.4em] uppercase"
-              style={{ color: "var(--muted-foreground)" }}
+              className="font-serif text-lg"
+              style={{ color: "#3a2510" }}
             >
-              The Day's Ledger
+              Today's Prayers
             </div>
             <div
-              className="font-serif text-sm italic"
-              style={{ color: "var(--muted-foreground)" }}
+              className="font-bangla text-[11px] tracking-wide"
+              style={{ color: "#8a5a20" }}
             >
-              five appointments with the divine
+              পাঁচ ওয়াক্ত
             </div>
           </div>
 
-          <ul>
+          <ul className="space-y-2">
             {todayPrayers.map((p, i) => {
               const isCurrent = i === currentIdx;
               const isPassed = p.at.getTime() < now.getTime() && !isCurrent;
               return (
                 <li
                   key={p.key}
-                  className="rise group relative grid grid-cols-[auto_1fr_auto] items-center gap-6 border-t py-6 md:gap-10 md:py-7"
+                  className="rise flex items-center justify-between rounded-2xl px-4 py-3 transition"
                   style={{
-                    animationDelay: `${520 + i * 80}ms`,
-                    borderColor: "var(--rule)",
-                    borderBottomWidth: i === todayPrayers.length - 1 ? 1 : 0,
-                    opacity: isPassed ? 0.38 : 1,
+                    background: isCurrent
+                      ? "linear-gradient(90deg, #f7c98a 0%, #f5b96b 100%)"
+                      : "rgba(255,247,232,0.55)",
+                    boxShadow: isCurrent
+                      ? "0 12px 24px -14px rgba(180,110,30,0.55)"
+                      : "0 1px 0 rgba(255,255,255,0.7) inset",
+                    opacity: isPassed ? 0.5 : 1,
+                    animationDelay: `${420 + i * 60}ms`,
+                    color: "#3a2510",
                   }}
                 >
-                  {isCurrent && (
-                    <>
-                      <span
-                        aria-hidden
-                        className="shimmer absolute top-1/2 left-[-24px] h-10 w-[3px] -translate-y-1/2 md:left-[-36px]"
-                        style={{ background: "var(--gold)" }}
-                      />
-                      <span
-                        aria-hidden
-                        className="absolute inset-x-0 top-0 h-[2px]"
-                        style={{ background: "var(--gold)" }}
-                      />
-                    </>
-                  )}
-
-                  {/* Roman numeral */}
-                  <span
-                    className="tabular font-serif w-10 text-lg italic"
-                    style={{ color: isCurrent ? "var(--gold)" : "var(--muted-foreground)" }}
-                  >
-                    {["I", "II", "III", "IV", "V"][i]}
-                  </span>
-
-                  <div className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
-                    <span className="font-serif text-3xl tracking-tight md:text-[34px]">
-                      {p.bn}
-                    </span>
+                  <div className="flex items-center gap-3">
                     <span
-                      className="font-arabic text-xl md:text-2xl"
-                      style={{ color: "var(--gold)" }}
+                      className="grid h-9 w-9 place-items-center rounded-full font-serif text-sm"
+                      style={{
+                        background: isCurrent ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.5)",
+                        color: "#7a4a14",
+                      }}
                     >
+                      {toBn(i + 1)}
+                    </span>
+                    <div>
+                      <div className="font-serif text-lg leading-tight">{p.bn}</div>
+                      <div className="text-[11px] tracking-[0.2em] uppercase" style={{ color: "#7a4a14" }}>
+                        {p.en}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-arabic text-xl" style={{ color: "#7a4a14" }}>
                       {p.ar}
                     </span>
-                    <span
-                      className="text-[10px] tracking-[0.32em] uppercase"
-                      style={{ color: "var(--muted-foreground)" }}
-                    >
-                      · {p.en}
+                    <span className="tabular font-serif text-xl">
+                      {toBn(p.h > 12 ? p.h - 12 : p.h)}:{toBn(pad(p.m))}
                     </span>
                   </div>
-
-                  <span
-                    className="tabular font-serif text-3xl tracking-tight md:text-4xl"
-                    style={{
-                      color: isCurrent ? "var(--gold)" : "var(--ink)",
-                    }}
-                  >
-                    {fmtTime(p.h, p.m)}
-                  </span>
                 </li>
               );
             })}
           </ul>
         </section>
 
-        {/* ── Ayah quote ──────────────────────────────────────────── */}
-        <section className="rise mt-24" style={{ animationDelay: "900ms" }}>
-          <div className="flex justify-center" style={{ color: "var(--gold)" }}>
-            <Ornament className="h-4 w-56 opacity-70" />
+        {/* ── Al Quran section ────────────────── */}
+        <section
+          className="rise mt-8 rounded-[28px] p-5"
+          style={{
+            background: "rgba(255,247,232,0.78)",
+            backdropFilter: "blur(14px)",
+            boxShadow: "0 20px 40px -24px rgba(120,70,20,0.35)",
+            animationDelay: "620ms",
+          }}
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <div className="font-serif text-xl" style={{ color: "#3a2510" }}>
+              Al Quran
+            </div>
+            <div
+              className="flex rounded-full p-0.5 text-[11px]"
+              style={{ background: "rgba(120,70,20,0.08)" }}
+            >
+              {["Surah", "Juz", "Page"].map((t, i) => (
+                <button
+                  key={t}
+                  className="rounded-full px-3 py-1 transition"
+                  style={{
+                    background: i === 0 ? "#f5b96b" : "transparent",
+                    color: i === 0 ? "#3a2510" : "#7a4a14",
+                    fontWeight: i === 0 ? 600 : 500,
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           </div>
-          <blockquote className="mx-auto mt-10 max-w-2xl text-center">
-            <p
-              className="font-arabic text-3xl leading-[2] md:text-[36px]"
-              style={{ color: "var(--ink)" }}
-            >
-              إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا
-            </p>
-            <p
-              className="font-serif mt-6 text-lg italic tracking-wide md:text-xl"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              "Indeed, prayer has been decreed upon the believers a decree of specified times."
-            </p>
-            <footer
-              className="mt-4 text-[10px] tracking-[0.4em] uppercase"
-              style={{ color: "var(--gold)" }}
-            >
-              An-Nisāʾ · ৪:১০৩
-            </footer>
-          </blockquote>
+
+          {/* Last read card */}
+          <div
+            className="mb-4 flex items-center justify-between rounded-2xl px-4 py-3"
+            style={{
+              background: "linear-gradient(100deg, #f7c98a 0%, #f5b96b 100%)",
+              color: "#3a2510",
+            }}
+          >
+            <div>
+              <div className="text-[10px] tracking-[0.3em] uppercase" style={{ color: "#7a4a14" }}>
+                Last Read
+              </div>
+              <div className="font-serif mt-0.5 text-2xl italic">Al-Fatiah</div>
+              <div className="text-[11px]" style={{ color: "#7a4a14" }}>
+                Ayah No: 1
+              </div>
+            </div>
+            <span className="font-arabic text-3xl" style={{ color: "#7a4a14" }}>
+              الفاتحة
+            </span>
+          </div>
+
+          <ul className="divide-y" style={{ borderColor: "rgba(120,70,20,0.12)" }}>
+            {SURAHS.map((s) => (
+              <li
+                key={s.no}
+                className="flex items-center justify-between py-3"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className="tabular font-serif w-8 text-sm"
+                    style={{ color: "#8a5a20" }}
+                  >
+                    {String(s.no).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <div className="font-serif text-lg" style={{ color: "#3a2510" }}>
+                      {s.en}
+                    </div>
+                    <div className="text-[11px]" style={{ color: "#8a5a20" }}>
+                      {s.ayahs} Ayahs
+                    </div>
+                  </div>
+                </div>
+                <span className="font-arabic text-2xl" style={{ color: "#7a4a14" }}>
+                  {s.ar}
+                </span>
+              </li>
+            ))}
+          </ul>
         </section>
 
-        {/* ── Colophon ────────────────────────────────────────────── */}
+        {/* ── Footer ──────────────────────────── */}
         <footer
-          className="mt-auto grid grid-cols-3 items-end gap-4 pt-24 text-[10px] tracking-[0.32em] uppercase"
-          style={{ color: "var(--muted-foreground)" }}
+          className="mt-10 text-center text-[10px] tracking-[0.32em] uppercase"
+          style={{ color: "#8a5a20" }}
         >
-          <div>Set in Instrument · Amiri · Hind</div>
-          <div className="text-center" style={{ color: "var(--gold)" }}>
-            ✦ Salat OS ✦
-          </div>
-          <div className="text-right">Phase I · Design Preview</div>
+          Salat OS · Deen Muslim · Vol. I
         </footer>
       </div>
     </div>
