@@ -202,12 +202,12 @@ function DesignerOSLanding() {
                 {downloading ? "Preparing…" : "⬇ Download .zip"}
                 <span className="text-[11px] text-neutral-400">v1.0.0</span>
               </button>
-              <Link
-                to="/extensions/designer-os"
+              <a
+                href="#preview"
                 className="inline-flex items-center rounded-xl border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-neutral-800 shadow-sm transition hover:border-neutral-300"
               >
                 See live preview →
-              </Link>
+              </a>
             </div>
             <p className="mt-4 text-xs text-neutral-500">
               Works on Chrome, Edge, Brave, Arc, Opera — any Chromium browser ≥ 116.
