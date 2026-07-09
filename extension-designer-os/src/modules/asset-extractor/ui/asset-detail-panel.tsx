@@ -101,8 +101,11 @@ function DetailBody({ id, onClose }: { id: string; onClose: () => void }) {
           <Star className={cn("h-4 w-4", asset.favorite && "fill-yellow-400 text-yellow-400")} />
         </button>
         <Dialog.Close asChild>
-          <button className="rounded p-1 text-muted-foreground hover:bg-muted">
-            <X className="h-4 w-4" />
+          <button
+            aria-label="Close asset details"
+            className="rounded p-1 text-muted-foreground hover:bg-muted"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </Dialog.Close>
       </div>

@@ -211,8 +211,12 @@ function StyleRow({
     <div className="rounded border bg-background p-2">
       <div className="flex items-center gap-1">
         <Input value={style.name} onChange={(e) => onChange({ name: e.target.value })} className="h-7 flex-1 text-xs" />
-        <button onClick={onRemove} className="rounded p-1 text-muted-foreground hover:text-destructive">
-          <Trash2 className="h-3 w-3" />
+        <button
+          onClick={onRemove}
+          aria-label={`Remove ${style.name || "style"}`}
+          className="rounded p-1 text-muted-foreground hover:text-destructive"
+        >
+          <Trash2 className="h-3 w-3" aria-hidden="true" />
         </button>
       </div>
       <p

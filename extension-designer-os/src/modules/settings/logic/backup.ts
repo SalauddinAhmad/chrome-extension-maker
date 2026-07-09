@@ -1,6 +1,10 @@
 /**
  * Backup / restore for the local Dexie DB. Uses a static table map so
  * TypeScript can prove each access is well-typed (no dynamic string keys).
+ *
+ * Backups embed the Dexie `schemaVersion` at export time. Imports reject
+ * files that were written against an incompatible (newer) schema so a
+ * post-1.0 backup can't silently corrupt older installs.
  */
 import { db } from "@/storage";
 import type { Table } from "dexie";
@@ -31,10 +35,18 @@ function tables(): TableEntry[] {
   ];
 }
 
+/** Bump when the shape of the backup file itself (not the DB schema) changes. */
+export const BACKUP_FILE_VERSION = 1;
+
 export interface BackupFile {
   app: "designer-os";
-  version: 1;
+  /** Backup FILE format version. */
+  version: number;
+  /** Dexie DB schema version this backup was written against. */
+  schemaVersion: number;
   exportedAt: number;
+  /** Human-readable app version, informational only. */
+  appVersion?: string;
   data: Record<string, unknown[]>;
 }
 
@@ -43,7 +55,14 @@ export async function exportAll(): Promise<BackupFile> {
   for (const { name, table } of tables()) {
     data[name] = await table.toArray();
   }
-  return { app: "designer-os", version: 1, exportedAt: Date.now(), data };
+  return {
+    app: "designer-os",
+    version: BACKUP_FILE_VERSION,
+    schemaVersion: db.verno,
+    exportedAt: Date.now(),
+    appVersion: "1.0.0",
+    data,
+  };
 }
 
 export function downloadBackup(file: BackupFile): void {
@@ -62,11 +81,48 @@ export interface ImportResult {
   skipped: string[];
 }
 
+/**
+ * Validate the backup envelope BEFORE touching the DB. Throws a
+ * user-facing error message on any incompatibility.
+ */
+export function validateBackup(file: unknown): asserts file is BackupFile {
+  if (!file || typeof file !== "object") {
+    throw new Error("Not a Designer OS backup file.");
+  }
+  const f = file as Partial<BackupFile>;
+  if (f.app !== "designer-os") {
+    throw new Error("Not a Designer OS backup file.");
+  }
+  if (typeof f.version !== "number") {
+    throw new Error("Backup is missing a version field.");
+  }
+  if (f.version > BACKUP_FILE_VERSION) {
+    throw new Error(
+      `Backup file version ${f.version} is newer than this build supports ` +
+        `(max ${BACKUP_FILE_VERSION}). Update Designer OS and try again.`,
+    );
+  }
+  if (typeof f.schemaVersion !== "number") {
+    throw new Error(
+      "Backup is missing a schemaVersion. Regenerate it with Designer OS 1.0 or later.",
+    );
+  }
+  if (f.schemaVersion > db.verno) {
+    throw new Error(
+      `Backup was written against DB schema v${f.schemaVersion}, but this ` +
+        `build only supports up to v${db.verno}. Update Designer OS and try again.`,
+    );
+  }
+  if (!f.data || typeof f.data !== "object") {
+    throw new Error("Backup has no data payload.");
+  }
+}
+
 export async function importAll(
-  file: BackupFile,
+  file: unknown,
   mode: "merge" | "replace",
 ): Promise<ImportResult> {
-  if (file?.app !== "designer-os") throw new Error("Not a Designer OS backup file");
+  validateBackup(file);
   let imported = 0;
   const skipped: string[] = [];
 
