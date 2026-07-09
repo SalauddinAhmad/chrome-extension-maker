@@ -62,11 +62,12 @@ function useNow(intervalMs = 1000) {
 
 /* ---------- ornaments ---------- */
 
-function Ornament({ className = "" }: { className?: string }) {
+function Ornament({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg
       viewBox="0 0 240 20"
       className={className}
+      style={style}
       fill="none"
       stroke="currentColor"
       strokeWidth="0.8"
@@ -85,6 +86,7 @@ function Ornament({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
 
 function CornerMark({ className = "" }: { className?: string }) {
   return (
