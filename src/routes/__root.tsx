@@ -77,20 +77,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Durud Reminder v2.0 — মিনিমাল দুরুদ রিমাইন্ডার এক্সটেনশন" },
+      { title: "Salat OS — নামাজের সময়সূচি, শান্ত ও এলিগ্যান্ট" },
       {
         name: "description",
         content:
-          "ব্রাউজিং করার ফাঁকে নবীজি (সাঃ)-এর উপর দুরুদ পড়ার সুন্দর রিমাইন্ডার। তাসবিহ কাউন্টার, দৈনিক স্ট্রিক ও সমৃদ্ধ দুরুদ লাইব্রেরি সহ।",
+          "বাংলাদেশি মুসলিমদের জন্য ডিজাইন-ফরওয়ার্ড, বাংলা-ফার্স্ট প্রেয়ার টাইমস অ্যাপ। অফলাইন, ট্র্যাকিং-ফ্রি, শান্ত ও এলিগ্যান্ট।",
       },
-      { name: "author", content: "Durud Reminder" },
-      { property: "og:title", content: "Durud Reminder v2.0" },
+      { name: "author", content: "Salat OS" },
+      { property: "og:title", content: "Salat OS — Prayer Times, quietly beautiful" },
       {
         property: "og:description",
-        content: "মিনিমাল ও এলিগ্যান্ট Chrome এক্সটেনশন — নিয়মিত দুরুদ পাঠের রিমাইন্ডার।",
+        content: "Bangla-first, design-forward prayer times. Offline-first, zero tracking.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#faf7f2" },
     ],
     links: [
       {
@@ -105,8 +106,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Tiro+Bangla&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap",
       },
+
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
