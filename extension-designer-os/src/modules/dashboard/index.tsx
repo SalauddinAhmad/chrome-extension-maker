@@ -89,11 +89,16 @@ export default function Dashboard() {
   ) ?? [];
 
   const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [settings, setSettings] = useState<Settings | undefined>();
   const activityTick = totals.colors + totals.fonts + totals.inspirations + totals.assets + totals.notes + totals.projects;
 
   useEffect(() => {
     fetchRecentActivity(8).then(setActivity).catch(() => setActivity([]));
   }, [activityTick]);
+
+  useEffect(() => {
+    getSettings().then(setSettings);
+  }, []);
 
   const isEmpty = activityTick === 0;
   const hasNoProjects = totals.projects === 0;
