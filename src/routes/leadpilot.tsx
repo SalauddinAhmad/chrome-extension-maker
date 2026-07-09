@@ -219,7 +219,7 @@ function LeadPilot() {
               <div className="flex items-center gap-1.5 text-[12px]" style={{ color: T.mute }}>
                 <span>Workspace</span>
                 <span style={{ color: T.faint }}>/</span>
-                <span style={{ color: T.ink }}>Lead Finder</span>
+                <span style={{ color: T.ink }}>{NAV.find((n) => n.key === active)?.label ?? "Dashboard"}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
