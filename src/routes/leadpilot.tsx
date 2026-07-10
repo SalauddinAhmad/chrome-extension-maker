@@ -152,17 +152,11 @@ const LEADS: Lead[] = [
 
 
 const NAV = [
-  { key: "dashboard", label: "Dashboard", icon: IconGrid },
-  { key: "finder", label: "Lead Finder", icon: IconSearch, badge: "AI" },
+  { key: "finder", label: "Lead Finder", icon: IconSearch },
   { key: "saved", label: "Saved Leads", icon: IconBookmark },
-  { key: "crm", label: "CRM", icon: IconKanban },
-  { key: "competitors", label: "Competitors", icon: IconTarget },
-  { key: "audits", label: "Website Audits", icon: IconGauge },
-  { key: "outreach", label: "AI Outreach", icon: IconMail },
-  { key: "reports", label: "Reports", icon: IconBarChart },
-  { key: "team", label: "Team", icon: IconUsers },
   { key: "settings", label: "Settings", icon: IconCog },
 ];
+
 
 /* ────────── icons ────────── */
 type IP = React.SVGProps<SVGSVGElement>;
