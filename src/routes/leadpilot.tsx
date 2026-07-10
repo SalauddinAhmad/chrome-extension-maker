@@ -357,16 +357,12 @@ function LeadPilot() {
               />
             )}
 
-            {active === "crm" && <CRMView />}
-            {active === "audits" && <AuditsView />}
-            {active === "outreach" && <OutreachView />}
-
-            {(active === "saved" || active === "competitors" || active === "reports" || active === "team" || active === "settings") && (
+            {(active === "saved" || active === "settings") && (
               <ModulePlaceholder title={NAV.find((n) => n.key === active)?.label ?? ""} />
             )}
 
             <p className="mt-6 text-center text-[10.5px] uppercase tracking-[0.24em]" style={{ color: T.faint }}>
-              LeadPilot AI · v0.2 · Finder · CRM · Audit · Outreach
+              LeadPilot · Google Places lead finder · XLSX / CSV / JSON export
             </p>
           </div>
         </main>
