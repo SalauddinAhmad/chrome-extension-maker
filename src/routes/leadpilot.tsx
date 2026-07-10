@@ -234,7 +234,7 @@ function LeadPilot() {
           </div>
 
           <nav className="flex-1 space-y-0.5 px-2">
-            {NAV.map(({ key, label, icon: Icon, badge }) => {
+            {NAV.map(({ key, label, icon: Icon }) => {
               const on = active === key;
               return (
                 <button
@@ -249,14 +249,6 @@ function LeadPilot() {
                 >
                   <Icon className="h-4 w-4" style={{ color: on ? T.brand : T.faint }} />
                   <span className="flex-1 text-left">{label}</span>
-                  {badge && (
-                    <span
-                      className="rounded px-1.5 py-0.5 text-[9px] font-semibold tracking-wider"
-                      style={{ background: T.brandSoft, color: T.brand }}
-                    >
-                      {badge}
-                    </span>
-                  )}
                 </button>
               );
             })}
