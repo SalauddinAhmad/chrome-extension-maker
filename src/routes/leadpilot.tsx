@@ -910,9 +910,10 @@ function OutreachView() {
   const [lead, setLead] = useState(LEADS[0]?.id ?? "");
   const [tone, setTone] = useState<"friendly" | "direct" | "premium">("friendly");
   const [copy, setCopy] = useState("");
-  const l = LEADS.find((x) => x.id === lead)!;
+  const l = LEADS.find((x) => x.id === lead);
 
   const generate = () => {
+    if (!l) return;
     const openers = {
       friendly: `Hi ${l.name.split(" ")[0]} team,`,
       direct: `${l.name} —`,
