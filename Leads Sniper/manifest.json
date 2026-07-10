@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Google Maps Scraper - Leads Sniper",
+  "description": "Scrape unlimited B2B leads from Google Maps in just minutes!",
+  "version": "4.0.5",
+  "icons": {
+    "16": "/icons/16x16.png",
+    "19": "/icons/16x16.png",
+    "32": "/icons/32x32.png",
+    "38": "/icons/192x192.png",
+    "48": "/icons/192x192.png",
+    "128": "/icons/192x192.png",
+    "192": "icons/192x192.png",
+    "512": "icons/512x512.png"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "webRequest",
+    "identity",
+    "identity.email",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://2captcha.com/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "*.gif",
+        "*.svg"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://turbomarketer.info/*",
+        "http://turbomarketer.me/*",
+        "https://*/maps/*",
+        "https://*/sorry/index*"
+      ],
+      "js": [
+        "content-scripts/c-app.js"
+      ]
+    }
+  ]
+}
