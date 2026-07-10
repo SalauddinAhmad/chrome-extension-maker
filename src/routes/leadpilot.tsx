@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { exportLeadsXLSX } from "@/lib/lead-export";
 
 export const Route = createFileRoute("/leadpilot")({
   head: () => ({
@@ -97,6 +98,7 @@ function IconUsers(p: IP) { return <svg {...base(p)}><circle cx="9" cy="8" r="3.
 function IconCog(p: IP) { return <svg {...base(p)}><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.2-1.7l2-1.5-2-3.4-2.3.9a7 7 0 0 0-3-1.7L13 2h-2l-.5 2.6a7 7 0 0 0-3 1.7L5.2 5.4l-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .6 0 1.1.2 1.7l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 3 1.7L11 22h2l.5-2.6a7 7 0 0 0 3-1.7l2.3.9 2-3.4-2-1.5c.1-.6.2-1.1.2-1.7Z"/></svg>; }
 function IconBolt(p: IP) { return <svg {...base(p)}><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></svg>; }
 function IconPlus(p: IP) { return <svg {...base(p)}><path d="M12 5v14M5 12h14"/></svg>; }
+function IconDownload(p: IP) { return <svg {...base(p)}><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>; }
 function IconArrow(p: IP) { return <svg {...base(p)}><path d="M5 12h14M13 6l6 6-6 6"/></svg>; }
 function IconStar(p: IP) { return <svg {...base(p)} fill="currentColor" stroke="none"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5l7.5-.6Z"/></svg>; }
 function IconGlobe(p: IP) { return <svg {...base(p)}><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>; }
@@ -510,7 +512,25 @@ function FinderView(props: {
               <span className="tabular-nums" style={{ color: T.ink }}>{minRating.toFixed(1)}</span>
             </div>
             <button
-              className="ml-auto inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
+              onClick={() =>
+                exportLeadsXLSX(
+                  filtered,
+                  `leadpilot-${new Date().toISOString().slice(0, 10)}.xlsx`,
+                )
+              }
+              disabled={filtered.length === 0}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition hover:brightness-125 disabled:opacity-40"
+              style={{ borderColor: T.border, background: T.bg, color: T.ink }}
+              title="Export current results to Excel (.xlsx)"
+            >
+              <IconDownload className="h-3.5 w-3.5" />
+              Export XLSX
+              <span className="rounded px-1 py-0.5 text-[10px] tabular-nums" style={{ background: T.surface2, color: T.mute }}>
+                {filtered.length}
+              </span>
+            </button>
+            <button
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
               style={{ background: T.brand, boxShadow: `0 4px 14px -4px ${T.brand}` }}
             >
               <IconPlus className="h-3.5 w-3.5" />
