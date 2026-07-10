@@ -98,7 +98,7 @@ function IconCommand(p: IP) { return <svg {...base(p)}><path d="M6 6h3v3H6a3 3 0
 
 /* ────────── component ────────── */
 function LeadPilot() {
-  const [active, setActive] = useState("finder");
+  const [active, setActive] = useState("dashboard");
   const [query, setQuery] = useState("");
   const [city, setCity] = useState("All cities");
   const [temp, setTemp] = useState<"all" | "hot" | "warm" | "cold">("all");
@@ -122,7 +122,7 @@ function LeadPilot() {
     return { total: LEADS.length, hot, opps, avg };
   }, []);
 
-  const activeLead = LEADS.find((l) => l.id === selected) ?? LEADS[0];
+  const activeLead = LEADS.find((l) => l.id === selected) ?? null;
 
   return (
     <div className="min-h-screen w-full" style={{ background: T.bg, color: T.ink, fontFamily: "'Inter', ui-sans-serif, system-ui" }}>
@@ -479,7 +479,7 @@ function FinderView(props: {
   minRating: number; setMinRating: (v: number) => void;
   filtered: Lead[];
   selected: string | null; setSelected: (v: string) => void;
-  activeLead: Lead;
+  activeLead: Lead | null;
 }) {
   const { totals, query, setQuery, city, setCity, temp, setTemp, minRating, setMinRating, filtered, selected, setSelected, activeLead } = props;
   return (
@@ -644,7 +644,7 @@ function FinderView(props: {
           </div>
 
           <aside className="border-t xl:border-t-0 xl:border-l" style={{ borderColor: T.border, background: T.surface2 }}>
-            <LeadDetail lead={activeLead} />
+            {activeLead ? <LeadDetail lead={activeLead} /> : <SidePanelEmpty />}
           </aside>
         </div>
       </section>
@@ -699,11 +699,7 @@ const CRM_STAGES: { key: CrmStage; label: string; color: string }[] = [
 
 function CRMView() {
   const initial = useMemo<Record<CrmStage, Lead[]>>(() => ({
-    new: [LEADS[0], LEADS[6]],
-    contacted: [LEADS[1], LEADS[2]],
-    qualified: [LEADS[3]],
-    won: [LEADS[4]],
-    lost: [LEADS[7]],
+    new: [], contacted: [], qualified: [], won: [], lost: [],
   }), []);
   const [board, setBoard] = useState(initial);
   const [dragId, setDragId] = useState<string | null>(null);
@@ -911,7 +907,7 @@ function ScoreCard({ label, value }: { label: string; value: number }) {
 
 /* ────────── AI Outreach ────────── */
 function OutreachView() {
-  const [lead, setLead] = useState(LEADS[0].id);
+  const [lead, setLead] = useState(LEADS[0]?.id ?? "");
   const [tone, setTone] = useState<"friendly" | "direct" | "premium">("friendly");
   const [copy, setCopy] = useState("");
   const l = LEADS.find((x) => x.id === lead)!;
