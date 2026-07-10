@@ -183,7 +183,7 @@ function IconCommand(p: IP) { return <svg {...base(p)}><path d="M6 6h3v3H6a3 3 0
 
 /* ────────── component ────────── */
 function LeadPilot() {
-  const [active, setActive] = useState("dashboard");
+  const [active, setActive] = useState("finder");
   const [query, setQuery] = useState("");
   const [city, setCity] = useState("All cities");
   const [temp, setTemp] = useState<"all" | "hot" | "warm" | "cold">("all");
