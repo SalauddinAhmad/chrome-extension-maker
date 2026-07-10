@@ -152,17 +152,11 @@ const LEADS: Lead[] = [
 
 
 const NAV = [
-  { key: "dashboard", label: "Dashboard", icon: IconGrid },
-  { key: "finder", label: "Lead Finder", icon: IconSearch, badge: "AI" },
+  { key: "finder", label: "Lead Finder", icon: IconSearch },
   { key: "saved", label: "Saved Leads", icon: IconBookmark },
-  { key: "crm", label: "CRM", icon: IconKanban },
-  { key: "competitors", label: "Competitors", icon: IconTarget },
-  { key: "audits", label: "Website Audits", icon: IconGauge },
-  { key: "outreach", label: "AI Outreach", icon: IconMail },
-  { key: "reports", label: "Reports", icon: IconBarChart },
-  { key: "team", label: "Team", icon: IconUsers },
   { key: "settings", label: "Settings", icon: IconCog },
 ];
+
 
 /* ────────── icons ────────── */
 type IP = React.SVGProps<SVGSVGElement>;
@@ -189,7 +183,7 @@ function IconCommand(p: IP) { return <svg {...base(p)}><path d="M6 6h3v3H6a3 3 0
 
 /* ────────── component ────────── */
 function LeadPilot() {
-  const [active, setActive] = useState("dashboard");
+  const [active, setActive] = useState("finder");
   const [query, setQuery] = useState("");
   const [city, setCity] = useState("All cities");
   const [temp, setTemp] = useState<"all" | "hot" | "warm" | "cold">("all");
@@ -240,7 +234,7 @@ function LeadPilot() {
           </div>
 
           <nav className="flex-1 space-y-0.5 px-2">
-            {NAV.map(({ key, label, icon: Icon, badge }) => {
+            {NAV.map(({ key, label, icon: Icon }) => {
               const on = active === key;
               return (
                 <button
@@ -255,14 +249,6 @@ function LeadPilot() {
                 >
                   <Icon className="h-4 w-4" style={{ color: on ? T.brand : T.faint }} />
                   <span className="flex-1 text-left">{label}</span>
-                  {badge && (
-                    <span
-                      className="rounded px-1.5 py-0.5 text-[9px] font-semibold tracking-wider"
-                      style={{ background: T.brandSoft, color: T.brand }}
-                    >
-                      {badge}
-                    </span>
-                  )}
                 </button>
               );
             })}
@@ -371,16 +357,12 @@ function LeadPilot() {
               />
             )}
 
-            {active === "crm" && <CRMView />}
-            {active === "audits" && <AuditsView />}
-            {active === "outreach" && <OutreachView />}
-
-            {(active === "saved" || active === "competitors" || active === "reports" || active === "team" || active === "settings") && (
+            {(active === "saved" || active === "settings") && (
               <ModulePlaceholder title={NAV.find((n) => n.key === active)?.label ?? ""} />
             )}
 
             <p className="mt-6 text-center text-[10.5px] uppercase tracking-[0.24em]" style={{ color: T.faint }}>
-              LeadPilot AI · v0.2 · Finder · CRM · Audit · Outreach
+              LeadPilot · Google Places lead finder · XLSX / CSV / JSON export
             </p>
           </div>
         </main>
