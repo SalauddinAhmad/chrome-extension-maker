@@ -226,6 +226,28 @@ function LeadPilot() {
             </div>
             <div className="flex items-center gap-2">
               <button
+                onClick={() => {
+                  fetch("/leadpilot-extension.zip")
+                    .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.blob(); })
+                    .then((blob) => {
+                      const a = document.createElement("a");
+                      a.href = URL.createObjectURL(blob);
+                      a.download = "leadpilot-extension.zip";
+                      a.click();
+                      URL.revokeObjectURL(a.href);
+                    })
+                    .catch((e) => alert("Download failed: " + e.message));
+                }}
+                className="flex items-center gap-2 rounded-md px-3 py-1.5 text-[12px] font-medium"
+                style={{
+                  background: `linear-gradient(180deg, #8b6bff, ${T.brand})`,
+                  color: "white",
+                  boxShadow: `0 4px 14px ${T.brand}55`,
+                }}
+              >
+                ↓ Download Chrome Extension
+              </button>
+              <button
                 className="flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-[12px]"
                 style={{ borderColor: T.border, background: T.surface2, color: T.mute }}
               >
@@ -245,6 +267,7 @@ function LeadPilot() {
                   boxShadow: `0 0 0 1px ${T.border}`,
                 }}
               />
+
             </div>
           </header>
 
