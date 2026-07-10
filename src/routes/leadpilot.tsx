@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { exportLeadsXLSX } from "@/lib/lead-export";
 
 export const Route = createFileRoute("/leadpilot")({
   head: () => ({
@@ -510,7 +511,25 @@ function FinderView(props: {
               <span className="tabular-nums" style={{ color: T.ink }}>{minRating.toFixed(1)}</span>
             </div>
             <button
-              className="ml-auto inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
+              onClick={() =>
+                exportLeadsXLSX(
+                  filtered,
+                  `leadpilot-${new Date().toISOString().slice(0, 10)}.xlsx`,
+                )
+              }
+              disabled={filtered.length === 0}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition hover:brightness-125 disabled:opacity-40"
+              style={{ borderColor: T.border, background: T.bg, color: T.ink }}
+              title="Export current results to Excel (.xlsx)"
+            >
+              <IconDownload className="h-3.5 w-3.5" />
+              Export XLSX
+              <span className="rounded px-1 py-0.5 text-[10px] tabular-nums" style={{ background: T.surface2, color: T.mute }}>
+                {filtered.length}
+              </span>
+            </button>
+            <button
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium text-white transition hover:brightness-110"
               style={{ background: T.brand, boxShadow: `0 4px 14px -4px ${T.brand}` }}
             >
               <IconPlus className="h-3.5 w-3.5" />
