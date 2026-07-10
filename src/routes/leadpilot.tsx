@@ -57,16 +57,8 @@ type Lead = {
   email: string | null;
 };
 
-const LEADS: Lead[] = [
-  { id: "1", name: "Sylhet Grand Dental", category: "Dental Clinic", city: "Sylhet", rating: 4.8, reviews: 214, website: null, ssl: false, score: 94, temp: "hot", opps: ["No website", "No SEO", "No socials"], phone: "+880 1711-000001", email: null },
-  { id: "2", name: "Zaman Restaurant", category: "Restaurant", city: "Dhaka", rating: 4.2, reviews: 1820, website: "zaman.com.bd", ssl: false, score: 87, temp: "hot", opps: ["No SSL", "Old design", "Slow site"], phone: "+880 1711-000002", email: "info@zaman.com.bd" },
-  { id: "3", name: "Blue Ocean Realty", category: "Real Estate", city: "Dubai", rating: 4.6, reviews: 342, website: "blueocean.ae", ssl: true, score: 76, temp: "warm", opps: ["Weak SEO", "No blog"], phone: "+971 4 000 0003", email: "hello@blueocean.ae" },
-  { id: "4", name: "North London Legal", category: "Law Firm", city: "London", rating: 4.9, reviews: 87, website: "nllegal.co.uk", ssl: true, score: 68, temp: "warm", opps: ["No mobile menu", "No socials"], phone: "+44 20 0000 0004", email: null },
-  { id: "5", name: "Iron & Oak Gym", category: "Fitness", city: "Toronto", rating: 4.5, reviews: 512, website: "ironoak.ca", ssl: true, score: 54, temp: "warm", opps: ["No reviews plugin"], phone: "+1 416 000 0005", email: "team@ironoak.ca" },
-  { id: "6", name: "Bright Smile Clinic", category: "Dental Clinic", city: "New York", rating: 4.7, reviews: 623, website: "brightsmile.nyc", ssl: true, score: 41, temp: "cold", opps: ["Minor a11y issues"], phone: "+1 212 000 0006", email: "care@brightsmile.nyc" },
-  { id: "7", name: "Chittagong Auto Care", category: "Auto Repair", city: "Chittagong", rating: 4.3, reviews: 128, website: null, ssl: false, score: 91, temp: "hot", opps: ["No website", "No GMB hours"], phone: "+880 1711-000007", email: null },
-  { id: "8", name: "Kyoto Sushi Bar", category: "Restaurant", city: "Tokyo", rating: 4.9, reviews: 2043, website: "kyotosushi.jp", ssl: true, score: 32, temp: "cold", opps: ["Nothing critical"], phone: "+81 3 0000 0008", email: "yo@kyotosushi.jp" },
-];
+const LEADS: Lead[] = [];
+
 
 const NAV = [
   { key: "dashboard", label: "Dashboard", icon: IconGrid },
