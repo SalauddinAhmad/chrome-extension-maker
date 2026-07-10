@@ -654,36 +654,151 @@ function FinderView(props: {
 
 /* ────────── Dashboard overview ────────── */
 function DashboardView({ totals, onGo }: { totals: { total: number; hot: number; opps: number; avg: number }; onGo: (k: string) => void }) {
+  const downloadExt = () => {
+    fetch("/leadpilot-extension.zip")
+      .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.blob(); })
+      .then((blob) => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "leadpilot-extension.zip";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      })
+      .catch((e) => alert("Download failed: " + e.message));
+  };
+
   return (
     <>
+      {/* KPI row — real zero state */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Kpi label="Total Leads" value={totals.total.toString()} delta="+18%" up />
-        <Kpi label="Hot Leads" value={totals.hot.toString()} delta="+4" up accent={T.hot} />
-        <Kpi label="Pipeline Value" value="$24.8k" delta="+9.1%" up accent={T.ok} />
-        <Kpi label="Avg Score" value={totals.avg.toString()} delta="+6.2" up />
+        <Kpi label="Total Leads" value={totals.total.toString()} delta="0" up />
+        <Kpi label="Hot Leads" value={totals.hot.toString()} delta="0" up accent={T.hot} />
+        <Kpi label="Opportunities" value={totals.opps.toString()} delta="0" up />
+        <Kpi label="Avg Score" value={totals.avg ? totals.avg.toString() : "—"} delta="0" up />
       </div>
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
-        {[
-          { k: "finder", t: "Discover leads", d: "AI-powered search across cities & niches.", i: IconSearch },
-          { k: "audits", t: "Run website audit", d: "SEO, performance, SSL, a11y in one pass.", i: IconGauge },
-          { k: "crm", t: "Open CRM pipeline", d: "Drag leads through your sales stages.", i: IconKanban },
-        ].map(({ k, t, d, i: I }) => (
-          <button
-            key={k}
-            onClick={() => onGo(k)}
-            className="group rounded-xl border p-5 text-left transition hover:brightness-110"
-            style={{ background: T.surface, borderColor: T.border }}
-          >
-            <I className="h-5 w-5" style={{ color: T.brand }} />
-            <div className="mt-3 text-[14px] font-semibold" style={{ color: T.ink }}>{t}</div>
-            <div className="mt-1 text-[12px]" style={{ color: T.mute }}>{d}</div>
-            <div className="mt-4 inline-flex items-center gap-1 text-[11.5px]" style={{ color: T.brand }}>
-              Open <IconArrow className="h-3 w-3" />
+
+      {/* Hero — real onboarding */}
+      <section
+        className="mt-6 overflow-hidden rounded-2xl border"
+        style={{
+          borderColor: T.border,
+          background: `radial-gradient(1200px 400px at 10% -20%, ${T.brandSoft}, transparent 60%), ${T.surface}`,
+        }}
+      >
+        <div className="grid gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:p-8">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-[10.5px] uppercase tracking-[0.16em]" style={{ borderColor: T.border, color: T.brand, background: T.brandSoft }}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: T.brand }} /> Real Mode · No Mock Data
             </div>
-          </button>
-        ))}
-      </div>
+            <h1 className="mt-3 text-[26px] font-semibold leading-tight tracking-tight" style={{ color: T.ink }}>
+              LeadPilot AI — লিগ্যাল, প্রিমিয়াম<br/>Google Maps Lead Intelligence
+            </h1>
+            <p className="mt-2 max-w-[560px] text-[13px] leading-relaxed" style={{ color: T.mute }}>
+              এখানে কোনো ডেমো ডেটা নেই। আসল leads পেতে LeadPilot Chrome Extension ইনস্টল করুন,
+              Google Places API (New) key দিন, এবং যেকোনো niche + city সার্চ করে instantly hot/warm/cold
+              scored leads XLSX / CSV / JSON আকারে export করুন।
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <button
+                onClick={downloadExt}
+                className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-[12.5px] font-medium text-white transition hover:brightness-110"
+                style={{ background: `linear-gradient(180deg, #8b6bff, ${T.brand})`, boxShadow: `0 8px 24px -8px ${T.brand}` }}
+              >
+                <IconDownload className="h-3.5 w-3.5" /> Chrome Extension ডাউনলোড
+              </button>
+              <button
+                onClick={() => onGo("finder")}
+                className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-[12.5px] font-medium transition"
+                style={{ borderColor: T.border, background: T.surface2, color: T.ink }}
+              >
+                Web app-এ Lead Finder দেখুন <IconArrow className="h-3 w-3" />
+              </button>
+            </div>
+            <ol className="mt-5 space-y-1.5 text-[12px]" style={{ color: T.mute }}>
+              <li><span style={{ color: T.brand }}>১.</span> ZIP ডাউনলোড → unzip করুন</li>
+              <li><span style={{ color: T.brand }}>২.</span> Chrome → <code style={{ color: T.ink }}>chrome://extensions</code> → Developer mode চালু</li>
+              <li><span style={{ color: T.brand }}>৩.</span> "Load unpacked" → folder সিলেক্ট → Options-এ API key পেস্ট → Save</li>
+              <li><span style={{ color: T.brand }}>৪.</span> Icon-এ click → search করুন → export করুন</li>
+            </ol>
+          </div>
+          <div className="rounded-xl border p-4" style={{ background: T.surface2, borderColor: T.border }}>
+            <div className="text-[10px] uppercase tracking-[0.16em]" style={{ color: T.faint }}>API খরচ</div>
+            <div className="mt-2 text-[22px] font-semibold tabular-nums" style={{ color: T.ok }}>$0/mo</div>
+            <p className="mt-1 text-[11.5px]" style={{ color: T.mute }}>
+              Google প্রতি মাসে $200 free credit দেয় — সাধারণত হাজার হাজার Places search এতে cover হয়।
+            </p>
+            <div className="mt-4 space-y-2 text-[11.5px]" style={{ color: T.mute }}>
+              <div className="flex items-center justify-between"><span>DOM scraping</span><span style={{ color: T.ok }}>নেই</span></div>
+              <div className="flex items-center justify-between"><span>CAPTCHA bypass</span><span style={{ color: T.ok }}>নেই</span></div>
+              <div className="flex items-center justify-between"><span>License server</span><span style={{ color: T.ok }}>নেই</span></div>
+              <div className="flex items-center justify-between"><span>Data leaves browser</span><span style={{ color: T.ok }}>নেই</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bangla feature grid */}
+      <section className="mt-6">
+        <div className="mb-3 flex items-baseline justify-between">
+          <h2 className="text-[15px] font-semibold" style={{ color: T.ink }}>Extension কী কী করতে পারে</h2>
+          <span className="text-[10.5px] uppercase tracking-[0.16em]" style={{ color: T.faint }}>১০টি core ক্ষমতা</span>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { i: IconSearch, t: "Text + Nearby সার্চ", d: "যেকোনো keyword + city — Google Places API (New) দিয়ে official ভাবে ২০/৪০/৬০ leads pull করে।" },
+            { i: IconBolt, t: "Live ০–১০০ Lead Score", d: "Rating, review count, website presence, SSL, price tier, high-LTV vertical — সব weight করে instant score।" },
+            { i: IconTarget, t: "Hot / Warm / Cold Signal", d: "Temperature label + colored pill — কোন lead-এ আগে call দিবেন সেটা এক নজরে।" },
+            { i: IconGauge, t: "Opportunity Detection", d: "No website, no SSL, no phone, few reviews, premium price tier — auto-flagged।" },
+            { i: IconMail, t: "Contact Harvesting", d: "Editorial summary + website থেকে email regex + Facebook / Instagram / LinkedIn / X / YouTube / TikTok pattern।" },
+            { i: IconDownload, t: "Multi-format Export", d: "XLSX (Leads + Opportunities pivot sheet), CSV (pivot-ready), JSON (developer-friendly) — এক ক্লিকে।" },
+            { i: IconGrid, t: "Side Panel + Popup", d: "Chrome side panel বা toolbar popup — যেভাবে কাজ করতে চান।" },
+            { i: IconGlobe, t: "Auto-pagination", d: "একটি query-তে ৩ pages × ২০ results = ৬০ leads, nextPageToken সহ properly rate-limited।" },
+            { i: IconCog, t: "১০০% Local & Private", d: "API key + results শুধু আপনার ব্রাউজারে (chrome.storage.local)। Google ছাড়া অন্য কোথাও data যায় না।" },
+          ].map(({ i: I, t, d }) => (
+            <div key={t} className="rounded-xl border p-4 transition hover:brightness-110" style={{ background: T.surface, borderColor: T.border }}>
+              <div className="grid h-8 w-8 place-items-center rounded-md" style={{ background: T.brandSoft, color: T.brand }}>
+                <I className="h-4 w-4" />
+              </div>
+              <div className="mt-3 text-[13px] font-semibold" style={{ color: T.ink }}>{t}</div>
+              <div className="mt-1 text-[12px] leading-relaxed" style={{ color: T.mute }}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Legal callout */}
+      <section className="mt-6 rounded-xl border p-4" style={{ background: T.surface, borderColor: T.border }}>
+        <div className="flex items-start gap-3">
+          <div className="grid h-8 w-8 flex-none place-items-center rounded-md" style={{ background: "rgba(16,185,129,0.12)", color: T.ok }}>
+            <IconStar className="h-4 w-4" />
+          </div>
+          <div>
+            <div className="text-[12.5px] font-semibold" style={{ color: T.ink }}>ToS-Clean · Leads Sniper-এর legal বিকল্প</div>
+            <div className="mt-1 text-[12px] leading-relaxed" style={{ color: T.mute }}>
+              LeadPilot Google Maps DOM scrape করে না, CAPTCHA bypass করে না, কোনো license server ছোঁয় না।
+              শুধু Google-এর official Places API (New) আপনার নিজের key দিয়ে call করা হয় — তাই Google-এর
+              ToS সরাসরি আপনার উপর apply হয়, extension-এর risk শূন্য।
+            </div>
+          </div>
+        </div>
+      </section>
     </>
+  );
+}
+
+function SidePanelEmpty() {
+  return (
+    <div className="grid h-full min-h-[420px] place-items-center p-6 text-center">
+      <div>
+        <div className="mx-auto grid h-10 w-10 place-items-center rounded-lg" style={{ background: T.brandSoft, color: T.brand }}>
+          <IconSearch className="h-5 w-5" />
+        </div>
+        <div className="mt-3 text-[13px] font-semibold" style={{ color: T.ink }}>কোনো lead select করা নেই</div>
+        <div className="mt-1 max-w-[240px] text-[11.5px] leading-relaxed" style={{ color: T.mute }}>
+          Chrome Extension দিয়ে real leads discover করুন — এখানে detail panel-এ দেখা যাবে।
+        </div>
+      </div>
+    </div>
   );
 }
 
