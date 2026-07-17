@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SalatRouteImport } from './routes/salat'
 import { Route as LeadpilotRouteImport } from './routes/leadpilot'
 import { Route as DesignerOsRouteImport } from './routes/designer-os'
+import { Route as AiStudioRouteImport } from './routes/ai-studio'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExtensionsDesignerOsRouteImport } from './routes/extensions.designer-os'
 
@@ -30,6 +31,11 @@ const DesignerOsRoute = DesignerOsRouteImport.update({
   path: '/designer-os',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiStudioRoute = AiStudioRouteImport.update({
+  id: '/ai-studio',
+  path: '/ai-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const ExtensionsDesignerOsRoute = ExtensionsDesignerOsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
   '/salat': typeof SalatRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
   '/salat': typeof SalatRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
   '/salat': typeof SalatRoute
@@ -67,15 +76,23 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai-studio'
     | '/designer-os'
     | '/leadpilot'
     | '/salat'
     | '/extensions/designer-os'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/designer-os' | '/leadpilot' | '/salat' | '/extensions/designer-os'
+  to:
+    | '/'
+    | '/ai-studio'
+    | '/designer-os'
+    | '/leadpilot'
+    | '/salat'
+    | '/extensions/designer-os'
   id:
     | '__root__'
     | '/'
+    | '/ai-studio'
     | '/designer-os'
     | '/leadpilot'
     | '/salat'
@@ -84,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiStudioRoute: typeof AiStudioRoute
   DesignerOsRoute: typeof DesignerOsRoute
   LeadpilotRoute: typeof LeadpilotRoute
   SalatRoute: typeof SalatRoute
@@ -113,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignerOsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-studio': {
+      id: '/ai-studio'
+      path: '/ai-studio'
+      fullPath: '/ai-studio'
+      preLoaderRoute: typeof AiStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -132,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiStudioRoute: AiStudioRoute,
   DesignerOsRoute: DesignerOsRoute,
   LeadpilotRoute: LeadpilotRoute,
   SalatRoute: SalatRoute,
