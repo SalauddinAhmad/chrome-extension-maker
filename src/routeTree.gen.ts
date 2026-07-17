@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SalatRouteImport } from './routes/salat'
-import { Route as NewtabPreviewRouteImport } from './routes/newtab-preview'
 import { Route as LeadpilotRouteImport } from './routes/leadpilot'
 import { Route as DesignerOsRouteImport } from './routes/designer-os'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,11 +18,6 @@ import { Route as ExtensionsDesignerOsRouteImport } from './routes/extensions.de
 const SalatRoute = SalatRouteImport.update({
   id: '/salat',
   path: '/salat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NewtabPreviewRoute = NewtabPreviewRouteImport.update({
-  id: '/newtab-preview',
-  path: '/newtab-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadpilotRoute = LeadpilotRouteImport.update({
@@ -51,7 +45,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
-  '/newtab-preview': typeof NewtabPreviewRoute
   '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
@@ -59,7 +52,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
-  '/newtab-preview': typeof NewtabPreviewRoute
   '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
@@ -68,7 +60,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
-  '/newtab-preview': typeof NewtabPreviewRoute
   '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
 }
@@ -78,23 +69,15 @@ export interface FileRouteTypes {
     | '/'
     | '/designer-os'
     | '/leadpilot'
-    | '/newtab-preview'
     | '/salat'
     | '/extensions/designer-os'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/designer-os'
-    | '/leadpilot'
-    | '/newtab-preview'
-    | '/salat'
-    | '/extensions/designer-os'
+  to: '/' | '/designer-os' | '/leadpilot' | '/salat' | '/extensions/designer-os'
   id:
     | '__root__'
     | '/'
     | '/designer-os'
     | '/leadpilot'
-    | '/newtab-preview'
     | '/salat'
     | '/extensions/designer-os'
   fileRoutesById: FileRoutesById
@@ -103,7 +86,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignerOsRoute: typeof DesignerOsRoute
   LeadpilotRoute: typeof LeadpilotRoute
-  NewtabPreviewRoute: typeof NewtabPreviewRoute
   SalatRoute: typeof SalatRoute
   ExtensionsDesignerOsRoute: typeof ExtensionsDesignerOsRoute
 }
@@ -115,13 +97,6 @@ declare module '@tanstack/react-router' {
       path: '/salat'
       fullPath: '/salat'
       preLoaderRoute: typeof SalatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/newtab-preview': {
-      id: '/newtab-preview'
-      path: '/newtab-preview'
-      fullPath: '/newtab-preview'
-      preLoaderRoute: typeof NewtabPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leadpilot': {
@@ -159,20 +134,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignerOsRoute: DesignerOsRoute,
   LeadpilotRoute: LeadpilotRoute,
-  NewtabPreviewRoute: NewtabPreviewRoute,
   SalatRoute: SalatRoute,
   ExtensionsDesignerOsRoute: ExtensionsDesignerOsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

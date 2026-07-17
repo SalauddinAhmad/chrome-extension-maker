@@ -15,9 +15,6 @@
   "background": {
     "service_worker": "background.js"
   },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
-  },
   "permissions": ["alarms", "storage", "notifications", "idle", "offscreen"],
   "web_accessible_resources": [
     {
