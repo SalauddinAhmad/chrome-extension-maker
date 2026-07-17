@@ -13,6 +13,7 @@ import { Route as SalatRouteImport } from './routes/salat'
 import { Route as LeadpilotRouteImport } from './routes/leadpilot'
 import { Route as DesignerOsRouteImport } from './routes/designer-os'
 import { Route as AiStudioRouteImport } from './routes/ai-studio'
+import { Route as AiNexusHubRouteImport } from './routes/ai-nexus-hub'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExtensionsDesignerOsRouteImport } from './routes/extensions.designer-os'
 
@@ -36,6 +37,11 @@ const AiStudioRoute = AiStudioRouteImport.update({
   path: '/ai-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiNexusHubRoute = AiNexusHubRouteImport.update({
+  id: '/ai-nexus-hub',
+  path: '/ai-nexus-hub',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const ExtensionsDesignerOsRoute = ExtensionsDesignerOsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-nexus-hub': typeof AiNexusHubRoute
   '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-nexus-hub': typeof AiNexusHubRoute
   '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-nexus-hub': typeof AiNexusHubRoute
   '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
   '/leadpilot': typeof LeadpilotRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai-nexus-hub'
     | '/ai-studio'
     | '/designer-os'
     | '/leadpilot'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai-nexus-hub'
     | '/ai-studio'
     | '/designer-os'
     | '/leadpilot'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ai-nexus-hub'
     | '/ai-studio'
     | '/designer-os'
     | '/leadpilot'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiNexusHubRoute: typeof AiNexusHubRoute
   AiStudioRoute: typeof AiStudioRoute
   DesignerOsRoute: typeof DesignerOsRoute
   LeadpilotRoute: typeof LeadpilotRoute
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-nexus-hub': {
+      id: '/ai-nexus-hub'
+      path: '/ai-nexus-hub'
+      fullPath: '/ai-nexus-hub'
+      preLoaderRoute: typeof AiNexusHubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiNexusHubRoute: AiNexusHubRoute,
   AiStudioRoute: AiStudioRoute,
   DesignerOsRoute: DesignerOsRoute,
   LeadpilotRoute: LeadpilotRoute,
