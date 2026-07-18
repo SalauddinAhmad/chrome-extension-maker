@@ -25,19 +25,19 @@
 
 /* Dark mode — deep emerald jewel-tone, premium */
 [data-theme="dark"] {
-  --bg: #070c0a;
-  --bg-2: #0b1310;
-  --surface: #121b17;
-  --surface-2: #172520;
-  --ink: #eef2ee;
-  --ink-soft: #b4bfb8;
-  --ink-mute: #7b8781;
-  --line: #1f2c26;
-  --line-2: #2a3830;
-  --brand: #3fa898;
-  --brand-2: #0f6b60;
-  --brand-soft: #0f2723;
-  --brand-ink: #06110d;
+  --bg: #06201c;
+  --bg-2: #0a2c27;
+  --surface: #0f3a34;
+  --surface-2: #144a42;
+  --ink: #eaf6f3;
+  --ink-soft: #a8ccc4;
+  --ink-mute: #6f938c;
+  --line: #1a4a42;
+  --line-2: #256058;
+  --brand: #5cc7b5;
+  --brand-2: #3fa898;
+  --brand-soft: #123c36;
+  --brand-ink: #04140f;
   --gold: #e0c079;
   --gold-2: #b8944a;
   --gold-soft: #2a2312;
