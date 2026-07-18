@@ -60,28 +60,29 @@
 :root {
   --radius: 0.5rem;
 
-  /* Salat OS — day (warm paper) */
-  --paper: #faf7f2;
-  --ink: #1a1815;
-  --gold: #8a7a3f;
-  --gold-soft: #b8a668;
+  /* Salat OS — day (mint paper, teal ink) */
+  --paper: #eaf6f3;
+  --ink: #0b1f1c;
+  --gold: #0f6b60;
+  --gold-soft: #3fa898;
 
   --background: var(--paper);
   --foreground: var(--ink);
   --card: #ffffff;
   --card-foreground: var(--ink);
-  --muted: #f2ede4;
-  --muted-foreground: #6b665c;
-  --subtle: #ede8de;
-  --rule: #e2dcd0;
+  --muted: #d9ece7;
+  --muted-foreground: #4a655f;
+  --subtle: #cfe6e0;
+  --rule: #b8d8d1;
 }
 
 .dark {
-  /* Salat OS — night (midnight ink) */
-  --paper: #0b0d10;
-  --ink: #ece7dc;
-  --gold: #b8a668;
-  --gold-soft: #8a7a3f;
+  /* Salat OS — night (deep teal ink) */
+  --paper: #06110f;
+  --ink: #e6f2ee;
+  --gold: #3fa898;
+  --gold-soft: #7fcfc0;
+
 
   --background: var(--paper);
   --foreground: var(--ink);
