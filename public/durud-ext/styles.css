@@ -777,3 +777,157 @@ input:checked + .slider::before { transform: translateX(18px); }
   border-radius: 999px;
   background: var(--gold);
 }
+
+/* ============================================================
+   Dark Mode — Refinement Pass v2.1
+   Fixes: brand text ghosting, hadith light bg, time-input picker,
+   footer contrast, slider track, active chip, play-now glow,
+   hero counter visibility, lang toggle active state.
+   ============================================================ */
+[data-theme="dark"] .brand-name {
+  color: #f2f6f2;
+  text-shadow: none;
+  font-weight: 600;
+}
+[data-theme="dark"] .brand-sub { color: #a8b3ac; }
+
+/* Hero count — sit above mosque silhouette */
+[data-theme="dark"] .hero-count-wrap {
+  position: relative;
+  z-index: 2;
+  border-top-color: rgba(255,255,255,0.10);
+}
+[data-theme="dark"] .hero-count-line { color: #dfe6e0; }
+[data-theme="dark"] .hero-count-val { color: #efd79a; text-shadow: 0 1px 6px rgba(0,0,0,0.45); }
+[data-theme="dark"] .hero-count-bar { background: rgba(255,255,255,0.10); }
+
+/* Refined status pill */
+[data-theme="dark"] .hero-status {
+  color: #f0d68a;
+  background: rgba(224,192,121,0.10);
+  border: 1px solid rgba(224,192,121,0.32);
+  backdrop-filter: blur(6px);
+}
+[data-theme="dark"] .hero-status.off {
+  color: #e6b3b3;
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* Play now — soft glow, no harsh border */
+[data-theme="dark"] .hero-play-now {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(224,192,121,0.28);
+  color: #f5efe0;
+  box-shadow: 0 0 0 1px rgba(224,192,121,0.06), 0 4px 14px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .hero-play-now:hover {
+  background: rgba(224,192,121,0.14);
+  border-color: rgba(224,192,121,0.5);
+}
+
+/* Chips — clearer inactive vs active separation */
+[data-theme="dark"] .chip {
+  background: #101915;
+  border-color: #26332c;
+  color: #b8c2bc;
+}
+[data-theme="dark"] .chip.chip-active {
+  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%);
+  color: #06110d;
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px rgba(79,192,160,0.35),
+    0 4px 14px rgba(79,192,160,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.22);
+}
+
+/* Selects & time inputs — native picker icons flip to dark */
+[data-theme="dark"] .select,
+[data-theme="dark"] .time-input {
+  background: #131d18;
+  border-color: #26332c;
+  color: #ece7dc;
+  color-scheme: dark;
+}
+[data-theme="dark"] .time-input::-webkit-calendar-picker-indicator,
+[data-theme="dark"] .select {
+  filter: none;
+}
+[data-theme="dark"] .time-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.85) sepia(0.15) saturate(1.2) hue-rotate(10deg);
+  cursor: pointer;
+  opacity: 0.85;
+}
+[data-theme="dark"] .time-row label { color: #b8c2bc; }
+
+/* Range slider — visible track in dark */
+[data-theme="dark"] .range {
+  accent-color: #4fc0a0;
+}
+[data-theme="dark"] input[type="range"].range {
+  background: transparent;
+}
+[data-theme="dark"] .range::-webkit-slider-runnable-track {
+  background: #26332c;
+  height: 4px;
+  border-radius: 999px;
+}
+[data-theme="dark"] .range::-moz-range-track {
+  background: #26332c;
+  height: 4px;
+  border-radius: 999px;
+}
+
+/* Hadith — force true dark surface + readable ink */
+[data-theme="dark"] .hadith {
+  background:
+    linear-gradient(180deg, rgba(224,192,121,0.05) 0%, rgba(224,192,121,0.015) 100%),
+    #131d18;
+  border: 1px solid rgba(224,192,121,0.18);
+  color: #dfe6e0;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .hadith-text,
+[data-theme="dark"] .hadith-text em {
+  color: #efd79a;
+}
+[data-theme="dark"] .hadith-ref { color: #b8944a; }
+
+/* Footer — brighter muted */
+[data-theme="dark"] .app-footer {
+  color: #a8b3ac;
+  border-top: 1px solid #1f2c26;
+  padding-top: 10px;
+}
+[data-theme="dark"] .save-indicator { color: #4fc0a0; }
+[data-theme="dark"] .version { color: #8a938e; }
+
+/* Language toggle — clear active state */
+[data-theme="dark"] .lang-toggle {
+  background: #131d18;
+  border-color: #26332c;
+  color: #a8b3ac;
+}
+[data-theme="dark"] .lang-opt.active {
+  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%);
+  color: #06110d;
+  box-shadow: 0 2px 8px rgba(79,192,160,0.35);
+}
+
+/* Toggle rows — clearer divider */
+[data-theme="dark"] .toggle-row { border-bottom-color: #1f2c26; }
+[data-theme="dark"] .toggle-title { color: #ece7dc; }
+[data-theme="dark"] .toggle-sub { color: #8a938e; }
+
+/* Switch slider (dark) */
+[data-theme="dark"] .slider { background: #26332c; }
+[data-theme="dark"] .switch input:checked + .slider {
+  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%);
+}
+
+/* Section headers */
+[data-theme="dark"] .section-head { color: #ece7dc; }
+[data-theme="dark"] .section-chev { color: #8a938e; }
+[data-theme="dark"] .control-label { color: #b8c2bc; }
+[data-theme="dark"] .control-val { color: #efd79a; }
