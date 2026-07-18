@@ -968,3 +968,68 @@ input:checked + .slider::before { transform: translateX(18px); }
 [data-theme="dark"] .control-label { color: #b8c2bc !important; }
 [data-theme="dark"] .control-val { color: #efd79a !important; }
 
+
+/* ============================================================
+   Dark Mode — Zero-White Enforcement Pass v2.3
+   Eliminates every residual light/white surface in dark theme.
+   ============================================================ */
+
+/* Toast — was rgb(238,242,238) in dark, now true dark */
+[data-theme="dark"] .toast {
+  background: #101915 !important;
+  color: #ece7dc !important;
+  border: 1px solid rgba(224,192,121,0.25) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important;
+}
+
+/* Hero status pill — replace cream/gold tint with deep surface */
+[data-theme="dark"] .hero-status {
+  background: rgba(79,192,160,0.10) !important;
+  border: 1px solid rgba(79,192,160,0.28) !important;
+  color: #a9e8cf !important;
+  box-shadow: none !important;
+}
+[data-theme="dark"] .hero-status.off {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  color: #d4a5a5 !important;
+}
+
+/* App shell — ensure no white leaks anywhere */
+[data-theme="dark"] html,
+[data-theme="dark"] body,
+[data-theme="dark"] .app {
+  background: linear-gradient(180deg, #070c0a 0%, #0b1310 100%) !important;
+  color: #ece7dc !important;
+}
+
+/* Any element inheriting light surface tokens — force dark */
+[data-theme="dark"] .card,
+[data-theme="dark"] .sections-card,
+[data-theme="dark"] .surface,
+[data-theme="dark"] .hadith,
+[data-theme="dark"] .lang-toggle,
+[data-theme="dark"] .select,
+[data-theme="dark"] .time-input,
+[data-theme="dark"] .chip:not(.chip-active):not([aria-pressed="true"]),
+[data-theme="dark"] .onb-btn,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #101915 !important;
+  color: #ece7dc !important;
+  border-color: #26332c !important;
+}
+
+/* Onboarding — keep emerald overlay but darken inner surfaces */
+[data-theme="dark"] .onboarding {
+  background: linear-gradient(180deg, rgba(6,17,13,0.97) 0%, rgba(3,10,7,0.99) 100%) !important;
+}
+[data-theme="dark"] .onb-icon {
+  background: rgba(79,192,160,0.12) !important;
+  border-color: rgba(224,192,121,0.28) !important;
+}
+[data-theme="dark"] .onb-btn {
+  background: linear-gradient(135deg, #e0c079 0%, #b8944a 100%) !important;
+  color: #06110d !important;
+}
