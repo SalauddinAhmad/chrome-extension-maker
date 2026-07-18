@@ -25,10 +25,10 @@
 
 /* Dark mode — deep emerald jewel-tone, premium */
 [data-theme="dark"] {
-  --bg: #06201c;
-  --bg-2: #0a2c27;
-  --surface: #0f3a34;
-  --surface-2: #144a42;
+  --bg: #0a3b34;
+  --bg-2: #0f4a42;
+  --surface: #145a50;
+  --surface-2: #1a6b60;
   --ink: #eaf6f3;
   --ink-soft: #a8ccc4;
   --ink-mute: #6f938c;
