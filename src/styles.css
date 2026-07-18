@@ -78,20 +78,40 @@
 
 .dark {
   /* Salat OS — night (midnight ink) */
-  --paper: #0f1114;
+  --paper: #0b0d10;
   --ink: #ece7dc;
   --gold: #b8a668;
   --gold-soft: #8a7a3f;
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: #16181c;
+  --card: #111418;
   --card-foreground: var(--ink);
-  --muted: #1a1d21;
+  --muted: #14171b;
   --muted-foreground: #8a857a;
-  --subtle: #1e2126;
-  --rule: #23262b;
+  --subtle: #171a1f;
+  --rule: #1f232a;
 }
+
+/* Auto-apply dark tokens when the OS is in dark mode, even without a toggle */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --paper: #0b0d10;
+    --ink: #ece7dc;
+    --gold: #b8a668;
+    --gold-soft: #8a7a3f;
+
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: #111418;
+    --card-foreground: var(--ink);
+    --muted: #14171b;
+    --muted-foreground: #8a857a;
+    --subtle: #171a1f;
+    --rule: #1f232a;
+  }
+}
+
 
 @layer base {
   * {
