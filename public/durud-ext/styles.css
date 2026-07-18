@@ -5,20 +5,20 @@
   --bg: #faf7f2;
   --bg-2: #f3ede3;
   --surface: #ffffff;
-  --ink: #14201b;
+  --ink: #0b1f1c;
   --ink-soft: #5a655f;
   --ink-mute: #8a938e;
   --line: #eae3d6;
   --line-2: #e2d9c7;
-  --brand: #0f5f4c;
-  --brand-2: #0a4536;
-  --brand-soft: #e6efeb;
+  --brand: #0f6b60;
+  --brand-2: #084a42;
+  --brand-soft: #eaf6f3;
   --brand-ink: #ffffff;
   --gold: #b8944a;
   --gold-soft: #f3ead4;
-  --shadow-sm: 0 1px 2px rgba(15, 95, 76, 0.04);
-  --shadow: 0 2px 14px rgba(15, 95, 76, 0.06);
-  --shadow-lg: 0 8px 30px rgba(15, 95, 76, 0.09);
+  --shadow-sm: 0 1px 2px rgba(15, 107, 96, 0.04);
+  --shadow: 0 2px 14px rgba(15, 107, 96, 0.06);
+  --shadow-lg: 0 8px 30px rgba(15, 107, 96, 0.09);
   --radius: 14px;
   --radius-sm: 10px;
 }
@@ -34,9 +34,9 @@
   --ink-mute: #7b8781;
   --line: #1f2c26;
   --line-2: #2a3830;
-  --brand: #4fc0a0;
-  --brand-2: #2a8a70;
-  --brand-soft: #16241e;
+  --brand: #3fa898;
+  --brand-2: #0f6b60;
+  --brand-soft: #0f2723;
   --brand-ink: #06110d;
   --gold: #e0c079;
   --gold-2: #b8944a;
@@ -52,7 +52,7 @@
     linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
 }
 [data-theme="dark"] .brand-mark {
-  background: linear-gradient(135deg, #1a3830 0%, #0f2620 100%);
+  background: linear-gradient(135deg, #0f3b34 0%, #082521 100%);
   color: var(--gold);
   box-shadow: var(--shadow), inset 0 1px 0 rgba(224,192,121,0.15), inset 0 0 0 1px rgba(224,192,121,0.12);
 }
@@ -76,7 +76,7 @@
   background:
     radial-gradient(120% 90% at 50% 0%, rgba(224,192,121,0.14) 0%, transparent 55%),
     radial-gradient(80% 60% at 100% 100%, rgba(79,192,160,0.12) 0%, transparent 60%),
-    linear-gradient(160deg, #0e2a22 0%, #061510 100%);
+    linear-gradient(160deg, #0d2e2a 0%, #04140f 100%);
   box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.04), inset 0 0 0 1px rgba(224,192,121,0.08);
 }
 [data-theme="dark"] .card,
@@ -846,7 +846,7 @@ input:checked + .slider::before { transform: translateX(18px); }
 }
 [data-theme="dark"] .chip.chip-active,
 [data-theme="dark"] .chip[aria-pressed="true"] {
-  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%) !important;
+  background: linear-gradient(135deg, #3fa898 0%, #0f6b60 100%) !important;
   color: #06110d !important;
   border-color: transparent !important;
   box-shadow:
@@ -894,7 +894,7 @@ input:checked + .slider::before { transform: translateX(18px); }
 /* 7. Volume slider — visible track */
 [data-theme="dark"] .range,
 [data-theme="dark"] input[type="range"] {
-  accent-color: #4fc0a0 !important;
+  accent-color: #3fa898 !important;
   background: transparent !important;
 }
 [data-theme="dark"] input[type="range"]::-webkit-slider-runnable-track {
@@ -933,7 +933,7 @@ input:checked + .slider::before { transform: translateX(18px); }
   border-top: 1px solid #1f2c26 !important;
   padding-top: 10px;
 }
-[data-theme="dark"] .save-indicator { color: #4fc0a0 !important; }
+[data-theme="dark"] .save-indicator { color: #3fa898 !important; }
 [data-theme="dark"] .version { color: #a8b3ac !important; }
 
 /* 10. Language toggle — clear active */
@@ -947,7 +947,7 @@ input:checked + .slider::before { transform: translateX(18px); }
   background: transparent !important;
 }
 [data-theme="dark"] .lang-opt.active {
-  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%) !important;
+  background: linear-gradient(135deg, #3fa898 0%, #0f6b60 100%) !important;
   color: #06110d !important;
   box-shadow: 0 2px 8px rgba(79,192,160,0.35) !important;
   font-weight: 700 !important;
@@ -959,7 +959,7 @@ input:checked + .slider::before { transform: translateX(18px); }
 [data-theme="dark"] .toggle-sub { color: #8a938e !important; }
 [data-theme="dark"] .slider { background: #26332c !important; }
 [data-theme="dark"] .switch input:checked + .slider {
-  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%) !important;
+  background: linear-gradient(135deg, #3fa898 0%, #0f6b60 100%) !important;
 }
 
 /* Section headers */
@@ -1124,7 +1124,7 @@ input:checked + .slider::before { transform: translateX(18px); }
 [data-theme="dark"] .select:focus,
 [data-theme="dark"] select:focus {
   outline: none !important;
-  border-color: #4fc0a0 !important;
+  border-color: #3fa898 !important;
   box-shadow: 0 0 0 3px rgba(79,192,160,0.18) !important;
 }
 
