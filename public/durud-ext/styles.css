@@ -1033,3 +1033,145 @@ input:checked + .slider::before { transform: translateX(18px); }
   background: linear-gradient(135deg, #e0c079 0%, #b8944a 100%) !important;
   color: #06110d !important;
 }
+
+/* ============================================================
+   Dark Mode — Aesthetic Polish v2.4
+   Adds depth, luminance, and refined luxury feel.
+   ============================================================ */
+
+/* Hero — richer gradient with radial glow + gold rim */
+[data-theme="dark"] .hero,
+[data-theme="dark"] .hero-card {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(79,192,160,0.18) 0%, transparent 55%),
+    radial-gradient(80% 60% at 50% 100%, rgba(224,192,121,0.10) 0%, transparent 60%),
+    linear-gradient(160deg, #0f2019 0%, #0a1611 55%, #08120e 100%) !important;
+  border: 1px solid rgba(224,192,121,0.18) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 0 0 1px rgba(79,192,160,0.06),
+    0 12px 40px -12px rgba(0,0,0,0.7),
+    0 2px 8px rgba(0,0,0,0.4) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Countdown numerals — gold gradient text */
+[data-theme="dark"] .hero-time,
+[data-theme="dark"] .countdown,
+[data-theme="dark"] .next-time {
+  background: linear-gradient(180deg, #f5dea0 0%, #e0c079 55%, #b8944a 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  text-shadow: 0 2px 20px rgba(224,192,121,0.25) !important;
+  letter-spacing: -0.02em;
+}
+
+/* Section cards — subtle elevation + inner top light */
+[data-theme="dark"] .card,
+[data-theme="dark"] .sections-card,
+[data-theme="dark"] .section {
+  background: linear-gradient(180deg, #10171400 0%, #0d1411 100%), #101915 !important;
+  border: 1px solid #1c2822 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    0 4px 16px -6px rgba(0,0,0,0.5) !important;
+  border-radius: 14px !important;
+}
+
+/* Section header hover — gentle accent */
+[data-theme="dark"] .section-head:hover {
+  background: rgba(79,192,160,0.04) !important;
+}
+
+/* Chips — refined inactive with subtle inner shadow */
+[data-theme="dark"] .chip:not(.chip-active):not([aria-pressed="true"]) {
+  background: #0d1512 !important;
+  border-color: #1f2c26 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02) !important;
+  transition: all 0.18s ease;
+}
+[data-theme="dark"] .chip:not(.chip-active):not([aria-pressed="true"]):hover {
+  background: #131e19 !important;
+  border-color: #2a3a32 !important;
+  color: #d4dbd6 !important;
+}
+
+/* Play button — refined pill with gold glow */
+[data-theme="dark"] .play-btn,
+[data-theme="dark"] .btn-play {
+  background: linear-gradient(135deg, #e0c079 0%, #c9a559 100%) !important;
+  color: #08120e !important;
+  border: none !important;
+  box-shadow:
+    0 0 0 1px rgba(224,192,121,0.25),
+    0 4px 14px rgba(224,192,121,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.35) !important;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+[data-theme="dark"] .play-btn:hover,
+[data-theme="dark"] .btn-play:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(224,192,121,0.4),
+    0 6px 20px rgba(224,192,121,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.4) !important;
+}
+
+/* Select — refined chevron + focus ring */
+[data-theme="dark"] .select:focus,
+[data-theme="dark"] select:focus {
+  outline: none !important;
+  border-color: #4fc0a0 !important;
+  box-shadow: 0 0 0 3px rgba(79,192,160,0.18) !important;
+}
+
+/* Volume slider thumb — luxurious */
+[data-theme="dark"] input[type="range"]::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #f5dea0, #c9a559) !important;
+  border: 2px solid #08120e !important;
+  box-shadow: 0 0 0 1px rgba(224,192,121,0.4), 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+
+/* Hadith card — refined typography + subtle gold divider */
+[data-theme="dark"] .hadith,
+[data-theme="dark"] #hadith-card {
+  background:
+    radial-gradient(100% 60% at 0% 0%, rgba(224,192,121,0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #131d18 0%, #0f1815 100%) !important;
+  border: 1px solid rgba(224,192,121,0.16) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(224,192,121,0.06),
+    0 6px 24px -8px rgba(0,0,0,0.5) !important;
+  position: relative;
+}
+[data-theme="dark"] .hadith::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 16px; right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(224,192,121,0.3), transparent);
+}
+
+/* Toggle switch — smoother, brighter thumb */
+[data-theme="dark"] .slider::before {
+  background: #ece7dc !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5) !important;
+}
+
+/* Header brand icon — subtle gold glow */
+[data-theme="dark"] .brand-icon,
+[data-theme="dark"] .app-header img:first-child {
+  filter: drop-shadow(0 0 12px rgba(224,192,121,0.25));
+}
+
+/* Scrollbar — refined dark */
+[data-theme="dark"] ::-webkit-scrollbar { width: 8px; }
+[data-theme="dark"] ::-webkit-scrollbar-track { background: #0a1310; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #1f2c26;
+  border-radius: 4px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #2a3a32; }
