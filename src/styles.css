@@ -86,28 +86,33 @@
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: #111418;
+  --card: #0d1f1c;
   --card-foreground: var(--ink);
-  --muted: #14171b;
-  --muted-foreground: #8a857a;
-  --subtle: #171a1f;
-  --rule: #1f232a;
+  --muted: #0b1a17;
+  --muted-foreground: #8fb0a8;
+  --subtle: #10261f;
+  --rule: #1a3b34;
 }
 
 /* Auto-apply dark tokens when the OS is in dark mode, even without a toggle */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --paper: #0b0d10;
-    --ink: #ece7dc;
-    --gold: #b8a668;
-    --gold-soft: #8a7a3f;
+    --paper: #06110f;
+    --ink: #e6f2ee;
+    --gold: #3fa898;
+    --gold-soft: #7fcfc0;
 
     --background: var(--paper);
     --foreground: var(--ink);
-    --card: #111418;
+    --card: #0d1f1c;
     --card-foreground: var(--ink);
-    --muted: #14171b;
-    --muted-foreground: #8a857a;
+    --muted: #0b1a17;
+    --muted-foreground: #8fb0a8;
+    --subtle: #10261f;
+    --rule: #1a3b34;
+  }
+}
+
     --subtle: #171a1f;
     --rule: #1f232a;
   }
