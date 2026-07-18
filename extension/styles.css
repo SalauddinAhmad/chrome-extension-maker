@@ -779,155 +779,192 @@ input:checked + .slider::before { transform: translateX(18px); }
 }
 
 /* ============================================================
-   Dark Mode — Refinement Pass v2.1
-   Fixes: brand text ghosting, hadith light bg, time-input picker,
-   footer contrast, slider track, active chip, play-now glow,
-   hero counter visibility, lang toggle active state.
+   Dark Mode — Refinement Pass v2.2 (bulletproof, uses !important)
+   Overrides earlier dark rules definitively.
    ============================================================ */
-[data-theme="dark"] .brand-name {
-  color: #f2f6f2;
-  text-shadow: none;
-  font-weight: 600;
-}
-[data-theme="dark"] .brand-sub { color: #a8b3ac; }
 
-/* Hero count — sit above mosque silhouette */
+/* 1. Brand text — force high contrast, drop serif fallback ghosting */
+[data-theme="dark"] .brand-name {
+  color: #f5f8f5 !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  letter-spacing: -0.01em;
+}
+[data-theme="dark"] .brand-sub {
+  color: #b8c2bc !important;
+  opacity: 1 !important;
+}
+
+/* 2. Hero count — lift above mosque silhouette + shadow for legibility */
 [data-theme="dark"] .hero-count-wrap {
   position: relative;
-  z-index: 2;
-  border-top-color: rgba(255,255,255,0.10);
+  z-index: 5 !important;
+  border-top: 1px solid rgba(255,255,255,0.12) !important;
+  padding-top: 10px;
+  margin-top: 10px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.35));
+  padding-left: 4px; padding-right: 4px;
+  border-radius: 8px;
 }
-[data-theme="dark"] .hero-count-line { color: #dfe6e0; }
-[data-theme="dark"] .hero-count-val { color: #efd79a; text-shadow: 0 1px 6px rgba(0,0,0,0.45); }
-[data-theme="dark"] .hero-count-bar { background: rgba(255,255,255,0.10); }
+[data-theme="dark"] .hero-count-line {
+  color: #eaf0ea !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+[data-theme="dark"] .hero-count-val {
+  color: #f0d68a !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+[data-theme="dark"] .hero-count-bar {
+  background: rgba(255,255,255,0.16) !important;
+}
+/* Dim the mosque silhouette so the count wins */
+[data-theme="dark"] .hero .hero-decor:not(.hero-decor-top) {
+  opacity: 0.10 !important;
+}
 
-/* Refined status pill */
+/* 3. Refined status pill */
 [data-theme="dark"] .hero-status {
-  color: #f0d68a;
-  background: rgba(224,192,121,0.10);
-  border: 1px solid rgba(224,192,121,0.32);
+  color: #f0d68a !important;
+  background: rgba(224,192,121,0.10) !important;
+  border: 1px solid rgba(224,192,121,0.32) !important;
   backdrop-filter: blur(6px);
+  box-shadow: none !important;
 }
 [data-theme="dark"] .hero-status.off {
-  color: #e6b3b3;
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.12);
+  color: #e6b3b3 !important;
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.12) !important;
 }
 
-/* Play now — soft glow, no harsh border */
-[data-theme="dark"] .hero-play-now {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(224,192,121,0.28);
-  color: #f5efe0;
-  box-shadow: 0 0 0 1px rgba(224,192,121,0.06), 0 4px 14px rgba(0,0,0,0.35);
-}
-[data-theme="dark"] .hero-play-now:hover {
-  background: rgba(224,192,121,0.14);
-  border-color: rgba(224,192,121,0.5);
-}
-
-/* Chips — clearer inactive vs active separation */
+/* 4. Chips — clear active vs inactive */
 [data-theme="dark"] .chip {
-  background: #101915;
-  border-color: #26332c;
-  color: #b8c2bc;
+  background: #101915 !important;
+  border-color: #26332c !important;
+  color: #b8c2bc !important;
+  box-shadow: none !important;
 }
-[data-theme="dark"] .chip.chip-active {
-  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%);
-  color: #06110d;
-  border-color: transparent;
+[data-theme="dark"] .chip.chip-active,
+[data-theme="dark"] .chip[aria-pressed="true"] {
+  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%) !important;
+  color: #06110d !important;
+  border-color: transparent !important;
   box-shadow:
     0 0 0 1px rgba(79,192,160,0.35),
-    0 4px 14px rgba(79,192,160,0.28),
-    inset 0 1px 0 rgba(255,255,255,0.22);
+    0 4px 14px rgba(79,192,160,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.22) !important;
+  font-weight: 700;
 }
 
-/* Selects & time inputs — native picker icons flip to dark */
-[data-theme="dark"] .select,
-[data-theme="dark"] .time-input {
-  background: #131d18;
-  border-color: #26332c;
-  color: #ece7dc;
-  color-scheme: dark;
+/* 5. Time inputs — fully dark + inverted picker icon */
+[data-theme="dark"] .time-input,
+[data-theme="dark"] input[type="time"] {
+  background: #101915 !important;
+  border: 1px solid #26332c !important;
+  color: #ece7dc !important;
+  color-scheme: dark !important;
+  font-family: "Inter", system-ui, sans-serif !important;
 }
-[data-theme="dark"] .time-input::-webkit-calendar-picker-indicator,
-[data-theme="dark"] .select {
-  filter: none;
-}
-[data-theme="dark"] .time-input::-webkit-calendar-picker-indicator {
-  filter: invert(0.85) sepia(0.15) saturate(1.2) hue-rotate(10deg);
+[data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85) sepia(0.15) saturate(1.2) hue-rotate(10deg) !important;
   cursor: pointer;
   opacity: 0.85;
 }
-[data-theme="dark"] .time-row label { color: #b8c2bc; }
+[data-theme="dark"] .select {
+  background: #101915 !important;
+  border-color: #26332c !important;
+  color: #ece7dc !important;
+  color-scheme: dark !important;
+}
+[data-theme="dark"] .time-row label,
+[data-theme="dark"] .time-row .time-label { color: #b8c2bc !important; }
 
-/* Range slider — visible track in dark */
-[data-theme="dark"] .range {
-  accent-color: #4fc0a0;
+/* 6. Play now — soft glow */
+[data-theme="dark"] .hero-play-now {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(224,192,121,0.28) !important;
+  color: #f5efe0 !important;
+  box-shadow: 0 0 0 1px rgba(224,192,121,0.06), 0 4px 14px rgba(0,0,0,0.35) !important;
 }
-[data-theme="dark"] input[type="range"].range {
-  background: transparent;
+[data-theme="dark"] .hero-play-now:hover {
+  background: rgba(224,192,121,0.14) !important;
+  border-color: rgba(224,192,121,0.5) !important;
 }
-[data-theme="dark"] .range::-webkit-slider-runnable-track {
-  background: #26332c;
-  height: 4px;
+
+/* 7. Volume slider — visible track */
+[data-theme="dark"] .range,
+[data-theme="dark"] input[type="range"] {
+  accent-color: #4fc0a0 !important;
+  background: transparent !important;
+}
+[data-theme="dark"] input[type="range"]::-webkit-slider-runnable-track {
+  background: #26332c !important;
+  height: 5px;
   border-radius: 999px;
 }
-[data-theme="dark"] .range::-moz-range-track {
-  background: #26332c;
-  height: 4px;
+[data-theme="dark"] input[type="range"]::-moz-range-track {
+  background: #26332c !important;
+  height: 5px;
   border-radius: 999px;
 }
 
-/* Hadith — force true dark surface + readable ink */
-[data-theme="dark"] .hadith {
+/* 8. Hadith — force true dark surface (kills line-122 light-gold override) */
+[data-theme="dark"] .hadith,
+[data-theme="dark"] #hadith-card {
   background:
-    linear-gradient(180deg, rgba(224,192,121,0.05) 0%, rgba(224,192,121,0.015) 100%),
-    #131d18;
-  border: 1px solid rgba(224,192,121,0.18);
-  color: #dfe6e0;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    linear-gradient(180deg, rgba(224,192,121,0.06) 0%, rgba(224,192,121,0.02) 100%),
+    #131d18 !important;
+  border: 1px solid rgba(224,192,121,0.20) !important;
+  color: #dfe6e0 !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.35) !important;
 }
 [data-theme="dark"] .hadith-text,
-[data-theme="dark"] .hadith-text em {
-  color: #efd79a;
+[data-theme="dark"] .hadith-text em,
+[data-theme="dark"] #hadith-text {
+  color: #efd79a !important;
+  font-family: "Inter", system-ui, sans-serif !important;
 }
-[data-theme="dark"] .hadith-ref { color: #b8944a; }
+[data-theme="dark"] .hadith-ref,
+[data-theme="dark"] #hadith-ref { color: #b8944a !important; }
 
-/* Footer — brighter muted */
+/* 9. Footer — brighter, readable */
 [data-theme="dark"] .app-footer {
-  color: #a8b3ac;
-  border-top: 1px solid #1f2c26;
+  color: #b8c2bc !important;
+  border-top: 1px solid #1f2c26 !important;
   padding-top: 10px;
 }
-[data-theme="dark"] .save-indicator { color: #4fc0a0; }
-[data-theme="dark"] .version { color: #8a938e; }
+[data-theme="dark"] .save-indicator { color: #4fc0a0 !important; }
+[data-theme="dark"] .version { color: #a8b3ac !important; }
 
-/* Language toggle — clear active state */
+/* 10. Language toggle — clear active */
 [data-theme="dark"] .lang-toggle {
-  background: #131d18;
-  border-color: #26332c;
-  color: #a8b3ac;
+  background: #101915 !important;
+  border: 1px solid #26332c !important;
+  color: #a8b3ac !important;
+}
+[data-theme="dark"] .lang-opt {
+  color: #8a938e !important;
+  background: transparent !important;
 }
 [data-theme="dark"] .lang-opt.active {
-  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%);
-  color: #06110d;
-  box-shadow: 0 2px 8px rgba(79,192,160,0.35);
+  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%) !important;
+  color: #06110d !important;
+  box-shadow: 0 2px 8px rgba(79,192,160,0.35) !important;
+  font-weight: 700 !important;
 }
 
-/* Toggle rows — clearer divider */
-[data-theme="dark"] .toggle-row { border-bottom-color: #1f2c26; }
-[data-theme="dark"] .toggle-title { color: #ece7dc; }
-[data-theme="dark"] .toggle-sub { color: #8a938e; }
-
-/* Switch slider (dark) */
-[data-theme="dark"] .slider { background: #26332c; }
+/* Toggle rows + switch */
+[data-theme="dark"] .toggle-row { border-bottom-color: #1f2c26 !important; }
+[data-theme="dark"] .toggle-title { color: #ece7dc !important; }
+[data-theme="dark"] .toggle-sub { color: #8a938e !important; }
+[data-theme="dark"] .slider { background: #26332c !important; }
 [data-theme="dark"] .switch input:checked + .slider {
-  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%);
+  background: linear-gradient(135deg, #4fc0a0 0%, #2a8a70 100%) !important;
 }
 
 /* Section headers */
-[data-theme="dark"] .section-head { color: #ece7dc; }
-[data-theme="dark"] .section-chev { color: #8a938e; }
-[data-theme="dark"] .control-label { color: #b8c2bc; }
-[data-theme="dark"] .control-val { color: #efd79a; }
+[data-theme="dark"] .section-head { color: #ece7dc !important; }
+[data-theme="dark"] .section-chev { color: #8a938e !important; }
+[data-theme="dark"] .control-label { color: #b8c2bc !important; }
+[data-theme="dark"] .control-val { color: #efd79a !important; }
+
