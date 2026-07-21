@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SalatRouteImport } from './routes/salat'
 import { Route as LeadpilotRouteImport } from './routes/leadpilot'
+import { Route as DurudRouteImport } from './routes/durud'
 import { Route as DesignerOsRouteImport } from './routes/designer-os'
 import { Route as AiStudioRouteImport } from './routes/ai-studio'
 import { Route as AiNexusHubRouteImport } from './routes/ai-nexus-hub'
@@ -25,6 +26,11 @@ const SalatRoute = SalatRouteImport.update({
 const LeadpilotRoute = LeadpilotRouteImport.update({
   id: '/leadpilot',
   path: '/leadpilot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DurudRoute = DurudRouteImport.update({
+  id: '/durud',
+  path: '/durud',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesignerOsRoute = DesignerOsRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/ai-nexus-hub': typeof AiNexusHubRoute
   '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
+  '/durud': typeof DurudRoute
   '/leadpilot': typeof LeadpilotRoute
   '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/ai-nexus-hub': typeof AiNexusHubRoute
   '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
+  '/durud': typeof DurudRoute
   '/leadpilot': typeof LeadpilotRoute
   '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/ai-nexus-hub': typeof AiNexusHubRoute
   '/ai-studio': typeof AiStudioRoute
   '/designer-os': typeof DesignerOsRoute
+  '/durud': typeof DurudRoute
   '/leadpilot': typeof LeadpilotRoute
   '/salat': typeof SalatRoute
   '/extensions/designer-os': typeof ExtensionsDesignerOsRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/ai-nexus-hub'
     | '/ai-studio'
     | '/designer-os'
+    | '/durud'
     | '/leadpilot'
     | '/salat'
     | '/extensions/designer-os'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/ai-nexus-hub'
     | '/ai-studio'
     | '/designer-os'
+    | '/durud'
     | '/leadpilot'
     | '/salat'
     | '/extensions/designer-os'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/ai-nexus-hub'
     | '/ai-studio'
     | '/designer-os'
+    | '/durud'
     | '/leadpilot'
     | '/salat'
     | '/extensions/designer-os'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AiNexusHubRoute: typeof AiNexusHubRoute
   AiStudioRoute: typeof AiStudioRoute
   DesignerOsRoute: typeof DesignerOsRoute
+  DurudRoute: typeof DurudRoute
   LeadpilotRoute: typeof LeadpilotRoute
   SalatRoute: typeof SalatRoute
   ExtensionsDesignerOsRoute: typeof ExtensionsDesignerOsRoute
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/leadpilot'
       fullPath: '/leadpilot'
       preLoaderRoute: typeof LeadpilotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/durud': {
+      id: '/durud'
+      path: '/durud'
+      fullPath: '/durud'
+      preLoaderRoute: typeof DurudRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/designer-os': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiNexusHubRoute: AiNexusHubRoute,
   AiStudioRoute: AiStudioRoute,
   DesignerOsRoute: DesignerOsRoute,
+  DurudRoute: DurudRoute,
   LeadpilotRoute: LeadpilotRoute,
   SalatRoute: SalatRoute,
   ExtensionsDesignerOsRoute: ExtensionsDesignerOsRoute,
@@ -187,13 +208,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
