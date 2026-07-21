@@ -1,209 +1,224 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import heroImg from "@/assets/hero.jpg";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Toolhouse — Design-forward tools & extensions" },
+      {
+        name: "description",
+        content:
+          "A curated collection of design-forward tools, browser extensions and AI workspaces — Durud Reminder, Salat OS, Designer OS, LeadPilot, AI Nexus Hub and more.",
+      },
+      { property: "og:title", content: "Toolhouse — Tools & Extensions" },
+      {
+        property: "og:description",
+        content:
+          "Design-forward tools, browser extensions and AI workspaces. Free, private, beautifully crafted.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Home,
 });
 
-const features = [
+type Tool = {
+  slug: string;
+  to: string;
+  name: string;
+  tagline: string;
+  category: string;
+  accent: string; // css gradient
+  glyph: string;
+  status?: "live" | "beta" | "new";
+};
+
+const TOOLS: Tool[] = [
   {
-    title: "সমৃদ্ধ দুরুদ লাইব্রেরি",
-    body: "দুরুদে তাজ, দুরুদে শাফা'আত ও আরও — আরবি, উচ্চারণ, বাংলা অনুবাদ ও রেফারেন্স সহ।",
+    slug: "durud",
+    to: "/durud",
+    name: "Durud Reminder",
+    tagline: "নবীজি (সাঃ)-এর প্রতি দুরুদ পাঠের শান্ত রিমাইন্ডার। তাসবিহ, স্ট্রিক, শুক্রবার মোড।",
+    category: "Chrome Extension · Islamic",
+    accent: "linear-gradient(135deg,#0f6b60,#3fa898)",
+    glyph: "﷽",
+    status: "live",
   },
   {
-    title: "ডিজিটাল তাসবিহ কাউন্টার",
-    body: "দৈনিক লক্ষ্য নির্ধারণ করুন, সুন্দর রিং প্রগ্রেসে দেখুন আপনার আজকের অগ্রগতি।",
+    slug: "salat",
+    to: "/salat",
+    name: "Salat OS",
+    tagline: "বাংলা-ফার্স্ট, ডিজাইন-ফরওয়ার্ড প্রেয়ার টাইমস। অফলাইন, ট্র্যাকিং-ফ্রি।",
+    category: "PWA · Islamic",
+    accent: "linear-gradient(135deg,#1c3d5a,#d4a574)",
+    glyph: "☾",
+    status: "beta",
   },
   {
-    title: "স্ট্রিক ও হিটম্যাপ",
-    body: "GitHub-স্টাইল হিটম্যাপে গত ৮ সপ্তাহের ধারাবাহিকতা এক নজরে দেখুন।",
+    slug: "designer-os",
+    to: "/designer-os",
+    name: "Designer OS",
+    tagline: "Open-source creative workspace। Color, typography, inspector, WCAG audit — সব ব্রাউজারে।",
+    category: "Chrome Extension · Design",
+    accent: "linear-gradient(135deg,#6d28d9,#ec4899)",
+    glyph: "◨",
+    status: "live",
   },
   {
-    title: "স্মার্ট সাইলেন্স",
-    body: "রাতে DND, শুধু সক্রিয় থাকলে রিমাইন্ডার — মনোযোগ নষ্ট না করেই।",
+    slug: "leadpilot",
+    to: "/leadpilot",
+    name: "LeadPilot AI",
+    tagline: "Enterprise lead intelligence। Google Places + Firecrawl দিয়ে legal lead extraction।",
+    category: "Extension · Sales",
+    accent: "linear-gradient(135deg,#0ea5e9,#111827)",
+    glyph: "◈",
+    status: "beta",
   },
   {
-    title: "শুক্রবার বিশেষ মোড",
-    body: "জুমার দিন স্বয়ংক্রিয়ভাবে রিমাইন্ডার আরও ঘন ঘন হয়।",
+    slug: "ai-nexus-hub",
+    to: "/ai-nexus-hub",
+    name: "AI Nexus Hub",
+    tagline: "১৬টি AI provider এক ছাদের নিচে। Chat, image, video, code — নিজের API key দিয়ে।",
+    category: "Web App · AI",
+    accent: "linear-gradient(135deg,#111827,#4f46e5)",
+    glyph: "✦",
+    status: "new",
+  },
+  {
+    slug: "ai-studio",
+    to: "/ai-studio",
+    name: "AI Studio",
+    tagline: "Multimodal AI playground — creative experimentation এর জন্য একটা মিনিমাল studio।",
+    category: "Web App · AI",
+    accent: "linear-gradient(135deg,#7c3aed,#22d3ee)",
+    glyph: "◉",
+    status: "beta",
   },
 ];
 
-const steps = [
-  "ডাউনলোড করা ZIP ফাইলটি আনজিপ করুন",
-  "Chrome-এ chrome://extensions খুলুন",
-  "ডান-উপরে Developer mode চালু করুন",
-  "Load unpacked ক্লিক করে ফোল্ডারটি সিলেক্ট করুন",
-];
-
-function Index() {
-  const [downloading, setDownloading] = useState(false);
-
-  const download = () => {
-    setDownloading(true);
-    fetch("/durud-reminder-v2.zip")
-      .then((res) => {
-        if (!res.ok) throw new Error(`Download failed: ${res.status}`);
-        return res.blob();
-      })
-      .then((blob) => {
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "durud-reminder-v2.zip";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      })
-      .catch((err) => alert(err.message))
-      .finally(() => setDownloading(false));
-  };
-
+function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary">
-            <div
-              className="h-4 w-4 rounded-sm border-[1.5px]"
-              style={{ borderColor: "var(--gold)" }}
-            />
+          <div
+            className="grid h-9 w-9 place-items-center rounded-xl font-serif text-lg font-semibold text-primary-foreground"
+            style={{ background: "linear-gradient(135deg,var(--primary),color-mix(in oklab, var(--primary) 60%, #000))" }}
+          >
+            ✦
           </div>
           <div>
-            <div className="font-serif text-base font-semibold tracking-tight">
-              Durud Reminder
-            </div>
-            <div className="text-xs text-muted-foreground">v2.0</div>
+            <div className="font-serif text-base font-semibold tracking-tight">Toolhouse</div>
+            <div className="text-xs text-muted-foreground">Design-forward tools</div>
           </div>
         </div>
         <a
-          href="#install"
-          className="text-sm text-muted-foreground hover:text-primary"
+          href="#tools"
+          className="text-sm text-muted-foreground transition hover:text-primary"
         >
-          ইনস্টল
+          সব টুল দেখুন ↓
         </a>
       </header>
 
-      <section className="mx-auto grid max-w-6xl gap-10 px-6 pt-8 pb-20 lg:grid-cols-2 lg:items-center lg:pt-16">
-        <div>
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-            <span
-              className="h-1.5 w-1.5 rounded-full"
-              style={{ background: "var(--gold)" }}
-            />
-            নতুন সংস্করণ · v2.0
-          </div>
-          <h1 className="font-serif text-5xl leading-[1.05] font-semibold tracking-tight lg:text-6xl">
-            নবীজি (সাঃ)-এর প্রতি
-            <br />
-            <span className="text-primary">দুরুদ পাঠ</span>, প্রতিদিন।
-          </h1>
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground">
-            ব্রাউজিং করার ফাঁকে নিয়মিত দুরুদ পাঠের সুন্দর, শান্ত রিমাইন্ডার।
-            মিনিমাল ডিজাইন, সমৃদ্ধ লাইব্রেরি, তাসবিহ কাউন্টার ও দৈনিক স্ট্রিক।
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button
-              onClick={download}
-              disabled={downloading}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
-            >
-              {downloading ? "প্রস্তুত হচ্ছে..." : "ZIP ডাউনলোড করুন"}
-              <span aria-hidden>↓</span>
-            </button>
-            <a
-              href="#features"
-              className="inline-flex items-center rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium text-foreground transition hover:border-primary"
-            >
-              ফিচার দেখুন
-            </a>
-          </div>
-          <p className="mt-4 text-xs text-muted-foreground">
-            Chrome · Edge · Brave · Opera — সকল Chromium ব্রাউজারে চলে
-          </p>
+      <section className="mx-auto max-w-6xl px-6 pt-10 pb-16 lg:pt-16">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          {TOOLS.length}টি টুল · একই ছাদের নিচে
         </div>
-        <div className="relative">
-          <div
-            className="absolute -inset-4 rounded-3xl opacity-40"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, color-mix(in oklab, var(--primary) 15%, transparent), transparent 70%)",
-            }}
-          />
-          <img
-            src={heroImg}
-            alt="Durud Reminder এর সুন্দর ইসলামিক নকশা"
-            width={1536}
-            height={1024}
-            className="relative rounded-3xl border border-border bg-card object-cover shadow-lg"
-          />
-        </div>
+        <h1 className="max-w-3xl font-serif text-5xl leading-[1.05] font-semibold tracking-tight lg:text-6xl">
+          সুন্দর, শান্ত, এবং <span className="text-primary">কাজের</span> টুল —
+          <br />
+          একজায়গায়।
+        </h1>
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
+          ডিজাইন-ফরওয়ার্ড ব্রাউজার এক্সটেনশন, ইসলামিক অ্যাপ, এবং AI ওয়ার্কস্পেসের একটা কিউরেটেড সংগ্রহ।
+          প্রতিটা টুলের কার্ডে ক্লিক করলে সেই টুলের বিস্তারিত পেজে যাবেন।
+        </p>
       </section>
 
-      <section
-        id="features"
-        className="border-t border-border bg-secondary/40 py-20"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-14 max-w-2xl">
-            <div className="mb-3 text-xs tracking-[0.2em] text-primary uppercase">
-              যা পাবেন
+      <section id="tools" className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <div className="mb-2 text-xs tracking-[0.2em] text-primary uppercase">
+              টুল সংগ্রহ
             </div>
-            <h2 className="font-serif text-3xl leading-tight font-semibold tracking-tight lg:text-4xl">
-              ছোট, মনোযোগী, এবং সুন্দর।
+            <h2 className="font-serif text-3xl font-semibold tracking-tight lg:text-4xl">
+              সব টুল
             </h2>
           </div>
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((f) => (
-              <div key={f.title} className="bg-card p-7">
-                <div className="mb-3 h-1 w-8 rounded-full bg-primary" />
-                <h3 className="mb-2 font-serif text-lg font-semibold">
-                  {f.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {f.body}
-                </p>
-              </div>
-            ))}
+          <div className="hidden text-xs text-muted-foreground sm:block">
+            কার্ডে ক্লিক করুন → বিস্তারিত পেজ
           </div>
         </div>
-      </section>
 
-
-      <section id="install" className="py-20">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="mb-3 text-xs tracking-[0.2em] text-primary uppercase">
-            ইনস্টল গাইড
-          </div>
-          <h2 className="mb-10 font-serif text-3xl font-semibold tracking-tight lg:text-4xl">
-            মাত্র ৪ ধাপ।
-          </h2>
-          <ol className="space-y-4">
-            {steps.map((s, i) => (
-              <li
-                key={i}
-                className="flex items-start gap-4 rounded-xl border border-border bg-card p-5"
-              >
-                <div className="grid h-8 w-8 flex-none place-items-center rounded-full bg-primary font-serif text-sm text-primary-foreground">
-                  {i + 1}
-                </div>
-                <p className="pt-1 text-sm text-foreground">{s}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-10 flex justify-center">
-            <button
-              onClick={download}
-              disabled={downloading}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {TOOLS.map((t) => (
+            <Link
+              key={t.slug}
+              to={t.to}
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-0.5 hover:border-primary hover:shadow-lg"
             >
-              {downloading ? "প্রস্তুত হচ্ছে..." : "ZIP ডাউনলোড করুন"}
-              <span aria-hidden>↓</span>
-            </button>
-          </div>
+              <div
+                className="absolute inset-x-0 top-0 h-24 opacity-90"
+                style={{ background: t.accent }}
+                aria-hidden
+              />
+              <div
+                className="absolute inset-x-0 top-0 h-24"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 40%, var(--card) 100%)",
+                }}
+                aria-hidden
+              />
+
+              <div className="relative">
+                <div className="flex items-start justify-between">
+                  <div
+                    className="grid h-14 w-14 place-items-center rounded-xl border border-white/20 font-serif text-2xl text-white shadow-md backdrop-blur-sm"
+                    style={{ background: t.accent }}
+                  >
+                    {t.glyph}
+                  </div>
+                  {t.status && (
+                    <span
+                      className={`rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase ${
+                        t.status === "new"
+                          ? "border-primary/40 bg-primary/10 text-primary"
+                          : t.status === "beta"
+                            ? "border-border bg-secondary text-muted-foreground"
+                            : "border-border bg-card text-muted-foreground"
+                      }`}
+                    >
+                      {t.status}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-14 text-[11px] tracking-wider text-muted-foreground uppercase">
+                  {t.category}
+                </div>
+                <h3 className="mt-1 font-serif text-xl font-semibold tracking-tight">
+                  {t.name}
+                </h3>
+                <p className="mt-2 min-h-[3.75rem] text-sm leading-relaxed text-muted-foreground">
+                  {t.tagline}
+                </p>
+
+                <div className="mt-5 flex items-center gap-1.5 text-sm font-medium text-primary opacity-0 transition group-hover:opacity-100">
+                  বিস্তারিত দেখুন
+                  <span aria-hidden className="transition group-hover:translate-x-1">
+                    →
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        Durud Reminder v2.0 · ভালোবাসা ও ইখলাসের সাথে তৈরি
+        Toolhouse · ভালোবাসা ও ইখলাসের সাথে তৈরি
       </footer>
     </div>
   );
